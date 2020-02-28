@@ -1078,11 +1078,11 @@
 
 <p>For more information on Turing’s automatic differentiation backend, please see the <a href="/dev/docs/using-turing/autodiff">Automatic Differentiation</a> article.</p>
 
-<p><a id="Progress-Meter-1"></a></p>
+<p><a id="Progress-Logging-1"></a></p>
 
-<h4 id="progress-meter">Progress Meter</h4>
+<h4 id="progress-logging">Progress Logging</h4>
 
-<p>Turing.jl uses ProgressMeter.jl to show the progress of sampling, which may lead to slow down of inference or even cause bugs in some IDEs due to I/O. This can be turned on or off by <code class="language-plaintext highlighter-rouge">turnprogress(true)</code> and <code class="language-plaintext highlighter-rouge">turnprogress(false)</code>, of which the former is set as default.</p>
+<p>Turing.jl uses ProgressLogging.jl to log the progress of sampling. To visualize the progress of sampling, you need to use a package that supports progress logs created by ProgressLogging.jl such as <a href="https://junolab.org/">Juno</a> or <a href="https://github.com/c42f/TerminalLoggers.jl">TerminalLoggers.jl</a>. Progress logging is enabled as default but might slow down inference. It can be turned on or off by setting the keyword argument <code class="language-plaintext highlighter-rouge">progress</code> of <code class="language-plaintext highlighter-rouge">sample</code> to <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>, respectively. Moreover, you can enable or disable progress logging globally by calling <code class="language-plaintext highlighter-rouge">turnprogress(true)</code> or <code class="language-plaintext highlighter-rouge">turnprogress(false)</code>, respectively.</p>
 
 
     <script

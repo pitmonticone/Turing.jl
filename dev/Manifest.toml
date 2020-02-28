@@ -171,9 +171,9 @@ version = "0.2.0"
 
 [[DynamicPPL]]
 deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools"]
-git-tree-sha1 = "ce8e2e4f4bd7ae0c84a35647ed7be975f4e5d9bb"
+git-tree-sha1 = "3296facbe5fa4814a6a695240b8954fbdbae93d5"
 uuid = "366bfd00-2699-11ea-058f-f148b4cae6d8"
-version = "0.4.0"
+version = "0.4.1"
 
 [[EllipsisNotation]]
 git-tree-sha1 = "65dad386e877850e6fce4fc77f60fe75a468ce9d"
