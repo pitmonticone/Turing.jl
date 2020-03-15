@@ -255,12 +255,6 @@
                       </li>
                       
                       <li class="md-nav__item navbar_bottom-border">
-                        <a class="md-nav__link" href="/dev/docs/using-turing/interface"
-                            id="pancakes-interface-guide"
-                            title="Interface Guide">Interface Guide</a>
-                      </li>
-                      
-                      <li class="md-nav__item navbar_bottom-border">
                         <a class="md-nav__link" href="/dev/docs/using-turing/autodiff"
                             id="pancakes-automatic-differentiation"
                             title="Automatic Differentiation">Automatic Differentiation</a>
@@ -282,6 +276,32 @@
                         <a class="md-nav__link" href="/dev/docs/using-turing/sampler-viz"
                             id="pancakes-sampler-visualization"
                             title="Sampler Visualization">Sampler Visualization</a>
+                      </li>
+                      
+                    </ul>
+                  </nav>
+                  
+                </li>
+                
+                
+                <li class="md-nav__item md-nav__item--nested navbar_bottom-border">
+                  <a class="md-nav__link pancakes-parent-mobile"
+                  id="pancakes-for-developers" title="FOR DEVELOPERS">FOR DEVELOPERS</a>
+                  
+                  <nav class="md-nav md-nav--secondary">
+                    <a class="md-nav__title mobile-navbar-back" for="__toc">Table of contents</a>
+                    <ul class="md-nav__list" data-md-scrollfix="">
+                      
+                      <li class="md-nav__item navbar_bottom-border">
+                        <a class="md-nav__link" href="/dev/docs/for-developers/compiler"
+                            id="pancakes-turing-compiler-design"
+                            title="Turing Compiler Design">Turing Compiler Design</a>
+                      </li>
+                      
+                      <li class="md-nav__item navbar_bottom-border">
+                        <a class="md-nav__link" href="/dev/docs/for-developers/interface"
+                            id="pancakes-interface-guide"
+                            title="Interface Guide">Interface Guide</a>
                       </li>
                       
                     </ul>
@@ -423,6 +443,8 @@
           <li class="md-nav__item mobile-nav" style="display:none">
             <a class="md-nav__link" title="USING TURING">USING TURING</a>
           </li><li class="md-nav__item mobile-nav" style="display:none">
+            <a class="md-nav__link" title="FOR DEVELOPERS">FOR DEVELOPERS</a>
+          </li><li class="md-nav__item mobile-nav" style="display:none">
             <a class="md-nav__link" title="TUTORIALS">TUTORIALS</a>
           </li><li class="md-nav__item mobile-nav" style="display:none">
             <a class="md-nav__link" title="API">API</a>
@@ -473,13 +495,6 @@
                         </li>
                         
                         <li class="md-nav__item">
-                        <a href="/dev/docs/using-turing/interface"
-                           title="Interface Guide" style="display:none;"
-                           
-                           class="md-nav__link pancakes-child">Interface Guide</a>
-                        </li>
-                        
-                        <li class="md-nav__item">
                         <a href="/dev/docs/using-turing/autodiff"
                            title="Automatic Differentiation" style="display:none;"
                            
@@ -505,6 +520,34 @@
                            title="Sampler Visualization" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Sampler Visualization</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+         </li>
+         
+         
+         <li class="md-nav__item md-nav__item--nested not-mobile-nav invisible">
+             <a class="md-nav__link pancakes-parent "
+                id="pancakes-for-developers"
+                title="FOR DEVELOPERS">FOR DEVELOPERS</a>
+                
+                <nav class="md-nav">
+                    <ul class="md-nav__list">
+                        
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/docs/for-developers/compiler"
+                           title="Turing Compiler Design" style="display:none;"
+                           
+                           class="md-nav__link pancakes-child">Turing Compiler Design</a>
+                        </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/docs/for-developers/interface"
+                           title="Interface Guide" style="display:none;"
+                           
+                           class="md-nav__link pancakes-child">Interface Guide</a>
                         </li>
                     </ul>
                 </nav>
@@ -686,18 +729,18 @@
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.AbstractTrajectory"><code class="language-plaintext highlighter-rouge">AdvancedHMC.AbstractTrajectory</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.AbstractTrajectorySampler"><code class="language-plaintext highlighter-rouge">AdvancedHMC.AbstractTrajectorySampler</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.BinaryTree"><code class="language-plaintext highlighter-rouge">AdvancedHMC.BinaryTree</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS-Tuple{MultinomialTS,AbstractFloat,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS-Tuple{MultinomialTS,AbstractFloat,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS-Tuple{Random.AbstractRNG,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS-Union{Tuple{I}, Tuple{C}, Tuple{S}, Tuple{F}, Tuple{I}, Tuple{I,Int64}, Tuple{I,Int64,F}} where C&lt;:AdvancedHMC.AbstractTerminationCriterion where S&lt;:AdvancedHMC.AbstractTrajectorySampler where F&lt;:AbstractFloat where I&lt;:AdvancedHMC.AbstractIntegrator"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS-Tuple"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS-Union{Tuple{I}, Tuple{C}, Tuple{S}, Tuple{F}, Tuple{I}, Tuple{I,Int64}, Tuple{I,Int64,F}} where C&lt;:AdvancedHMC.AbstractTerminationCriterion where S&lt;:AdvancedHMC.AbstractTrajectorySampler where F&lt;:AbstractFloat where I&lt;:AdvancedHMC.AbstractIntegrator"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS-Tuple{SliceTS,AbstractFloat,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS-Tuple{Random.AbstractRNG,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination-Union{Tuple{F}, Tuple{MultinomialTS,AdvancedHMC.NUTS,F,F}} where F&lt;:AbstractFloat"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination-Union{Tuple{F}, Tuple{SliceTS,AdvancedHMC.NUTS,F,F}} where F&lt;:AbstractFloat"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Transition"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Transition</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.A-Tuple{Any,Any,Any}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.A</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.build_tree-Union{Tuple{C}, Tuple{S}, Tuple{F}, Tuple{I}, Tuple{Random.AbstractRNG,AdvancedHMC.NUTS{S,C,I,F},Hamiltonian,AdvancedHMC.PhasePoint,AdvancedHMC.AbstractTrajectorySampler,Int64,Int64,AbstractFloat}} where C&lt;:AdvancedHMC.AbstractTerminationCriterion where S&lt;:AdvancedHMC.AbstractTrajectorySampler where F&lt;:AbstractFloat where I&lt;:AdvancedHMC.AbstractIntegrator"><code class="language-plaintext highlighter-rouge">AdvancedHMC.build_tree</code></a></li>
