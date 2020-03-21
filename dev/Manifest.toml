@@ -81,10 +81,10 @@ uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
 version = "0.5.8"
 
 [[Combinatorics]]
-deps = ["LinearAlgebra", "Polynomials", "Test"]
-git-tree-sha1 = "50b3ae4d643dc27eaff69fb6be06ee094d5500c9"
+deps = ["Polynomials"]
+git-tree-sha1 = "140cc833258df8e5aafabdb068875ac0c256be23"
 uuid = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
-version = "0.7.0"
+version = "1.0.0"
 
 [[CommonSubexpressions]]
 deps = ["Test"]
@@ -146,10 +146,10 @@ uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
 version = "0.22.6"
 
 [[DistributionsAD]]
-deps = ["Combinatorics", "Compat", "DiffRules", "Distributions", "FillArrays", "ForwardDiff", "LinearAlgebra", "PDMats", "Random", "ReverseDiff", "SpecialFunctions", "StatsBase", "StatsFuns", "Tracker", "Zygote", "ZygoteRules"]
-git-tree-sha1 = "16f13a4f2be22a2983716c7ce5c97a0a8434f031"
+deps = ["Combinatorics", "Compat", "DiffRules", "Distributions", "FillArrays", "ForwardDiff", "LinearAlgebra", "NaNMath", "PDMats", "Random", "ReverseDiff", "SpecialFunctions", "StatsBase", "StatsFuns", "Tracker", "Zygote", "ZygoteRules"]
+git-tree-sha1 = "1f756b0a223ba56c67bd1e4d9a6bb33caa629e67"
 uuid = "ced4e74d-a319-5a8a-b0ac-84af2272839c"
-version = "0.4.6"
+version = "0.4.7"
 
 [[DocStringExtensions]]
 deps = ["LibGit2", "Markdown", "Pkg", "Test"]
@@ -256,9 +256,9 @@ version = "0.21.0"
 
 [[LazyArrays]]
 deps = ["ArrayLayouts", "FillArrays", "LinearAlgebra", "MacroTools", "StaticArrays"]
-git-tree-sha1 = "6e818d550c2158def13c236c3b825fc14995160c"
+git-tree-sha1 = "b799f90cd9a1d90a54038f8263e701023bce1af8"
 uuid = "5078a376-72f3-5289-bfd5-ec5146d43c02"
-version = "0.15.0"
+version = "0.15.1"
 
 [[LibGit2]]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
@@ -334,9 +334,9 @@ version = "0.3.3"
 
 [[OpenBLAS_jll]]
 deps = ["Libdl", "Pkg"]
-git-tree-sha1 = "858f107d79a016d9511e34186fe2af11566ba762"
+git-tree-sha1 = "139adbff69e8149e68824994b68f06a61a5a2797"
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.7+7"
+version = "0.3.7+8"
 
 [[OpenSpecFun_jll]]
 deps = ["CompilerSupportLibraries_jll", "Libdl", "Pkg"]
