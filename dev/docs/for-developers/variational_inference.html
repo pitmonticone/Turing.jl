@@ -784,7 +784,7 @@
 
 <script type="math/tex; mode=display">\mathrm{supp}\big(q(z)\big) \subseteq \mathrm{supp}\big(p(z \mid x)\big)</script>
 
-<p>Otherwise there might be a point <script type="math/tex">z*0 \sim q(z)</script> such that <script type="math/tex">p(z*0 \mid \{ x_i \}_{i = 1}^n) = 0</script>, resulting in <script type="math/tex">\log\big(\frac{q(z)}{0}\big)</script> which doesn’t make sense!</p>
+<p>Otherwise there might be a point <script type="math/tex">z_0 \sim q(z)</script> such that <script type="math/tex">p(z_0 \mid \{ x_i \}_{i = 1}^n) = 0</script>, resulting in <script type="math/tex">\log\big(\frac{q(z)}{0}\big)</script> which doesn’t make sense!</p>
 
 <p>One major problem: as we can see in the definition of the KL-divergence, we need <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> for any <script type="math/tex">z</script> if we want to compute the KL-divergence between this and <script type="math/tex">q(z)</script>. We don’t have that. The entire reason we even do Bayesian inference is that we don’t know the posterior! Cleary this isn’t going to work. <em>Or is it?!</em></p>
 
@@ -826,7 +826,7 @@
 
 <p>where</p>
 
-<script type="math/tex; mode=display">\widehat{\mathrm{ELBO}}(q) = \frac{1}{m} \bigg( \sum_{k = 1}^m \sum_{i = 1}^n \log p(x_i, z*k) \bigg) + \mathbb{H} \big(q(z)\big) \quad \text{where} \quad z\*k \sim q(z) \quad \forall k = 1, \dots, m</script>
+<script type="math/tex; mode=display">\widehat{\mathrm{ELBO}}(q) = \frac{1}{m} \bigg( \sum_{k = 1}^m \sum_{i = 1}^n \log p(x_i, z_k) \bigg) + \mathbb{H} \big(q(z)\big) \quad \text{where} \quad z_k \sim q(z) \quad \forall k = 1, \dots, m</script>
 
 <p>Hence, as long as we can sample from <script type="math/tex">q(z)</script> somewhat efficiently, we can indeed minimize the KL-divergence! Neat, eh?</p>
 
@@ -885,7 +885,7 @@
 
 <p>Though not necessary, we’ll often make a <em>mean-field</em> assumption for the variational posterior <script type="math/tex">q(z)</script>, i.e. assume independence between the latent variables. In this case, we’ll write</p>
 
-<script type="math/tex; mode=display">\theta = (\mu, \sigma^2) := (\mu_1, \dots, \mu_d, \sigma*1^2, \dots, \sigma*d^2)</script>
+<script type="math/tex; mode=display">\theta = (\mu, \sigma^2) := (\mu_1, \dots, \mu_d, \sigma_1^2, \dots, \sigma_d^2)</script>
 
 <p><a id="Examples-1"></a></p>
 
@@ -912,7 +912,7 @@
 
 <p>with posterior <script type="math/tex">p(s, m \mid \{ x_i \}_{i = 1}^n) = p(s) p(m \mid s) \prod_{i = 1}^n p(x_i \mid s, m)</script> and the mean-field variational posterior <script type="math/tex">q(s, m)</script> will be</p>
 
-<script type="math/tex; mode=display">q_{\mu_1, \mu_2, \sigma*1^2, \sigma*2^2}(s, m) = p_{\mathcal{N}(\mu_1, \sigma*1^2)}(s) p\*{\mathcal{N}(\mu_2, \sigma_2^2)}(m)</script>
+<script type="math/tex; mode=display">q_{\mu_1, \mu_2, \sigma*1^2, \sigma*2^2}(s, m) = p_{\mathcal{N}(\mu_1, \sigma_1^2)}(s) p_{\mathcal{N}(\mu_2, \sigma_2^2)}(m)</script>
 
 <p>where we’ve denoted the evaluation of the probability density of a Gaussian as <script type="math/tex">p_{\mathcal{N}(\mu, \sigma^2)}(x)</script>.</p>
 
