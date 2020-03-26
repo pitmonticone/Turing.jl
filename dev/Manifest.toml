@@ -8,9 +8,9 @@ version = "0.5.0"
 
 [[AbstractMCMC]]
 deps = ["ConsoleProgressMonitor", "Distributed", "Logging", "LoggingExtras", "ProgressLogging", "Random", "StatsBase", "TerminalLoggers"]
-git-tree-sha1 = "b6da6e3035c3ab4f92a46e0dae550419927eece5"
+git-tree-sha1 = "a7e186cfbca7e28d4ed528c80384b6f242690d83"
 uuid = "80f14c24-f653-4e6a-9b94-39d6b0f70001"
-version = "0.5.4"
+version = "0.5.5"
 
 [[AbstractTrees]]
 deps = ["Markdown"]
