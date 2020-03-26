@@ -7,8 +7,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Bayesian Hidden Markov Models</title>
-    <meta name="description" content="Bayesian Hidden Markov Models">
+    <title>Variational Inference</title>
+    <meta name="description" content="">
     <meta name="author" content="The Turing Team">
     <meta name="theme-color" content="red">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -17,7 +17,7 @@
     <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="canonical" href="/dev/tutorials/4-bayeshmm/">
+    <link rel="canonical" href="/dev/docs/for-developers/variational_inference">
     <link rel="alternate" type="application/rss+xml" title="Turing.jl" href="/dev/feed.xml">
     <meta name="lang:clipboard.copy" content="Copy to clipboard">
     <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -52,7 +52,7 @@
 
     <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off>
     <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off>
-    <label class=md-overlay data-md-component=overlay for=__drawer></label> <a href="#bayesian-hidden-markov-models" tabindex=1 class=md-skip> Skip to content </a>
+    <label class=md-overlay data-md-component=overlay for=__drawer></label> <a href="#variational-inference" tabindex=1 class=md-skip> Skip to content </a>
     <header class=md-header data-md-component=header data-md-state=none>
         <nav class="md-header-nav md-grid">
             <div class=md-flex>
@@ -534,7 +534,7 @@
          
          
          <li class="md-nav__item md-nav__item--nested not-mobile-nav invisible">
-             <a class="md-nav__link pancakes-parent "
+             <a class="md-nav__link pancakes-parent open-parent"
                 id="pancakes-for-developers"
                 title="FOR DEVELOPERS">FOR DEVELOPERS</a>
                 
@@ -544,22 +544,22 @@
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/compiler"
-                           title="Turing Compiler Design" style="display:none;"
+                           title="Turing Compiler Design" 
                            
                            class="md-nav__link pancakes-child">Turing Compiler Design</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/interface"
-                           title="Interface Guide" style="display:none;"
+                           title="Interface Guide" 
                            
                            class="md-nav__link pancakes-child">Interface Guide</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/variational_inference"
-                           title="Variational Inference" style="display:none;"
-                           
+                           title="Variational Inference" 
+                            style="color: red;"
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
                     </ul>
@@ -569,7 +569,7 @@
          
          
          <li class="md-nav__item md-nav__item--nested not-mobile-nav invisible">
-             <a class="md-nav__link pancakes-parent open-parent"
+             <a class="md-nav__link pancakes-parent "
                 id="pancakes-tutorials"
                 title="TUTORIALS">TUTORIALS</a>
                 
@@ -579,63 +579,63 @@
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials"
-                           title="Home" 
+                           title="Home" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Home</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/0-introduction"
-                           title="Introduction to Turing" 
+                           title="Introduction to Turing" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Introduction to Turing</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/1-gaussianmixturemodel"
-                           title="Gaussian Mixture Models" 
+                           title="Gaussian Mixture Models" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Gaussian Mixture Models</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/2-logisticregression"
-                           title="Bayesian Logistic Regression" 
+                           title="Bayesian Logistic Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Logistic Regression</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/3-bayesnn"
-                           title="Bayesian Neural Networks" 
+                           title="Bayesian Neural Networks" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Neural Networks</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/4-bayeshmm"
-                           title="Hidden Markov Models" 
-                            style="color: red;"
+                           title="Hidden Markov Models" style="display:none;"
+                           
                            class="md-nav__link pancakes-child">Hidden Markov Models</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/5-linearregression"
-                           title="Linear Regression" 
+                           title="Linear Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Linear Regression</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/6-infinitemixturemodel"
-                           title="Infinite Mixture Models" 
+                           title="Infinite Mixture Models" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Infinite Mixture Models</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/7-poissonregression"
-                           title="Bayesian Poisson Regression" 
+                           title="Bayesian Poisson Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Poisson Regression</a>
                         </li>
@@ -721,10 +721,10 @@
         <ul id="nav-toc" class="md-nav__list" data-md-scrollfix="">
         <!-- toc will be appended here!-->
         </ul>
-        <a href="https://twitter.com/intent/tweet?original_referer=https://github.com/TuringLang/Turing.jl/edit/master/docs/src_tutorials/4_BayesHmm.md" title="Tweet this page" class="social-link"><i class="fa fa-twitter fa-1x"></i>Tweet this page</a>
+        <a href="https://twitter.com/intent/tweet?original_referer=https://github.com/TuringLang/Turing.jl/edit/master/docs/src/for-developers/variational_inference.md" title="Tweet this page" class="social-link"><i class="fa fa-twitter fa-1x"></i>Tweet this page</a>
         <a href="https://discourse.julialang.org/c/domain/probprog" title="Ask questions" class="social-link"><i class="fa fa-stack-overflow fa-1x"></i>Ask questions</a>
-        <a href="https://github.com/TuringLang/Turing.jl//issues/new?label=question&title=Question:&body=Question%20on:%20https://github.com/TuringLang/Turing.jl/edit/master/docs/_tutorials/4_BayesHmm.md" title="Report issues" class="social-link"><i class="fa fa-comments fa-1x"></i>Report issues</a>
-        <a href="https://github.com/TuringLang/Turing.jl/edit/master/docs/src_tutorials/4_BayesHmm.md" title="Edit this page on github"  class="social-link"><i class="fa fa-github fa-1x"></i> Edit me</a>
+        <a href="https://github.com/TuringLang/Turing.jl//issues/new?label=question&title=Question:&body=Question%20on:%20https://github.com/TuringLang/Turing.jl/edit/master/docs/_docs/for-developers/variational_inference.md" title="Report issues" class="social-link"><i class="fa fa-comments fa-1x"></i>Report issues</a>
+        <a href="https://github.com/TuringLang/Turing.jl/edit/master/docs/src/for-developers/variational_inference.md" title="Edit this page on github"  class="social-link"><i class="fa fa-github fa-1x"></i> Edit me</a>
       </nav>
     </div>
   </div>
@@ -733,193 +733,265 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <h1 id="bayesian-hidden-markov-models">Bayesian Hidden Markov Models</h1>
+    <p><a id="Overview-1"></a></p>
 
-<p>This tutorial illustrates training Bayesian <a href="https://en.wikipedia.org/wiki/Hidden_Markov_model">Hidden Markov Models</a> (HMM) using Turing. The main goals are learning the transition matrix, emission parameter, and hidden states. For a more rigorous academic overview on Hidden Markov Models, see <a href="http://mlg.eng.cam.ac.uk/zoubin/papers/ijprai.pdf">An introduction to Hidden Markov Models and Bayesian Networks</a> (Ghahramani, 2001).</p>
+<h1 id="overview">Overview</h1>
 
-<p>Let’s load the libraries we’ll need. We also set a random seed (for reproducibility) and the automatic differentiation backend to forward mode (more <a href="http://turing.ml/docs/autodiff/">here</a> on why this is useful).</p>
+<p>In this post we’ll have a look at what’s know as <strong>variational inference (VI)</strong>, a family of <em>approximate</em> Bayesian inference methods. In particular, we will focus on one of the more standard VI methods called <strong>Automatic Differentation Variational Inference (ADVI)</strong>. If</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Load libraries.</span>
-<span class="k">using</span> <span class="n">Turing</span><span class="x">,</span> <span class="n">Plots</span><span class="x">,</span> <span class="n">Random</span>
+<p>Here we’ll have a look at the theory behind VI, but if you’re interested in how to use ADVI in Turing.jl, <a href="../tutorials/8_VariationalInference.html">checkout this tutorial</a>.</p>
 
-<span class="c"># Turn off progress monitor.</span>
-<span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">);</span>
+<p><a id="Motivation-1"></a></p>
 
-<span class="c"># Set a random seed and use the forward_diff AD mode.</span>
-<span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="x">(</span><span class="mi">1234</span><span class="x">);</span>
-</code></pre></div></div>
+<h1 id="motivation">Motivation</h1>
 
-<h2 id="simple-state-detection">Simple State Detection</h2>
+<p>In Bayesian inference one usually specifies a model as follows: given data <script type="math/tex">\{ x_i\}_{i = 1}^n</script>,</p>
 
-<p>In this example, we’ll use something where the states and emission parameters are straightforward.</p>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}   \text{prior:     } \quad z &\sim p(z)   \\
+  \text{likelihood:} \quad x_i &\overset{\text{i.i.d.}}{\sim} p(x \mid z) \quad  \text{where} \quad i = 1, \dots, n \end{align*} %]]></script>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define the emission parameter.</span>
-<span class="n">y</span> <span class="o">=</span> <span class="x">[</span> <span class="mf">1.0</span><span class="x">,</span> <span class="mf">1.0</span><span class="x">,</span> <span class="mf">1.0</span><span class="x">,</span> <span class="mf">1.0</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">3.0</span><span class="x">,</span> <span class="mf">3.0</span><span class="x">,</span> <span class="mf">3.0</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">1.0</span><span class="x">,</span> <span class="mf">1.0</span> <span class="x">];</span>
-<span class="n">N</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">y</span><span class="x">);</span>  <span class="n">K</span> <span class="o">=</span> <span class="mi">3</span><span class="x">;</span>
+<p>where <script type="math/tex">\overset{\text{i.i.d.}}{\sim}</script> denotes that the samples are identically independently distributed. Our goal in Bayesian inference is then to find the <em>posterior</em> <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n) = \prod_{i=1}^{n} p(z \mid x_i)</script> In general one cannot obtain a closed form expression for <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script>, but one might still be able to <em>sample</em> from <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> with guarantees of converging to the target posterior <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> as the number of samples go to <script type="math/tex">\infty</script>, e.g. MCMC.</p>
 
-<span class="c"># Plot the data we just made.</span>
-<span class="n">plot</span><span class="x">(</span><span class="n">y</span><span class="x">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="mi">15</span><span class="x">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="x">(</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span><span class="mi">5</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">500</span><span class="x">,</span> <span class="mi">250</span><span class="x">))</span>
-</code></pre></div></div>
+<p>As you are hopefully already aware, Turing.jl provides a lot of different methods with asymptotic exactness guarantees that we can apply to such a problem!</p>
 
-<p><img src="../figures/4_BayesHmm_2_1.png" alt="" /></p>
+<p>Unfortunately, these unbiased samplers can be prohibitively expensive to run. As the model <script type="math/tex">p</script> increases in complexity, the convergence of these unbiased samplers can slow down dramatically. Still, in the <em>infinite</em> limit, these methods should converge to the true posterior! But infinity is fairly large, like, <em>at least</em> more than 12, so this might take a while.</p>
 
-<p>We can see that we have three states, one for each height of the plot (1, 2, 3). This height is also our emission parameter, so state one produces a value of one, state two produces a value of two, and so on.</p>
+<p>In such a case it might be desirable to sacrifice some of these asymptotic guarantees, and instead <em>approximate</em> the posterior <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> using some other model which we’ll denote <script type="math/tex">q(z)</script>.</p>
 
-<p>Ultimately, we would like to understand three major parameters:</p>
+<p>There are multiple approaches to take in this case, one of which is <strong>variational inference (VI)</strong>.</p>
+
+<p><a id="Variational-Inference-(VI)-1"></a></p>
+
+<h1 id="variational-inference-vi">Variational Inference (VI)</h1>
+
+<p>In VI, we’re looking to approximate <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n )</script> using some <em>approximate</em> or <em>variational</em> posterior <script type="math/tex">q(z)</script>.</p>
+
+<p>To approximate something you need a notion of what “close” means. In the context of probability densities a standard such “measure” of closeness is the <em>Kullback-Leibler (KL) divergence</em> , though this is far from the only one. The KL-divergence is defined between two densities <script type="math/tex">q(z)</script> and <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}   \mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) &= \int \log \bigg( \frac{q(z)}{\sum_{i = 1}^n p(z \mid x_i)} \bigg) q(z) \mathrm{d}{z} \\
+  &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) - \sum_{i = 1}^n \log p(z \mid x_i) \big] \\
+  &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big] - \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(z \mid x_i) \big] \end{align*} %]]></script>
+
+<p>It’s worth noting that unfortunately the KL-divergence is <em>not</em> a metric/distance in the analysis-sense due to its lack of symmetry. On the other hand, it turns out that minimizing the KL-divergence that it’s actually equivalent to maximizing the log-likelihood! Also, under reasonable restrictions on the densities at hand,</p>
+
+<script type="math/tex; mode=display">\mathrm{D_{KL}}\big(q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) = 0 \quad \iff \quad p(z) = p(z \mid \{ x_i \}_{i = 1}^n), \quad \forall z</script>
+
+<p>Therefore one could (and we will) attempt to approximate <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> using a density <script type="math/tex">q(z)</script> by minimizing the KL-divergence between these two!</p>
+
+<p>One can also show that <script type="math/tex">\mathrm{D_{KL}} \ge 0</script>, which we’ll need later. Finally notice that the KL-divergence is only well-defined when in fact <script type="math/tex">q(z)</script> is zero everywhere <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> is zero, i.e.</p>
+
+<script type="math/tex; mode=display">\mathrm{supp}\big(q(z)\big) \subseteq \mathrm{supp}\big(p(z \mid x)\big)</script>
+
+<p>Otherwise there might be a point <script type="math/tex">z*0 \sim q(z)</script> such that <script type="math/tex">p(z*0 \mid \{ x_i \}_{i = 1}^n) = 0</script>, resulting in <script type="math/tex">\log\big(\frac{q(z)}{0}\big)</script> which doesn’t make sense!</p>
+
+<p>One major problem: as we can see in the definition of the KL-divergence, we need <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> for any <script type="math/tex">z</script> if we want to compute the KL-divergence between this and <script type="math/tex">q(z)</script>. We don’t have that. The entire reason we even do Bayesian inference is that we don’t know the posterior! Cleary this isn’t going to work. <em>Or is it?!</em></p>
+
+<p><a id="Computing-\mathrm{D_{KL}}-without-the-posterior-1"></a></p>
+
+<h2 id="computing-mathrmd_kl-without-the-posterior">Computing <script type="math/tex">\mathrm{D_{KL}}</script> without the posterior</h2>
+
+<p>First off, recall that</p>
+
+<script type="math/tex; mode=display">p(z \mid x_i) = \frac{p(x_i, z)}{p(x_i)}</script>
+
+<p>so we can write</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} \mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big] - \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i, z) - \log p(x_i) \big] \\
+    &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big] - \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i, z) \big] + \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i) \big] \\      &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big] - \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i, z) \big] + \sum_{i = 1}^n \log p(x_i) \end{align*} %]]></script>
+
+<p>where in the last equality we used the fact that <script type="math/tex">p(x_i)</script> is independent of <script type="math/tex">z</script>.</p>
+
+<p>Now you’re probably thinking “Oh great! Now you’ve introduced <script type="math/tex">p(x_i)</script> which we <em>also</em> can’t compute (in general)!”. Woah. Calm down human. Let’s do some more algebra. The above expression can be rearranged to</p>
+
+<script type="math/tex; mode=display">\mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) + \underbrace{\sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i, z) \big] - \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big]}_{=: \mathrm{ELBO}(q)} = \underbrace{\sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i) \big]}_{\text{constant}}</script>
+
+<p>See? The left-hand side is <em>constant</em> and, as we mentioned before, <script type="math/tex">\mathrm{D_{KL}} \ge 0</script>. What happens if we try to <em>maximize</em> the term we just gave the completely arbitrary name <script type="math/tex">\mathrm{ELBO}</script>? Well, if <script type="math/tex">\mathrm{ELBO}</script> goes up while <script type="math/tex">p(x_i)</script> stays constant then <script type="math/tex">\mathrm{D_{KL}}</script> <em>has to</em> go down! That is, the <script type="math/tex">q(z)</script> which <em>minimizes</em> the KL-divergence is the same <script type="math/tex">q(z)</script> which <em>maximizes</em> <script type="math/tex">\mathrm{ELBO}(q)</script>:</p>
+
+<script type="math/tex; mode=display">\underset{q}{\mathrm{argmin}} \ \mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) = \underset{q}{\mathrm{argmax}} \ \mathrm{ELBO}(q)</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} \mathrm{ELBO}(q) &:= \bigg( \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i, z) \big]  \bigg) - \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big] \\
+    &= \bigg( \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(x_i, z) \big] \bigg) + \mathbb{H}\big( q(z) \big) \end{align*} %]]></script>
+
+<p>and <script type="math/tex">\mathbb{H} \big(q(z) \big)</script> denotes the <a href="https://www.wikiwand.com/en/Differential_entropy">(differential) entropy</a> of <script type="math/tex">q(z)</script>.</p>
+
+<p>Assuming joint <script type="math/tex">p(x_i, z)</script> and the entropy <script type="math/tex">\mathbb{H}\big(q(z)\big)</script> are both tractable, we can use a Monte-Carlo for the remaining expectation. This leaves us with the following tractable expression</p>
+
+<script type="math/tex; mode=display">\underset{q}{\mathrm{argmin}} \ \mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) \approx \underset{q}{\mathrm{argmax}} \ \widehat{\mathrm{ELBO}}(q)</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">\widehat{\mathrm{ELBO}}(q) = \frac{1}{m} \bigg( \sum_{k = 1}^m \sum_{i = 1}^n \log p(x_i, z*k) \bigg) + \mathbb{H} \big(q(z)\big) \quad \text{where} \quad z\*k \sim q(z) \quad \forall k = 1, \dots, m</script>
+
+<p>Hence, as long as we can sample from <script type="math/tex">q(z)</script> somewhat efficiently, we can indeed minimize the KL-divergence! Neat, eh?</p>
+
+<p>Sidenote: in the case where <script type="math/tex">q(z)</script> is tractable but <script type="math/tex">\mathbb{H} \big(q(z) \big)</script> is <em>not</em> , we can use an Monte-Carlo estimate for this term too but this generally results in a higher-variance estimate.</p>
+
+<p>Also, I fooled you real good: the ELBO <em>isn’t</em> an arbitrary name, hah! In fact it’s an abbreviation for the <strong>expected lower bound (ELBO)</strong> because it, uhmm, well, it’s the <em>expected</em> lower bound (remember <script type="math/tex">\mathrm{D_{KL}} \ge 0</script>). Yup.</p>
+
+<p><a id="Maximizing-\widehat{\mathrm{ELBO}}(q)-1"></a></p>
+
+<h2 id="maximizing-widehatmathrmelboq">Maximizing <script type="math/tex">\widehat{\mathrm{ELBO}}(q)</script></h2>
+
+<p>Finding the optimal <script type="math/tex">q</script> over <em>all</em> possible densities of course isn’t feasible. Instead we consider a family of <em>parameterized</em> densities <script type="math/tex">\mathscr{D}_{\Theta}</script> where <script type="math/tex">\Theta</script> denotes the space of possible parameters. Each density in this family <script type="math/tex">q_{\theta} \in \mathscr{D}_{\Theta}</script> is parameterized by a unique <script type="math/tex">\theta \in \Theta</script>. Moreover, we’ll assume</p>
 
 <ol>
-  <li>The transition matrix. This is a matrix that assigns a probability of switching from one state to any other state, including the state that we are already in.</li>
-  <li>The emission matrix, which describes a typical value emitted by some state. In the plot above, the emission parameter for state one is simply one.</li>
-  <li>The state sequence is our understanding of what state we were actually in when we observed some data. This is very important in more sophisticated HMM models, where the emission value does not equal our state.</li>
+  <li><script type="math/tex">q_{\theta}(z)</script>, i.e. evaluating the probability density <script type="math/tex">q</script> at any point <script type="math/tex">z</script>, is differentiable</li>
+  <li><script type="math/tex">z \sim q_{\theta}(z)</script>, i.e. the process of sampling from <script type="math/tex">q_{\theta}(z)</script>, is differentiable</li>
 </ol>
 
-<p>With this in mind, let’s set up our model. We are going to use some of our knowledge as modelers to provide additional information about our system. This takes the form of the prior on our emission parameter.</p>
+<p>(1) is fairly straight-forward, but (2) is a bit tricky. What does it even mean for a <em>sampling process</em> to be differentiable? This is quite an interesting problem in its own right and would require something like a <a href="https://arxiv.org/abs/1906.10652">50-page paper to properly review the different approaches (highly recommended read)</a>.</p>
 
-<p>$$
-m_i \sim Normal(i, 0.5), \space m = {1,2,3}
-$$</p>
+<p>We’re going to make use of a particular such approach which goes under a bunch of different names: <em>reparametrization trick</em>, <em>path derivative</em>, etc. This refers to making the assumption that all elements <script type="math/tex">q_{\theta} \in \mathscr{Q}_{\Theta}</script> can be considered as reparameterizations of some base density, say <script type="math/tex">\bar{q}(z)</script>. That is, if <script type="math/tex">q_{\theta} \in \mathscr{Q}_{\Theta}</script> then</p>
 
-<p>Simply put, this says that we expect state one to emit values in a Normally distributed manner, where the mean of each state’s emissions is that state’s value. The variance of 0.5 helps the model converge more quickly — consider the case where we have a variance of 1 or 2. In this case, the likelihood of observing a 2 when we are in state 1 is actually quite high, as it is within a standard deviation of the true emission value. Applying the prior that we are likely to be tightly centered around the mean prevents our model from being too confused about the state that is generating our observations.</p>
+<script type="math/tex; mode=display">z \sim q_{\theta}(z) \quad \iff \quad z := g_{\theta}(\tilde{z}) \quad \text{where} \quad \bar{z} \sim \bar{q}(z)</script>
 
-<p>The priors on our transition matrix are noninformative, using <code class="language-plaintext highlighter-rouge">T[i] ~ Dirichlet(ones(K)/K)</code>. The Dirichlet prior used in this way assumes that the state is likely to change to any other state with equal probability. As we’ll see, this transition matrix prior will be overwritten as we observe data.</p>
+<p>for some function <script type="math/tex">g_{\theta}</script> differentiable wrt. <script type="math/tex">\theta</script>. So all <script type="math/tex">q_{\theta} \in \mathscr{Q}_{\Theta}</script> are using the <em>same</em> reparameterization-function <script type="math/tex">g</script> but each <script type="math/tex">q_{\theta}</script> correspond to different choices of <script type="math/tex">\theta</script> for <script type="math/tex">f_{\theta}</script>.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Turing model definition.</span>
-<span class="nd">@model</span> <span class="n">BayesHmm</span><span class="x">(</span><span class="n">y</span><span class="x">,</span> <span class="n">K</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-    <span class="c"># Get observation length.</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">y</span><span class="x">)</span>
+<p>Under this assumption we can differentiate the sampling process by taking the derivative of <script type="math/tex">g_{\theta}</script> wrt. <script type="math/tex">\theta</script>, and thus we can differentiate the entire <script type="math/tex">\widehat{\mathrm{ELBO}}(q_{\theta})</script> wrt. <script type="math/tex">\theta</script>! With the gradient available we can either try to solve for optimality either by setting the gradient equal to zero or maximize <script type="math/tex">\widehat{\mathrm{ELBO}}(q_{\theta})</script> stepwise by traversing <script type="math/tex">\mathscr{Q}_{\Theta}</script> in the direction of steepest ascent. For the sake of generality, we’re going to go with the stepwise approach.</p>
 
-    <span class="c"># State sequence.</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">tzeros</span><span class="x">(</span><span class="kt">Int</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span>
+<p>With all this nailed down, we eventually reach the section on <strong>Automatic Differentiation Variational Inference (ADVI)</strong>.</p>
 
-    <span class="c"># Emission matrix.</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">K</span><span class="x">)</span>
+<p><a id="Automatic-Differentiation-Variational-Inference-(ADVI)-1"></a></p>
 
-    <span class="c"># Transition matrix.</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">Vector</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">K</span><span class="x">)</span>
+<h2 id="automatic-differentiation-variational-inference-advi">Automatic Differentiation Variational Inference (ADVI)</h2>
 
-    <span class="c"># Assign distributions to each element</span>
-    <span class="c"># of the transition matrix and the</span>
-    <span class="c"># emission matrix.</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">K</span>
-        <span class="n">T</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Dirichlet</span><span class="x">(</span><span class="n">ones</span><span class="x">(</span><span class="n">K</span><span class="x">)</span><span class="o">/</span><span class="n">K</span><span class="x">)</span>
-        <span class="n">m</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">i</span><span class="x">,</span> <span class="mf">0.5</span><span class="x">)</span>
-    <span class="k">end</span>
+<p>So let’s revisit the assumptions we’ve made at this point:</p>
 
-    <span class="c"># Observe each point of the input.</span>
-    <span class="n">s</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span> <span class="o">~</span> <span class="n">Categorical</span><span class="x">(</span><span class="n">K</span><span class="x">)</span>
-    <span class="n">y</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">[</span><span class="n">s</span><span class="x">[</span><span class="mi">1</span><span class="x">]],</span> <span class="mf">0.1</span><span class="x">)</span>
+<ol>
+  <li>The variational posterior <script type="math/tex">q_{\theta}</script> is in a parameterized family of densities denoted <script type="math/tex">\mathscr{Q}_{\Theta}</script>, with <script type="math/tex">\theta \in \Theta</script>.</li>
+  <li><script type="math/tex">\mathscr{Q}_{\Theta}</script> is a space of <em>reparameterizable</em> densities with <script type="math/tex">\bar{q}(z)</script> as the base-density.</li>
+  <li>The parameterization function <script type="math/tex">g_{\theta}</script> is differentiable wrt. <script type="math/tex">\theta</script>.</li>
+  <li>Evaluation of the probability density <script type="math/tex">q_{\theta}(z)</script> is differentiable wrt. <script type="math/tex">\theta</script>.</li>
+  <li><script type="math/tex">\mathbb{H}\big(q_{\theta}(z)\big)</script> is tractable.</li>
+  <li>Evaluation of the joint density <script type="math/tex">p(x, z)</script> is tractable and differentiable wrt. <script type="math/tex">z</script></li>
+  <li>The support of <script type="math/tex">p(z \mid x)</script> is a subspace of the support of <script type="math/tex">q(z)</script>: <script type="math/tex">\mathrm{supp}\big(p(z \mid x)\big) \subseteq \mathrm{supp}\big(q(z)\big)</script>.</li>
+</ol>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="o">:</span><span class="n">N</span>
-        <span class="n">s</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Categorical</span><span class="x">(</span><span class="n">vec</span><span class="x">(</span><span class="n">T</span><span class="x">[</span><span class="n">s</span><span class="x">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="x">]]))</span>
-        <span class="n">y</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">[</span><span class="n">s</span><span class="x">[</span><span class="n">i</span><span class="x">]],</span> <span class="mf">0.1</span><span class="x">)</span>
-    <span class="k">end</span>
-<span class="k">end</span><span class="x">;</span>
-</code></pre></div></div>
+<p>All of these are not <em>necessary</em> to do VI, but they are very convenient and results in a fairly flexible approach. One distribution which has a density satisfying all of the above assumptions <em>except</em> (7) (we’ll get back to this in second) for any tractable and differentiable <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> is the good ole’ Gaussian/normal distribution:</p>
 
-<p>We will use a combination of two samplers (<a href="http://turing.ml/docs/library/#Turing.HMC">HMC</a> and <a href="http://turing.ml/docs/library/#Turing.PG">Particle Gibbs</a>) by passing them to the <a href="http://turing.ml/docs/library/#Turing.Gibbs">Gibbs</a> sampler. The Gibbs sampler allows for compositional inference, where we can utilize different samplers on different parameters.</p>
+<script type="math/tex; mode=display">z \sim \mathcal{N}(\mu, \Sigma) \quad \iff \quad z = g_{\mu, L}(\bar{z}) := \mu + L^T \tilde{z} \quad \text{where} \quad \bar{z} \sim \bar{q}(z) := \mathcal{N}(1_d, I_{d \times d})</script>
 
-<p>In this case, we use HMC for <code class="language-plaintext highlighter-rouge">m</code> and <code class="language-plaintext highlighter-rouge">T</code>, representing the emission and transition matrices respectively. We use the Particle Gibbs sampler for <code class="language-plaintext highlighter-rouge">s</code>, the state sequence. You may wonder why it is that we are not assigning <code class="language-plaintext highlighter-rouge">s</code> to the HMC sampler, and why it is that we need compositional Gibbs sampling at all.</p>
+<p>where <script type="math/tex">\Sigma = L L^T</script>, with <script type="math/tex">L</script> obtained from the Cholesky-decomposition. Abusing notation a bit, we’re going to write</p>
 
-<p>The parameter <code class="language-plaintext highlighter-rouge">s</code> is not a continuous variable. It is a vector of <strong>integers</strong>, and thus Hamiltonian methods like HMC and <a href="http://turing.ml/docs/library/#-turingnuts--type">NUTS</a> won’t work correctly. Gibbs allows us to apply the right tools to the best effect. If you are a particularly advanced user interested in higher performance, you may benefit from setting up your Gibbs sampler to use <a href="http://turing.ml/docs/autodiff/#compositional-sampling-with-differing-ad-modes">different automatic differentiation</a> backends for each parameter space.</p>
+<script type="math/tex; mode=display">\theta = (\mu, \Sigma) := (\mu_1, \dots, \mu_d, L_{11}, \dots, L_{1, d}, L_{2, 1}, \dots, L_{2, d}, \dots, L_{d, 1}, \dots, L_{d, d})</script>
 
-<p>Time to run our sampler.</p>
+<p>With this assumption we finally have a tractable expression for <script type="math/tex">\widehat{\mathrm{ELBO}}(q_{\mu, \Sigma})</script>! Well, assuming (7) is holds. Since a Gaussian has non-zero probability on the entirety of <script type="math/tex">\mathbb{R}^d</script>, we also require <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> to have non-zero probability on all of <script type="math/tex">\mathbb{R}^d</script>.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="n">Gibbs</span><span class="x">(</span><span class="n">HMC</span><span class="x">(</span><span class="mf">0.001</span><span class="x">,</span> <span class="mi">7</span><span class="x">,</span> <span class="o">:</span><span class="n">m</span><span class="x">,</span> <span class="o">:</span><span class="n">T</span><span class="x">),</span> <span class="n">PG</span><span class="x">(</span><span class="mi">20</span><span class="x">,</span> <span class="o">:</span><span class="n">s</span><span class="x">))</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">BayesHmm</span><span class="x">(</span><span class="n">y</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span> <span class="n">g</span><span class="x">,</span> <span class="mi">100</span><span class="x">);</span>
-</code></pre></div></div>
+<p>Though not necessary, we’ll often make a <em>mean-field</em> assumption for the variational posterior <script type="math/tex">q(z)</script>, i.e. assume independence between the latent variables. In this case, we’ll write</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: MethodError: no method matching Float64(::Tracker.TrackedReal{Float6
-4})
-Closest candidates are:
-  Float64(::Real, !Matched::RoundingMode) where T&lt;:AbstractFloat at roundin
-g.jl:185
-  Float64(::T&lt;:Number) where T&lt;:Number at boot.jl:725
-  Float64(!Matched::Int8) at float.jl:60
-  ...
-</code></pre></div></div>
+<script type="math/tex; mode=display">\theta = (\mu, \sigma^2) := (\mu_1, \dots, \mu_d, \sigma*1^2, \dots, \sigma*d^2)</script>
 
-<p>Let’s see how well our chain performed. Ordinarily, using the <code class="language-plaintext highlighter-rouge">describe</code> function from <a href="https://github.com/TuringLang/MCMCChain.jl">MCMCChain</a> would be a good first step, but we have generated a lot of parameters here (<code class="language-plaintext highlighter-rouge">s[1]</code>, <code class="language-plaintext highlighter-rouge">s[2]</code>, <code class="language-plaintext highlighter-rouge">m[1]</code>, and so on). It’s a bit easier to show how our model performed graphically.</p>
+<p><a id="Examples-1"></a></p>
 
-<p>The code below generates an animation showing the graph of the data above, and the data our model generates in each sample.</p>
+<h3 id="examples">Examples</h3>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import StatsPlots for animating purposes.</span>
-<span class="k">using</span> <span class="n">StatsPlots</span>
+<p>As a (trivial) example we could apply the approach described above to is the following generative model for <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script>:</p>
 
-<span class="c"># Extract our m and s parameters from the chain.</span>
-<span class="n">m_set</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">m</span><span class="x">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">data</span>
-</code></pre></div></div>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}     m &\sim \mathcal{N}(0, 1) \\
+    x_i &\overset{\text{i.i.d.}}{=} \mathcal{N}(m, 1), \quad i = 1, \dots, n \end{align*} %]]></script>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
+<p>In this case <script type="math/tex">z = m</script> and we have the posterior defined <script type="math/tex">p(m \mid \{ x_i \}_{i = 1}^n) = p(m) \prod_{i = 1}^n p(x_i \mid m)</script>. Then the variational posterior would be</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s_set</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">s</span><span class="x">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">data</span>
-</code></pre></div></div>
+<script type="math/tex; mode=display">q_{\mu, \sigma} = \mathcal{N}(\mu, \sigma^2) \quad \text{where} \quad \mu \in \mathbb{R}, \ \sigma^2 \in \mathbb{R}^{ + }</script>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
+<p>And since prior of <script type="math/tex">m</script>, <script type="math/tex">\mathcal{N}(0, 1)</script>, has non-zero probability on the entirety of <script type="math/tex">\mathbb{R}</script>, same as <script type="math/tex">q(m)</script>, i.e. assumption (7) above holds, everything is fine and life is good.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c"># Iterate through the MCMC samples.</span>
-<span class="n">Ns</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">c</span><span class="x">)</span>
-</code></pre></div></div>
+<p>But what about this generative model for <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script>:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}     s &\sim \mathrm{InverseGamma}(2, 3) \\
+    m &\sim \mathcal{N}(0, s) \\
+    x_i &\overset{\text{i.i.d.}}{=} \mathcal{N}(m, s), \quad i = 1, \dots, n \end{align*} %]]></script>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c"># Make an animation.</span>
-<span class="n">animation</span> <span class="o">=</span> <span class="nd">@animate</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">Ns</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">m_set</span><span class="x">[</span><span class="n">i</span><span class="x">,</span> <span class="o">:</span><span class="x">];</span> 
-    <span class="n">s</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">s_set</span><span class="x">[</span><span class="n">i</span><span class="x">,</span><span class="o">:</span><span class="x">]);</span>
-    <span class="n">emissions</span> <span class="o">=</span> <span class="n">collect</span><span class="x">(</span><span class="n">skipmissing</span><span class="x">(</span><span class="n">m</span><span class="x">[</span><span class="n">s</span><span class="x">]))</span>
-    
-    <span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(</span><span class="n">y</span><span class="x">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="x">,</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">500</span><span class="x">,</span> <span class="mi">250</span><span class="x">),</span>
-        <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"Time"</span><span class="x">,</span>
-        <span class="n">ylabel</span> <span class="o">=</span> <span class="s">"State"</span><span class="x">,</span>
-        <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topright</span><span class="x">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"True data"</span><span class="x">,</span>
-        <span class="n">xlim</span> <span class="o">=</span> <span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="mi">15</span><span class="x">),</span>
-        <span class="n">ylim</span> <span class="o">=</span> <span class="x">(</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span><span class="mi">5</span><span class="x">));</span>
-    <span class="n">plot!</span><span class="x">(</span><span class="n">emissions</span><span class="x">,</span> <span class="n">color</span> <span class="o">=</span> <span class="o">:</span><span class="n">blue</span><span class="x">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Sample </span><span class="si">$$</span><span class="s">N"</span><span class="x">)</span>
-<span class="k">end</span> <span class="n">every</span> <span class="mi">10</span><span class="x">;</span>
-</code></pre></div></div>
+<p>with posterior <script type="math/tex">p(s, m \mid \{ x_i \}_{i = 1}^n) = p(s) p(m \mid s) \prod_{i = 1}^n p(x_i \mid s, m)</script> and the mean-field variational posterior <script type="math/tex">q(s, m)</script> will be</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: Ns not defined
-</code></pre></div></div>
+<script type="math/tex; mode=display">q_{\mu_1, \mu_2, \sigma*1^2, \sigma*2^2}(s, m) = p_{\mathcal{N}(\mu_1, \sigma*1^2)}(s) p\*{\mathcal{N}(\mu_2, \sigma_2^2)}(m)</script>
 
-<p><img src="https://user-images.githubusercontent.com/422990/50612436-de588980-0e8e-11e9-8635-4e3e97c0d7f9.gif" alt="animation" /></p>
+<p>where we’ve denoted the evaluation of the probability density of a Gaussian as <script type="math/tex">p_{\mathcal{N}(\mu, \sigma^2)}(x)</script>.</p>
 
-<p>Looks like our model did a pretty good job, but we should also check to make sure our chain converges. A quick check is to examine whether the diagonal (representing the probability of remaining in the current state) of the transition matrix appears to be stationary. The code below extracts the diagonal and shows a traceplot of each persistence probability.</p>
+<p>Observe that <script type="math/tex">\mathrm{InverseGamma}(2, 3)</script> has non-zero probability only on <script type="math/tex">\mathbb{R}^{ + } := (0, \infty)</script> which is clearly not all of <script type="math/tex">\mathbb{R}</script> like <script type="math/tex">q(s, m)</script> has, i.e.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Index the chain with the persistence probabilities.</span>
-<span class="n">subchain</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="x">,[</span><span class="s">"T[</span><span class="si">$$</span><span class="s">i][</span><span class="si">$$</span><span class="s">i]"</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">K</span><span class="x">],</span><span class="o">:</span><span class="x">]</span>
-</code></pre></div></div>
+<script type="math/tex; mode=display">\mathrm{supp} \big( q(s, m) \big) \not\subseteq \mathrm{supp} \big( p(z \mid \{ x_i \}_{i = 1}^n) \big)</script>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
+<p>Recall from the definition of the KL-divergence that when this is the case, the KL-divergence isn’t well defined. This gets us to the <em>automatic</em> part of ADVI.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c"># Plot the chain.</span>
-<span class="n">plot</span><span class="x">(</span><span class="n">subchain</span><span class="x">,</span> 
-    <span class="n">colordim</span> <span class="o">=</span> <span class="o">:</span><span class="n">parameter</span><span class="x">,</span> 
-    <span class="n">seriestype</span><span class="o">=:</span><span class="n">traceplot</span><span class="x">,</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s">"Persistence Probability"</span><span class="x">,</span>
-    <span class="n">legend</span><span class="o">=:</span><span class="n">right</span>
-    <span class="x">)</span>
-</code></pre></div></div>
+<p><a id="&quot;Automatic&quot;?-How?-1"></a></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: subchain not defined
-</code></pre></div></div>
+<h3 id="automatic-how">“Automatic”? How?</h3>
 
-<p>A cursory examination of the traceplot above indicates that at least <code class="language-plaintext highlighter-rouge">T[3,3]</code> and possibly <code class="language-plaintext highlighter-rouge">T[2,2]</code> have converged to something resembling stationary. <code class="language-plaintext highlighter-rouge">T[1,1]</code>, on the other hand, has a slight “wobble”, and seems less consistent than the others. We can use the diagnostic functions provided by <a href="https://github.com/TuringLang/MCMCChain.jl">MCMCChain</a> to engage in some formal tests, like the Heidelberg and Welch diagnostic:</p>
+<p>For a lot of the standard (continuous) densities <script type="math/tex">p</script> we can actually construct a probability density <script type="math/tex">\tilde{p}</script> with non-zero probability on all of <script type="math/tex">\mathbb{R}</script> by <em>transforming</em> the “constrained” probability density <script type="math/tex">p</script> to <script type="math/tex">\tilde{p}</script>. In fact, in these cases this is a one-to-one relationship. As we’ll see, this helps solve the support-issue we’ve been going on and on about.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">heideldiag</span><span class="x">(</span><span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">T</span><span class="x">])</span>
-</code></pre></div></div>
+<p><a id="Transforming-densities-using-change-of-variables-1"></a></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
+<h4 id="transforming-densities-using-change-of-variables">Transforming densities using change of variables</h4>
 
-<p>The p-values on the test suggest that we cannot reject the hypothesis that the observed sequence comes from a stationary distribution, so we can be somewhat more confident that our transition matrix has converged to something reasonable.</p>
+<p>If we want to compute the probability of <script type="math/tex">x</script> taking a value in some set <script type="math/tex">A \subseteq \mathrm{supp} \big( p(x) \big)</script>, we have to integrate <script type="math/tex">p(x)</script> over <script type="math/tex">A</script>, i.e.</p>
+
+<script type="math/tex; mode=display">\mathbb{P}_p(x \in A) = \int_A p(x) \mathrm{d}x</script>
+
+<p>This means that if we have a differentiable bijection <script type="math/tex">f: \mathrm{supp} \big( q(x) \big) \to \mathbb{R}^d</script> with differentiable inverse <script type="math/tex">f^{-1}: \mathbb{R}^d \to \mathrm{supp} \big( p(x) \big)</script>, we can perform a change of variables</p>
+
+<script type="math/tex; mode=display">\mathbb{P}_p(x \in A) = \int_{f^{-1}(A)} p \big(f^{-1}(y) \big) \ \big| \det \mathcal{J}_{f^{-1}}(y) \big| \ \mathrm{d}y</script>
+
+<p>where <script type="math/tex">\mathcal{J}_{f^{-1}}(x)</script> denotes the jacobian of <script type="math/tex">f^{-1}</script> evaluted at <script type="math/tex">x</script>. Observe that this defines a probability distribution</p>
+
+<script type="math/tex; mode=display">\mathbb{P}_{\tilde{p}}\big(y \in f^{-1}(A) \big) = \int_{f^{-1}(A)} \tilde{p}(y) \mathrm{d}y</script>
+
+<p>since <script type="math/tex">f^{-1}\big(\mathrm{supp} (p(x)) \big) = \mathbb{R}^d</script> which has probability 1. This probability distribution has <em>density</em> <script type="math/tex">\tilde{p}(y)</script> with <script type="math/tex">\mathrm{supp} \big( \tilde{p}(y) \big) = \mathbb{R}^d</script>, defined</p>
+
+<script type="math/tex; mode=display">\tilde{p}(y) = p \big( f^{-1}(y) \big) \ \big| \det \mathcal{J}_{f^{-1}}(y) \big|</script>
+
+<p>or equivalently</p>
+
+<script type="math/tex; mode=display">\tilde{p} \big( f(x) \big) = \frac{p(x)}{\big| \det \mathcal{J}_{f}(x) \big|}</script>
+
+<p>due to the fact that</p>
+
+<script type="math/tex; mode=display">\big| \det \mathcal{J}_{f^{-1}}(y) \big| = \big| \det \mathcal{J}_{f}(x) \big|^{-1}</script>
+
+<p><em>Note: it’s also necessary that the log-abs-det-jacobian term is non-vanishing. This can for example be accomplished by assuming <script type="math/tex">f</script> to also be elementwise monotonic.</em></p>
+
+<p><a id="Back-to-VI-1"></a></p>
+
+<h4 id="back-to-vi">Back to VI</h4>
+
+<p>So why is this is useful? Well, we’re looking to generalize our approach using a normal distribution to cases where the supports don’t match up. How about defining <script type="math/tex">q(z)</script> by</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}   \eta &\sim \mathcal{N}(\mu, \Sigma) \\
+  z &= f^{-1}(\eta) \end{align*} %]]></script>
+
+<p>where <script type="math/tex">f^{-1}: \mathbb{R}^d \to \mathrm{supp} \big( p(z \mid x) \big)</script> is a differentiable bijection with differentiable inverse. Then <script type="math/tex">z \sim q_{\mu, \Sigma}(z) \implies z \in \mathrm{supp} \big( p(z \mid x) \big)</script> as we wanted. The resulting variational density is</p>
+
+<script type="math/tex; mode=display">q_{\mu, \Sigma}(z) = p_{\mathcal{N}(\mu, \Sigma)}\big( f(z) \big) \ \big| \det \mathcal{J}_{f}(z) \big|</script>
+
+<p>Note that the way we’ve constructed <script type="math/tex">q(z)</script> here is basically a reverse of the approach we described above. Here we sample from a distribution with support on <script type="math/tex">\mathbb{R}</script> and transform <em>to</em> <script type="math/tex">\mathrm{supp} \big( p(z \mid x) \big)</script>.</p>
+
+<p>If we want to write the ELBO explicitly in terms of <script type="math/tex">\eta</script> rather than <script type="math/tex">z</script>, the first term in the ELBO becomes</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}   \mathbb{E}_{z \sim q_{\mu, \Sigma}(z)} \big[ \log p(x_i, z) \big] &= \mathbb{E}_{\eta \sim \mathcal{N}(\mu, \Sigma)} \Bigg[ \log \frac{p\big(x_i, f^{-1}(\eta) \big)}{\big| \det \mathcal{J}_{f^{-1}}(\eta) \big|} \Bigg] \\
+  &= \mathbb{E}_{\eta \sim \mathcal{N}(\mu, \Sigma)} \big[ \log p\big(x_i, f^{-1}(\eta) \big) \big] - \mathbb{E}_{\eta \sim \mathcal{N}(\mu, \Sigma)} \big[ \big| \det \mathcal{J}_{f^{-1}}(\eta) \big| \big] \end{align*} %]]></script>
+
+<p>The entropy is invariant under change of variables, thus <script type="math/tex">\mathbb{H} \big(q_{\mu, \Sigma}(z)\big)</script> is simply the entropy of the normal distribution which is known analytically.</p>
+
+<p>Hence, the resulting empirical estimate of the ELBO is</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} \widehat{\mathrm{ELBO}}(q_{\mu, \Sigma}) &= \frac{1}{m} \bigg( \sum_{k = 1}^m \sum_{i = 1}^n \Big(\log p\big(x_i, f^{-1}(\eta_k)\big) - \log \big| \det \mathcal{J}_{f^{-1}}(\eta_k) \big| \Big) \bigg) + \mathbb{H} \big(p_{\mathcal{N}(\mu, \Sigma)}(z)\big) \\
+& \text{where} \quad z_k  \sim \mathcal{N}(\mu, \Sigma) \quad \forall k = 1, \dots, m \end{align*} %]]></script>
+
+<p>And maximizing this wrt. <script type="math/tex">\mu</script> and <script type="math/tex">\Sigma</script> is what’s referred to as <strong>Automatic Differentation Variational Inference (ADVI)</strong>!</p>
+
+<p>Now if you want to try it out, <a href="../tutorials/8_VariationalInference.html">check out the tutorial on how to use ADVI in Turing.jl!</a></p>
+
 
     <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -1017,7 +1089,7 @@ $(document).ready(function() {
 
     <script src="/dev/assets/js/application.js"></script>
     
-    <script>console.log('3')</script>
+    <script>console.log('4')</script>
     <script>app.initialize({version:"0.17.4", url:{base:'/dev'}})</script>
 
     
