@@ -864,6 +864,8 @@
 
 <p>methods like Particle Gibbs. You can increase the effectiveness of particle sampling by including more particles in the particle sampler.</p>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/gibbs.jl#L7-L32" class="documenter-source">source</a><br /></p>
+
 <h3 id="-turinginferencehmc--type"><a id="Turing.Inference.HMC" href="#Turing.Inference.HMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HMC</span><span class="x">(</span><span class="n">ϵ</span><span class="o">::</span><span class="kt">Float64</span><span class="x">,</span> <span class="n">n_leapfrog</span><span class="o">::</span><span class="kt">Int</span><span class="x">)</span>
@@ -898,6 +900,8 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/hmc.jl#L45-L73" class="documenter-source">source</a><br /></p>
+
 <h3 id="-turinginferencehmcda--type"><a id="Turing.Inference.HMCDA" href="#Turing.Inference.HMCDA">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HMCDA</span><span class="x">(</span><span class="n">n_adapts</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">δ</span><span class="o">::</span><span class="kt">Float64</span><span class="x">,</span> <span class="n">λ</span><span class="o">::</span><span class="kt">Float64</span><span class="x">;</span> <span class="n">ϵ</span><span class="o">::</span><span class="kt">Float64</span><span class="o">=</span><span class="mf">0.0</span><span class="x">)</span>
@@ -924,6 +928,8 @@
 <ul>
   <li>Hoffman, Matthew D., and Andrew Gelman. “The No-U-turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo.” Journal of Machine Learning Research 15, no. 1 (2014): 1593-1623.</li>
 </ul>
+
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/hmc.jl#L144-L167" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferenceis--type"><a id="Turing.Inference.IS" href="#Turing.Inference.IS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></strong> — <em>Type</em>.</h3>
 
@@ -953,6 +959,8 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">IS</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
+
 <p>!!! warning “Missing docstring.”
     Missing docstring for <code class="language-plaintext highlighter-rouge">MH</code>. Check Documenter’s build log for details.</p>
 
@@ -979,6 +987,8 @@
   <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically searching using a heuristic procedure.</li>
 </ul>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/hmc.jl#L210-L230" class="documenter-source">source</a><br /></p>
+
 <h3 id="-turinginferencepg--type"><a id="Turing.Inference.PG" href="#Turing.Inference.PG">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PG</span><span class="x">(</span><span class="n">n_particles</span><span class="o">::</span><span class="kt">Int</span><span class="x">)</span>
@@ -992,6 +1002,8 @@
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PG</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="mi">100</span><span class="x">)</span>
 </code></pre></div></div>
+
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/AdvancedSMC.jl#L134-L147" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencesmc--type"><a id="Turing.Inference.SMC" href="#Turing.Inference.SMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></strong> — <em>Type</em>.</h3>
 
@@ -1007,6 +1019,8 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SMC</span><span class="x">()</span>
 </code></pre></div></div>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/inference/AdvancedSMC.jl#L33-L46" class="documenter-source">source</a><br /></p>
+
 <p><a id="Distributions-1"></a></p>
 
 <h2 id="distributions">Distributions</h2>
@@ -1018,12 +1032,16 @@
 
 <p>A distribution with support and density of one everywhere.</p>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
+
 <h3 id="-turingflatpos--type"><a id="Turing.FlatPos" href="#Turing.FlatPos">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FlatPos</span><span class="x">(</span><span class="n">l</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p>A distribution with a lower bound of <code class="language-plaintext highlighter-rouge">l</code> and a density of one at every <code class="language-plaintext highlighter-rouge">x</code> above <code class="language-plaintext highlighter-rouge">l</code>.</p>
+
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingbinomiallogit--type"><a id="Turing.BinomialLogit" href="#Turing.BinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.BinomialLogit</code></strong> — <em>Type</em>.</h3>
 
@@ -1032,6 +1050,8 @@
 
 <p>A univariate binomial logit distribution.</p>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
+
 <h3 id="-turingvecbinomiallogit--type"><a id="Turing.VecBinomialLogit" href="#Turing.VecBinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.VecBinomialLogit</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BinomialLogit</span><span class="x">(</span><span class="n">n</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">,</span> <span class="n">I</span><span class="o">&lt;:</span><span class="kt">Integer</span><span class="x">)</span>
@@ -1039,12 +1059,16 @@
 
 <p>A multivariate binomial logit distribution.</p>
 
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/stdlib/distributions.jl#L50-L54" class="documenter-source">source</a><br /></p>
+
 <h3 id="-turingorderedlogistic--type"><a id="Turing.OrderedLogistic" href="#Turing.OrderedLogistic">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.OrderedLogistic</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">OrderedLogistic</span><span class="x">(</span><span class="n">η</span><span class="o">::</span><span class="kt">Any</span><span class="x">,</span> <span class="n">cutpoints</span><span class="o">&lt;:</span><span class="kt">AbstractVector</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p>An ordered logistic distribution.</p>
+
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/15e9528ced3248b711f632038bbff957f6cc9953/src/stdlib/distributions.jl#L73-L77" class="documenter-source">source</a><br /></p>
 
 <p><a id="Data-Structures-1"></a></p>
 
