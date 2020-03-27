@@ -827,9 +827,9 @@
 
 <p>One major problem: as we can see in the definition of the KL-divergence, we need <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> for any <script type="math/tex">z</script> if we want to compute the KL-divergence between this and <script type="math/tex">q(z)</script>. We don’t have that. The entire reason we even do Bayesian inference is that we don’t know the posterior! Cleary this isn’t going to work. <em>Or is it?!</em></p>
 
-<p><a id="Computing-\mathrm{D_{KL}}-without-the-posterior-1"></a></p>
+<p><a id="Computing-KL-divergence-without-knowing-the-posterior-1"></a></p>
 
-<h2 id="computing-mathrmd_kl-without-the-posterior">Computing <script type="math/tex">\mathrm{D_{KL}}</script> without the posterior</h2>
+<h2 id="computing-kl-divergence-without-knowing-the-posterior">Computing KL-divergence without knowing the posterior</h2>
 
 <p>First off, recall that</p>
 
@@ -873,9 +873,9 @@
 
 <p>Also, I fooled you real good: the ELBO <em>isn’t</em> an arbitrary name, hah! In fact it’s an abbreviation for the <strong>expected lower bound (ELBO)</strong> because it, uhmm, well, it’s the <em>expected</em> lower bound (remember <script type="math/tex">\mathrm{D_{KL}} \ge 0</script>). Yup.</p>
 
-<p><a id="Maximizing-\widehat{\mathrm{ELBO}}(q)-1"></a></p>
+<p><a id="Maximizing-the-ELBO-1"></a></p>
 
-<h2 id="maximizing-widehatmathrmelboq">Maximizing <script type="math/tex">\widehat{\mathrm{ELBO}}(q)</script></h2>
+<h2 id="maximizing-the-elbo">Maximizing the ELBO</h2>
 
 <p>Finding the optimal <script type="math/tex">q</script> over <em>all</em> possible densities of course isn’t feasible. Instead we consider a family of <em>parameterized</em> densities <script type="math/tex">\mathscr{D}_{\Theta}</script> where <script type="math/tex">\Theta</script> denotes the space of possible parameters. Each density in this family <script type="math/tex">q_{\theta} \in \mathscr{D}_{\Theta}</script> is parameterized by a unique <script type="math/tex">\theta \in \Theta</script>. Moreover, we’ll assume</p>
 
