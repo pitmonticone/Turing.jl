@@ -8,9 +8,9 @@ version = "0.5.0"
 
 [[AbstractMCMC]]
 deps = ["ConsoleProgressMonitor", "Distributed", "Logging", "LoggingExtras", "ProgressLogging", "Random", "StatsBase", "TerminalLoggers"]
-git-tree-sha1 = "fbfbc0d2e44f8249c88868bcef2810527cd3522b"
+git-tree-sha1 = "f4ca05833c7ca5101e6aac1133ef346b2712c511"
 uuid = "80f14c24-f653-4e6a-9b94-39d6b0f70001"
-version = "0.5.6"
+version = "1.0.0"
 
 [[AbstractTrees]]
 deps = ["Markdown"]
@@ -32,9 +32,9 @@ version = "0.2.24"
 
 [[AdvancedMH]]
 deps = ["AbstractMCMC", "Distributions", "Random", "Requires"]
-git-tree-sha1 = "372c0685ebed177af7972004561e6841d9b031b8"
+git-tree-sha1 = "0703b7faff778c7f9d2524655d50019cb6291b15"
 uuid = "5b7e9947-ddc0-4b3f-9b55-0d8042f74170"
-version = "0.4.1"
+version = "0.5.0"
 
 [[ArgCheck]]
 git-tree-sha1 = "59c256cf71c3982484ae4486ee86a3d7da891dea"
@@ -188,10 +188,10 @@ uuid = "997ab1e6-3595-5248-9280-8efb232c3433"
 version = "0.2.0"
 
 [[DynamicPPL]]
-deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools"]
-git-tree-sha1 = "4a86f4d236808e1a92bff10e71833f39c54ff075"
+deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools", "ZygoteRules"]
+git-tree-sha1 = "ef91448d0e730589dd085b14fa15f03062aa47a6"
 uuid = "366bfd00-2699-11ea-058f-f148b4cae6d8"
-version = "0.5.0"
+version = "0.6.0"
 
 [[EllipsisNotation]]
 git-tree-sha1 = "65dad386e877850e6fce4fc77f60fe75a468ce9d"
@@ -370,9 +370,9 @@ version = "0.12.0"
 
 [[Parsers]]
 deps = ["Dates", "Test"]
-git-tree-sha1 = "75d07cb840c300084634b4991761886d0d762724"
+git-tree-sha1 = "f8f5d2d4b4b07342e5811d2b6428e45524e241df"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "1.0.1"
+version = "1.0.2"
 
 [[Pkg]]
 deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "UUIDs"]
