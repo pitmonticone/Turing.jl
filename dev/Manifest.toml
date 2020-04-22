@@ -8,9 +8,9 @@ version = "0.5.0"
 
 [[AbstractMCMC]]
 deps = ["ConsoleProgressMonitor", "Distributed", "Logging", "LoggingExtras", "ProgressLogging", "Random", "StatsBase", "TerminalLoggers"]
-git-tree-sha1 = "f4ca05833c7ca5101e6aac1133ef346b2712c511"
+git-tree-sha1 = "31a0a7b957525748e05599488ca6eef476fef12b"
 uuid = "80f14c24-f653-4e6a-9b94-39d6b0f70001"
-version = "1.0.0"
+version = "1.0.1"
 
 [[AbstractTrees]]
 deps = ["Markdown"]
@@ -67,9 +67,9 @@ version = "0.2.4"
 
 [[AxisArrays]]
 deps = ["Dates", "IntervalSets", "IterTools", "RangeArrays"]
-git-tree-sha1 = "4781a1dc368d9f1630281ed4a4240a0f34a420de"
+git-tree-sha1 = "f31f50712cbdf40ee8287f0443b57503e34122ef"
 uuid = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
-version = "0.4.0"
+version = "0.4.3"
 
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
@@ -123,15 +123,15 @@ uuid = "88cd18e8-d9cc-4ea6-8889-5259c0d15c8b"
 version = "0.1.2"
 
 [[DataAPI]]
-git-tree-sha1 = "674b67f344687a88310213ddfa8a2b3c76cc4252"
+git-tree-sha1 = "00612b2fbe534a539dc7f70106c71e3a943d9b98"
 uuid = "9a962f9c-6df0-11e9-0e5d-c546b8b5ee8a"
-version = "1.1.0"
+version = "1.2.0"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "4dead20a1606a60292529023d6eac18a1ef6432e"
+git-tree-sha1 = "9faa13be79557bf4c5713fb912b0e3c5aa33d046"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.17.12"
+version = "0.17.13"
 
 [[Dates]]
 deps = ["Printf"]
@@ -229,9 +229,9 @@ version = "1.1.1"
 
 [[IRTools]]
 deps = ["InteractiveUtils", "MacroTools", "Test"]
-git-tree-sha1 = "1a4355e4b5b50be2311ebb644f34f3306dbd0410"
+git-tree-sha1 = "8845400bd2d9815d37720251f1b53d27a335e1f4"
 uuid = "7869d1d1-7146-5819-86e3-90919afe41df"
-version = "0.3.1"
+version = "0.3.2"
 
 [[InplaceOps]]
 deps = ["LinearAlgebra", "Test"]
@@ -299,9 +299,9 @@ version = "0.4.0"
 
 [[MCMCChains]]
 deps = ["AbstractMCMC", "AxisArrays", "Distributions", "Formatting", "LinearAlgebra", "Random", "RecipesBase", "Requires", "Serialization", "SpecialFunctions", "Statistics", "StatsBase"]
-git-tree-sha1 = "b0a578f0e447a11fd49342243518437883433742"
+git-tree-sha1 = "4ecb0414630d9b6e8dd9937085f8e1aba5891444"
 uuid = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
-version = "3.0.11"
+version = "3.0.12"
 
 [[MacroTools]]
 deps = ["Markdown", "Random"]
