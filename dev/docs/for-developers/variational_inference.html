@@ -796,7 +796,7 @@
 <p>To approximate something you need a notion of what “close” means. In the context of probability densities a standard such “measure” of closeness is the <em>Kullback-Leibler (KL) divergence</em> , though this is far from the only one. The KL-divergence is defined between two densities <script type="math/tex">q(z)</script> and <script type="math/tex">p(z \mid \{ x_i \}_{i = 1}^n)</script> as</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
-\begin{align*}   \mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) &= \int \log \bigg( \frac{q(z)}{\sum_{i = 1}^n p(z \mid x_i)} \bigg) q(z) \mathrm{d}{z} \\
+\begin{align*}   \mathrm{D_{KL}} \big( q(z), p(z \mid \{ x_i \}_{i = 1}^n) \big) &= \int \log \bigg( \frac{q(z)}{\prod_{i = 1}^n p(z \mid x_i)} \bigg) q(z) \mathrm{d}{z} \\
   &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) - \sum_{i = 1}^n \log p(z \mid x_i) \big] \\
   &= \mathbb{E}_{z \sim q(z)} \big[ \log q(z) \big] - \sum_{i = 1}^n \mathbb{E}_{z \sim q(z)} \big[ \log p(z \mid x_i) \big] \end{align*} %]]></script>
 
