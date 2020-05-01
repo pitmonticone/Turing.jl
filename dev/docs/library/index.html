@@ -173,7 +173,9 @@
     <div class="md-container">
         <main class="md-main">
             <div class="md-main__inner md-grid full-width" data-md-component="container">
-            <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            
+
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
   <div class="md-sidebar__scrollwrap">
     <div class="md-sidebar__inner">
       <nav class="md-nav md-nav--primary" data-md-level="0">
@@ -850,7 +852,7 @@
 
 <p>methods like Particle Gibbs. You can increase the effectiveness of particle sampling by including more particles in the particle sampler.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/gibbs.jl#L7-L32" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/gibbs.jl#L7-L32" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmc--type"><a id="Turing.Inference.HMC" href="#Turing.Inference.HMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></strong> — <em>Type</em>.</h3>
 
@@ -886,7 +888,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/hmc.jl#L45-L73" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/hmc.jl#L45-L73" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmcda--type"><a id="Turing.Inference.HMCDA" href="#Turing.Inference.HMCDA">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></strong> — <em>Type</em>.</h3>
 
@@ -915,7 +917,7 @@
   <li>Hoffman, Matthew D., and Andrew Gelman. “The No-U-turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo.” Journal of Machine Learning Research 15, no. 1 (2014): 1593-1623.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/hmc.jl#L144-L167" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/hmc.jl#L144-L167" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferenceis--type"><a id="Turing.Inference.IS" href="#Turing.Inference.IS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></strong> — <em>Type</em>.</h3>
 
@@ -945,7 +947,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">IS</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
 
 <p>!!! warning “Missing docstring.”
     Missing docstring for <code class="language-plaintext highlighter-rouge">MH</code>. Check Documenter’s build log for details.</p>
@@ -973,7 +975,7 @@
   <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically searching using a heuristic procedure.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/hmc.jl#L210-L230" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/hmc.jl#L210-L230" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencepg--type"><a id="Turing.Inference.PG" href="#Turing.Inference.PG">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></strong> — <em>Type</em>.</h3>
 
@@ -989,7 +991,7 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PG</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="mi">100</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/AdvancedSMC.jl#L155-L168" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/AdvancedSMC.jl#L155-L168" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencesmc--type"><a id="Turing.Inference.SMC" href="#Turing.Inference.SMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></strong> — <em>Type</em>.</h3>
 
@@ -1004,7 +1006,7 @@
   <li><code class="language-plaintext highlighter-rouge">resampler::Any</code></li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/inference/AdvancedSMC.jl#L33" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/inference/AdvancedSMC.jl#L33" class="documenter-source">source</a><br /></p>
 
 <p><a id="Distributions-1"></a></p>
 
@@ -1017,7 +1019,7 @@
 
 <p>A distribution with support and density of one everywhere.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingflatpos--type"><a id="Turing.FlatPos" href="#Turing.FlatPos">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></strong> — <em>Type</em>.</h3>
 
@@ -1026,7 +1028,7 @@
 
 <p>A distribution with a lower bound of <code class="language-plaintext highlighter-rouge">l</code> and a density of one at every <code class="language-plaintext highlighter-rouge">x</code> above <code class="language-plaintext highlighter-rouge">l</code>.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingbinomiallogit--type"><a id="Turing.BinomialLogit" href="#Turing.BinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.BinomialLogit</code></strong> — <em>Type</em>.</h3>
 
@@ -1035,7 +1037,7 @@
 
 <p>A univariate binomial logit distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
 
 <p>!!! warning “Missing docstring.”
     Missing docstring for <code class="language-plaintext highlighter-rouge">VecBinomialLogit</code>. Check Documenter’s build log for details.</p>
@@ -1047,7 +1049,7 @@
 
 <p>An ordered logistic distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/3e18ac200d8ba6f84df948457d5a19ec3578fe2e/src/stdlib/distributions.jl#L72-L76" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/f848143060c8a3b71c8a0661838759ce553d2bc3/src/stdlib/distributions.jl#L72-L76" class="documenter-source">source</a><br /></p>
 
 <p><a id="Data-Structures-1"></a></p>
 
@@ -1095,41 +1097,43 @@
 </code></pre></div></div>
 
 
+    
+
     <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
 
-<script>
-$(document).ready(function() {
+    <script>
+    $(document).ready(function() {
 
-    var toc = $('#nav-toc');
+        var toc = $('#nav-toc');
 
-    // Select each header
-    sections = $('#md-container-pancakes h1');
-        $.each(sections, function(idx, v) {
-            section = $(v);
-            var div_id = $(section).attr('id');
-            var div_text = section.text().split('¶')[0];
-            var parent = $("#" + div_id)
-            var content = '<li id="link_' + div_id + '" class="md-nav__item"><a class="md-nav__link toc-side-bar" href="#' + div_id + '" title="' + div_text +'">' + div_text +'</a></li>';
-            $(toc).append(content);
+        // Select each header
+        sections = $('#md-container-pancakes h1');
+            $.each(sections, function(idx, v) {
+                section = $(v);
+                var div_id = $(section).attr('id');
+                var div_text = section.text().split('¶')[0];
+                var parent = $("#" + div_id)
+                var content = '<li id="link_' + div_id + '" class="md-nav__item"><a class="md-nav__link toc-side-bar" href="#' + div_id + '" title="' + div_text +'">' + div_text +'</a></li>';
+                $(toc).append(content);
 
-            // Add section code to subnavigation
-            var children = $('<nav class="md-nav"><ul class="md-nav__list"></nav></ul>')
-            var contenders = $("#" + div_id).nextUntil( "h1" );
-            $.each(contenders, function(idx, contender){
-               if($(contender).is('h2')) {
-                   var contender_id = $(contender).attr('id');
-                   var contender_text = $(contender).text().split('¶')[0];
-                   var content = '<li class="md-nav__item"><a class="md-nav__link toc-side-bar" href="#' + contender_id + '" title="' + contender_text +'">' + contender_text +'</a></li>';
-                   children.append(content);
-                }
-             })
-             $("#link_" + div_id).append(children);
+                // Add section code to subnavigation
+                var children = $('<nav class="md-nav"><ul class="md-nav__list"></nav></ul>')
+                var contenders = $("#" + div_id).nextUntil( "h1" );
+                $.each(contenders, function(idx, contender){
+                if($(contender).is('h2')) {
+                    var contender_id = $(contender).attr('id');
+                    var contender_text = $(contender).text().split('¶')[0];
+                    var content = '<li class="md-nav__item"><a class="md-nav__link toc-side-bar" href="#' + contender_id + '" title="' + contender_text +'">' + contender_text +'</a></li>';
+                    children.append(content);
+                    }
+                })
+                $("#link_" + div_id).append(children);
+            });
         });
-    });
-</script>
+    </script>
 
     <!-- this will parse through the header fields and add a button to open
      an issue / ask a question on Github. The editable field should be in
