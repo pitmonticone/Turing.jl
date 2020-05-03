@@ -823,7 +823,7 @@ x_i &\sim Normal(\mu_{z_i}, \Sigma)
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>two_model (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##two_model#362 (generic function with 2 methods)
 </code></pre></div></div>
 
 <h4 id="finite-mixture-model">Finite Mixture Model</h4>
@@ -909,6 +909,11 @@ $$</p>
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
+│   fn = /home/cameron/code/TuringTutorials/tmp.gif
+└ @ Plots /home/cameron/.julia/packages/Plots/cc8wh/src/animation.jl:98
+</code></pre></div></div>
+
 <p><img src="https://user-images.githubusercontent.com/422990/55284032-90cfa980-5323-11e9-8a99-f9315db170cb.gif" alt="tmp" /></p>
 
 <p>Further, we can see that the number of clusters is logarithmic in the number of observations and data points. This is a side-effect of the “rich get richer” phenomenon, i.e. we expect large clusters and thus the number of clusters has to be smaller than the number of observations.</p>
@@ -963,7 +968,7 @@ $$</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>infiniteGMM (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##infiniteGMM#903 (generic function with 2 methods)
 </code></pre></div></div>
 
 <p>We can now use Turing to infer the assignments of some data points. First, we will create some random data that comes from three clusters, with means of 0, -5, and 10.</p>
@@ -986,6 +991,9 @@ $$</p>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model_fun</span><span class="x">,</span> <span class="n">SMC</span><span class="x">(),</span> <span class="n">iterations</span><span class="x">);</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:00[39m
+</code></pre></div></div>
+
 <p>Finally, we can plot the number of clusters in each sample.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Extract the number of clusters for each sample of the Markov chain.</span>
@@ -995,14 +1003,14 @@ $$</p>
 <span class="n">plot</span><span class="x">(</span><span class="n">k</span><span class="x">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"Iteration"</span><span class="x">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">"Number of clusters"</span><span class="x">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Chain 1"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/6_InfiniteMixtureModel_9_1.png" alt="" /></p>
+<p><img src="6_InfiniteMixtureModel_files/6_InfiniteMixtureModel_31_0.svg" alt="svg" /></p>
 
 <p>If we visualize the histogram of the number of clusters sampled from our posterior, we observe that the model seems to prefer 3 clusters, which is the true number of clusters. Note that the number of clusters in a Dirichlet process mixture model is not limited a priori and will grow to infinity with probability one. However, if conditioned on data the posterior will concentrate on a finite number of clusters enforcing the resulting model to have a finite amount of clusters. It is, however, not given that the posterior of a Dirichlet process Gaussian mixture model converges to the true number of clusters, given that data comes from a finite mixture model. See Jeffrey Miller and Matthew Harrison: <a href="https://arxiv.org/pdf/1301.2708.pdf">A simple example of Dirichlet process mixture inconsitency for the number of components</a> for details.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">histogram</span><span class="x">(</span><span class="n">k</span><span class="x">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"Number of clusters"</span><span class="x">,</span> <span class="n">legend</span> <span class="o">=</span> <span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/6_InfiniteMixtureModel_10_1.png" alt="" /></p>
+<p><img src="6_InfiniteMixtureModel_files/6_InfiniteMixtureModel_33_0.svg" alt="svg" /></p>
 
 <p>One issue with the Chinese restaurant process construction is that the number of latent parameters we need to sample scales with the number of observations. It may be desirable to use alternative constructions in certain cases. Alternative methods of constructing a Dirichlet process can be employed via the following representations:</p>
 

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Bayesian Hidden Markov Models</title>
-    <meta name="description" content="Bayesian Hidden Markov Models">
+    <meta name="description" content="Bayesian Hidden Markov ModelsThis tutorial illustrates training Bayesian Hidden Markov Models (HMM) using Turing. The main goals are learning the transition ...">
     <meta name="author" content="The Turing Team">
     <meta name="theme-color" content="red">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -766,7 +766,6 @@
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
     <h1 id="bayesian-hidden-markov-models">Bayesian Hidden Markov Models</h1>
-
 <p>This tutorial illustrates training Bayesian <a href="https://en.wikipedia.org/wiki/Hidden_Markov_model">Hidden Markov Models</a> (HMM) using Turing. The main goals are learning the transition matrix, emission parameter, and hidden states. For a more rigorous academic overview on Hidden Markov Models, see <a href="http://mlg.eng.cam.ac.uk/zoubin/papers/ijprai.pdf">An introduction to Hidden Markov Models and Bayesian Networks</a> (Ghahramani, 2001).</p>
 
 <p>Let’s load the libraries we’ll need. We also set a random seed (for reproducibility) and the automatic differentiation backend to forward mode (more <a href="http://turing.ml/docs/autodiff/">here</a> on why this is useful).</p>
@@ -781,6 +780,10 @@
 <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="x">(</span><span class="mi">1234</span><span class="x">);</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+└ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
+</code></pre></div></div>
+
 <h2 id="simple-state-detection">Simple State Detection</h2>
 
 <p>In this example, we’ll use something where the states and emission parameters are straightforward.</p>
@@ -793,7 +796,7 @@
 <span class="n">plot</span><span class="x">(</span><span class="n">y</span><span class="x">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="mi">15</span><span class="x">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="x">(</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span><span class="mi">5</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">500</span><span class="x">,</span> <span class="mi">250</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="../figures/4_BayesHmm_2_1.png" alt="" /></p>
+<p><img src="4_BayesHmm_files/4_BayesHmm_3_0.svg" alt="svg" /></p>
 
 <p>We can see that we have three states, one for each height of the plot (1, 2, 3). This height is also our emission parameter, so state one produces a value of one, state two produces a value of two, and so on.</p>
 
@@ -860,16 +863,6 @@ $$</p>
 <span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">BayesHmm</span><span class="x">(</span><span class="n">y</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span> <span class="n">g</span><span class="x">,</span> <span class="mi">100</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: MethodError: no method matching Float64(::Tracker.TrackedReal{Float6
-4})
-Closest candidates are:
-  Float64(::Real, !Matched::RoundingMode) where T&lt;:AbstractFloat at roundin
-g.jl:185
-  Float64(::T&lt;:Number) where T&lt;:Number at boot.jl:725
-  Float64(!Matched::Int8) at float.jl:60
-  ...
-</code></pre></div></div>
-
 <p>Let’s see how well our chain performed. Ordinarily, using the <code class="language-plaintext highlighter-rouge">describe</code> function from <a href="https://github.com/TuringLang/MCMCChain.jl">MCMCChain</a> would be a good first step, but we have generated a lot of parameters here (<code class="language-plaintext highlighter-rouge">s[1]</code>, <code class="language-plaintext highlighter-rouge">s[2]</code>, <code class="language-plaintext highlighter-rouge">m[1]</code>, and so on). It’s a bit easier to show how our model performed graphically.</p>
 
 <p>The code below generates an animation showing the graph of the data above, and the data our model generates in each sample.</p>
@@ -879,26 +872,11 @@ g.jl:185
 
 <span class="c"># Extract our m and s parameters from the chain.</span>
 <span class="n">m_set</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">m</span><span class="x">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">data</span>
-</code></pre></div></div>
+<span class="n">s_set</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">s</span><span class="x">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">data</span>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s_set</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">s</span><span class="x">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">data</span>
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c"># Iterate through the MCMC samples.</span>
 <span class="n">Ns</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">c</span><span class="x">)</span>
-</code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c"># Make an animation.</span>
 <span class="n">animation</span> <span class="o">=</span> <span class="nd">@animate</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">Ns</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">m_set</span><span class="x">[</span><span class="n">i</span><span class="x">,</span> <span class="o">:</span><span class="x">];</span> 
@@ -916,21 +894,13 @@ g.jl:185
 <span class="k">end</span> <span class="n">every</span> <span class="mi">10</span><span class="x">;</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: Ns not defined
-</code></pre></div></div>
-
 <p><img src="https://user-images.githubusercontent.com/422990/50612436-de588980-0e8e-11e9-8635-4e3e97c0d7f9.gif" alt="animation" /></p>
 
 <p>Looks like our model did a pretty good job, but we should also check to make sure our chain converges. A quick check is to examine whether the diagonal (representing the probability of remaining in the current state) of the transition matrix appears to be stationary. The code below extracts the diagonal and shows a traceplot of each persistence probability.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Index the chain with the persistence probabilities.</span>
 <span class="n">subchain</span> <span class="o">=</span> <span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="x">,[</span><span class="s">"T[</span><span class="si">$$</span><span class="s">i][</span><span class="si">$$</span><span class="s">i]"</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">K</span><span class="x">],</span><span class="o">:</span><span class="x">]</span>
-</code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c"># Plot the chain.</span>
 <span class="n">plot</span><span class="x">(</span><span class="n">subchain</span><span class="x">,</span> 
     <span class="n">colordim</span> <span class="o">=</span> <span class="o">:</span><span class="n">parameter</span><span class="x">,</span> 
@@ -940,15 +910,26 @@ g.jl:185
     <span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: subchain not defined
-</code></pre></div></div>
+<p><img src="4_BayesHmm_files/4_BayesHmm_11_0.svg" alt="svg" /></p>
 
 <p>A cursory examination of the traceplot above indicates that at least <code class="language-plaintext highlighter-rouge">T[3,3]</code> and possibly <code class="language-plaintext highlighter-rouge">T[2,2]</code> have converged to something resembling stationary. <code class="language-plaintext highlighter-rouge">T[1,1]</code>, on the other hand, has a slight “wobble”, and seems less consistent than the others. We can use the diagnostic functions provided by <a href="https://github.com/TuringLang/MCMCChain.jl">MCMCChain</a> to engage in some formal tests, like the Heidelberg and Welch diagnostic:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">heideldiag</span><span class="x">(</span><span class="n">c</span><span class="x">[</span><span class="o">:</span><span class="n">T</span><span class="x">])</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: UndefVarError: c not defined
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-element Array{ChainDataFrame{NamedTuple{(:parameters, Symbol("Burn-in"), :Stationarity, Symbol("p-value"), :Mean, :Halfwidth, :Test),Tuple{Array{String,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}}},1}:
+ Heidelberger and Welch Diagnostic - Chain 1
+  parameters  Burn-in  Stationarity  p-value    Mean  Halfwidth    Test
+  ──────────  ───────  ────────────  ───────  ──────  ─────────  ──────
+     T[1][1]  50.0000        0.0000   0.0001  0.5329     0.0063  1.0000
+     T[1][2]  50.0000        0.0000   0.0189  0.1291     0.0043  1.0000
+     T[1][3]  50.0000        0.0000   0.0230  0.3381     0.0032  1.0000
+     T[2][1]  30.0000        1.0000   0.2757  0.0037     0.0000  1.0000
+     T[2][2]   0.0000        1.0000   0.1689  0.0707     0.0022  1.0000
+     T[2][3]   0.0000        1.0000   0.1365  0.9255     0.0022  1.0000
+     T[3][1]  50.0000        0.0000   0.0454  0.4177     0.0147  1.0000
+     T[3][2]  40.0000        1.0000   0.0909  0.2549     0.0080  1.0000
+     T[3][3]  50.0000        0.0000   0.0098  0.3274     0.0067  1.0000
 </code></pre></div></div>
 
 <p>The p-values on the test suggest that we cannot reject the hypothesis that the observed sequence comes from a stationary distribution, so we can be somewhat more confident that our transition matrix has converged to something reasonable.</p>

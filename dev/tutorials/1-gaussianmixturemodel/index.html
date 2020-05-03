@@ -789,7 +789,7 @@
 <span class="n">scatter</span><span class="x">(</span><span class="n">x</span><span class="x">[</span><span class="mi">1</span><span class="x">,</span><span class="o">:</span><span class="x">],</span> <span class="n">x</span><span class="x">[</span><span class="mi">2</span><span class="x">,</span><span class="o">:</span><span class="x">],</span> <span class="n">legend</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s">"Synthetic Dataset"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/1_GaussianMixtureModel_1_1.png" alt="" /></p>
+<p><img src="1_GaussianMixtureModel_files/1_GaussianMixtureModel_2_0.svg" alt="svg" /></p>
 
 <h2 id="gaussian-mixture-model-in-turing">Gaussian Mixture Model in Turing</h2>
 
@@ -818,17 +818,24 @@ $$</p>
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+└ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
+
+
+
+
+
+false
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">GaussianMixtureModel</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
     
     <span class="n">D</span><span class="x">,</span> <span class="n">N</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
 
-    <span class="c"># Draw the paramters for cluster 1.</span>
+    <span class="c"># Draw the parameters for cluster 1.</span>
     <span class="n">μ1</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">()</span>
     
-    <span class="c"># Draw the paramters for cluster 2.</span>
+    <span class="c"># Draw the parameters for cluster 2.</span>
     <span class="n">μ2</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">()</span>
     
     <span class="n">μ</span> <span class="o">=</span> <span class="x">[</span><span class="n">μ1</span><span class="x">,</span> <span class="n">μ2</span><span class="x">]</span>
@@ -852,7 +859,7 @@ $$</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GaussianMixtureModel (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##GaussianMixtureModel#361 (generic function with 2 methods)
 </code></pre></div></div>
 
 <p>After having specified the model in Turing, we can construct the model function and run a MCMC simulation to obtain assignments of the data points.</p>
@@ -878,7 +885,7 @@ $$</p>
 <span class="n">p</span><span class="o">=</span><span class="n">plot</span><span class="x">(</span><span class="n">tchain</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">ids</span><span class="x">,</span> <span class="o">:</span><span class="x">],</span> <span class="n">legend</span><span class="o">=</span><span class="nb">true</span><span class="x">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="x">[</span><span class="s">"Mu 1"</span> <span class="s">"Mu 2"</span><span class="x">],</span> <span class="n">colordim</span><span class="o">=:</span><span class="n">parameter</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/1_GaussianMixtureModel_6_1.png" alt="" /></p>
+<p><img src="1_GaussianMixtureModel_files/1_GaussianMixtureModel_13_0.svg" alt="svg" /></p>
 
 <p>You’ll note here that it appears the location means are switching between chains. We will address this in future tutorials. For those who are keenly interested, see <a href="https://mc-stan.org/users/documentation/case-studies/identifying_mixture_models.html">this</a> article on potential solutions.</p>
 
@@ -908,7 +915,7 @@ $$</p>
 <span class="n">scatter!</span><span class="x">(</span><span class="n">x</span><span class="x">[</span><span class="mi">1</span><span class="x">,</span><span class="o">:</span><span class="x">],</span> <span class="n">x</span><span class="x">[</span><span class="mi">2</span><span class="x">,</span><span class="o">:</span><span class="x">],</span> <span class="n">legend</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s">"Synthetic Dataset"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/1_GaussianMixtureModel_9_1.png" alt="" /></p>
+<p><img src="1_GaussianMixtureModel_files/1_GaussianMixtureModel_18_0.svg" alt="svg" /></p>
 
 <h2 id="infered-assignments">Infered Assignments</h2>
 
@@ -921,7 +928,8 @@ $$</p>
     <span class="n">zcolor</span> <span class="o">=</span> <span class="n">assignments</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/1_GaussianMixtureModel_10_1.png" alt="" /></p>
+<p><img src="1_GaussianMixtureModel_files/1_GaussianMixtureModel_21_0.svg" alt="svg" /></p>
+
 
     
 <script

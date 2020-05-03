@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Bayesian Logistic Regression</title>
-    <meta name="description" content="Bayesian Logistic Regression">
+    <meta name="description" content="Bayesian Logistic RegressionBayesian logistic regression is the Bayesian counterpart to a common tool in machine learning, logistic regression. The goal of l...">
     <meta name="author" content="The Turing Team">
     <meta name="theme-color" content="red">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -766,7 +766,6 @@
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
     <h1 id="bayesian-logistic-regression">Bayesian Logistic Regression</h1>
-
 <p><a href="https://en.wikipedia.org/wiki/Logistic_regression#Bayesian">Bayesian logistic regression</a> is the Bayesian counterpart to a common tool in machine learning, logistic regression. The goal of logistic regression is to predict a one or a zero for a given training item. An example might be predicting whether someone is sick or ill given their symptoms and personal information.</p>
 
 <p>In our example, we’ll be working to predict whether someone is likely to default with a synthetic dataset found in the <code class="language-plaintext highlighter-rouge">RDatasets</code> package. This dataset, <code class="language-plaintext highlighter-rouge">Defaults</code>, comes from R’s <a href="https://cran.r-project.org/web/packages/ISLR/index.html">ISLR</a> package and contains information on borrowers.</p>
@@ -793,7 +792,16 @@
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>false
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling RDatasets [ce6b1742-4840-55fa-b093-852dadbb1d8b]
+└ @ Base loading.jl:1260
+┌ Info: [Turing]: progress logging is disabled globally
+└ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
+
+
+
+
+
+false
 </code></pre></div></div>
 
 <h2 id="data-cleaning--set-up">Data Cleaning &amp; Set Up</h2>
@@ -807,17 +815,7 @@
 <span class="n">first</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="mi">6</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6×4 DataFrame
-│ Row │ Default      │ Student      │ Balance │ Income  │
-│     │ Categorical… │ Categorical… │ Float64 │ Float64 │
-├─────┼──────────────┼──────────────┼─────────┼─────────┤
-│ 1   │ No           │ No           │ 729.526 │ 44361.6 │
-│ 2   │ No           │ Yes          │ 817.18  │ 12106.1 │
-│ 3   │ No           │ No           │ 1073.55 │ 31767.1 │
-│ 4   │ No           │ No           │ 529.251 │ 35704.5 │
-│ 5   │ No           │ No           │ 785.656 │ 38463.5 │
-│ 6   │ No           │ Yes          │ 919.589 │ 7491.56 │
-</code></pre></div></div>
+<table class="data-frame"><thead><tr><th></th><th>Default</th><th>Student</th><th>Balance</th><th>Income</th></tr><tr><th></th><th>Categorical…</th><th>Categorical…</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>6 rows × 4 columns</p><tr><th>1</th><td>No</td><td>No</td><td>729.526</td><td>44361.6</td></tr><tr><th>2</th><td>No</td><td>Yes</td><td>817.18</td><td>12106.1</td></tr><tr><th>3</th><td>No</td><td>No</td><td>1073.55</td><td>31767.1</td></tr><tr><th>4</th><td>No</td><td>No</td><td>529.251</td><td>35704.5</td></tr><tr><th>5</th><td>No</td><td>No</td><td>785.656</td><td>38463.5</td></tr><tr><th>6</th><td>No</td><td>Yes</td><td>919.589</td><td>7491.56</td></tr></tbody></table>
 
 <p>Most machine learning processes require some effort to tidy up the data, and this is no different. We need to convert the <code class="language-plaintext highlighter-rouge">Default</code> and <code class="language-plaintext highlighter-rouge">Student</code> columns, which say “Yes” or “No” into 1s and 0s. Afterwards, we’ll get rid of the old words-based columns.</p>
 
@@ -832,17 +830,7 @@
 <span class="n">first</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="mi">6</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6×4 DataFrame
-│ Row │ Balance │ Income  │ DefaultNum │ StudentNum │
-│     │ Float64 │ Float64 │ Float64    │ Float64    │
-├─────┼─────────┼─────────┼────────────┼────────────┤
-│ 1   │ 729.526 │ 44361.6 │ 0.0        │ 0.0        │
-│ 2   │ 817.18  │ 12106.1 │ 0.0        │ 1.0        │
-│ 3   │ 1073.55 │ 31767.1 │ 0.0        │ 0.0        │
-│ 4   │ 529.251 │ 35704.5 │ 0.0        │ 0.0        │
-│ 5   │ 785.656 │ 38463.5 │ 0.0        │ 0.0        │
-│ 6   │ 919.589 │ 7491.56 │ 0.0        │ 1.0        │
-</code></pre></div></div>
+<table class="data-frame"><thead><tr><th></th><th>Balance</th><th>Income</th><th>DefaultNum</th><th>StudentNum</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>6 rows × 4 columns</p><tr><th>1</th><td>729.526</td><td>44361.6</td><td>0.0</td><td>0.0</td></tr><tr><th>2</th><td>817.18</td><td>12106.1</td><td>0.0</td><td>1.0</td></tr><tr><th>3</th><td>1073.55</td><td>31767.1</td><td>0.0</td><td>0.0</td></tr><tr><th>4</th><td>529.251</td><td>35704.5</td><td>0.0</td><td>0.0</td></tr><tr><th>5</th><td>785.656</td><td>38463.5</td><td>0.0</td><td>0.0</td></tr><tr><th>6</th><td>919.589</td><td>7491.56</td><td>0.0</td><td>1.0</td></tr></tbody></table>
 
 <p>After we’ve done that tidying, it’s time to split our dataset into training and testing sets, and separate the labels from the data. We separate our data into two halves, <code class="language-plaintext highlighter-rouge">train</code> and <code class="language-plaintext highlighter-rouge">test</code>. You can use a higher percentage of splitting (or a lower one) by modifying the <code class="language-plaintext highlighter-rouge">at = 0.05</code> argument. We have highlighted the use of only a 5% sample to show the power of Bayesian inference with small sample sizes.</p>
 
@@ -930,38 +918,20 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
 
 Summary Statistics
-. Omitted printing of 1 columns
-│ Row │ parameters │ mean      │ std      │ naive_se   │ mcse       │ ess  
-   │
-│     │ Symbol     │ Float64   │ Float64  │ Float64    │ Float64    │ Any  
-   │
-├─────┼────────────┼───────────┼──────────┼────────────┼────────────┼──────
-───┤
-│ 1   │ balance    │ 1.78999   │ 0.331794 │ 0.00494609 │ 0.00848061 │ 186.5
-65 │
-│ 2   │ income     │ -0.139602 │ 0.332703 │ 0.00495964 │ 0.011117   │ 967.8
-64 │
-│ 3   │ intercept  │ -4.12687  │ 0.545573 │ 0.00813292 │ 0.0172957  │ 65.36
-02 │
-│ 4   │ student    │ -0.918551 │ 0.636926 │ 0.00949473 │ 0.0309855  │ 529.7
-24 │
+  parameters     mean     std  naive_se    mcse       ess   r_hat
+  ──────────  ───────  ──────  ────────  ──────  ────────  ──────
+     balance   1.7910  0.3220    0.0048  0.0087  271.8875  1.0019
+      income  -0.1394  0.3320    0.0049  0.0111  991.7991  1.0010
+   intercept  -4.1193  0.4756    0.0071  0.0147  163.4210  1.0001
+     student  -0.9149  0.6302    0.0094  0.0302  650.1722  1.0046
 
 Quantiles
-
-│ Row │ parameters │ 2.5%      │ 25.0%    │ 50.0%     │ 75.0%     │ 97.5%  
-  │
-│     │ Symbol     │ Float64   │ Float64  │ Float64   │ Float64   │ Float64
-  │
-├─────┼────────────┼───────────┼──────────┼───────────┼───────────┼────────
-──┤
-│ 1   │ balance    │ 1.20484   │ 1.57879  │ 1.77619   │ 1.9798    │ 2.41041
-  │
-│ 2   │ income     │ -0.782103 │ -0.36119 │ -0.135722 │ 0.0840768 │ 0.48844
-8 │
-│ 3   │ intercept  │ -5.01721  │ -4.39229 │ -4.08815  │ -3.81892  │ -3.3217
-8 │
-│ 4   │ student    │ -2.16432  │ -1.33493 │ -0.911954 │ -0.502552 │ 0.33238
-7 │
+  parameters     2.5%    25.0%    50.0%    75.0%    97.5%
+  ──────────  ───────  ───────  ───────  ───────  ───────
+     balance   1.2168   1.5819   1.7784   1.9798   2.3970
+      income  -0.7735  -0.3582  -0.1372   0.0831   0.4892
+   intercept  -5.0109  -4.3876  -4.0866  -3.8198  -3.3232
+     student  -2.1533  -1.3321  -0.9115  -0.5011   0.3324
 </code></pre></div></div>
 
 <p>Since we ran multiple chains, we may as well do a spot check to make sure each chain converges around similar points.</p>
@@ -969,7 +939,7 @@ Quantiles
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/2_LogisticRegression_8_1.png" alt="" /></p>
+<p><img src="2_LogisticRegression_files/2_LogisticRegression_15_0.svg" alt="svg" /></p>
 
 <p>Looks good!</p>
 
@@ -982,7 +952,7 @@ Quantiles
 <span class="n">corner</span><span class="x">(</span><span class="n">chain</span><span class="x">,</span> <span class="n">l</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/2_LogisticRegression_9_1.png" alt="" /></p>
+<p><img src="2_LogisticRegression_files/2_LogisticRegression_17_0.svg" alt="svg" /></p>
 
 <p>Fortunately the corner plot appears to demonstrate unimodal distributions for each of our parameters, so it should be straightforward to take the means of each parameter’s sampled values to estimate our model to make predictions.</p>
 
@@ -1029,7 +999,7 @@ Quantiles
 <span class="n">loss</span> <span class="o">=</span> <span class="n">sum</span><span class="x">((</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">test_label</span><span class="x">)</span><span class="o">.^</span><span class="mi">2</span><span class="x">)</span> <span class="o">/</span> <span class="n">length</span><span class="x">(</span><span class="n">test_label</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.09231578947368421
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.09273684210526316
 </code></pre></div></div>
 
 <p>Perhaps more important is to see what percentage of defaults we correctly predicted. The code below simply counts defaults and predictions and presents the results.</p>
@@ -1043,22 +1013,18 @@ Quantiles
 <span class="n">println</span><span class="x">(</span><span class="s">"Defaults: </span><span class="si">$$</span><span class="s">defaults
     Predictions: </span><span class="si">$$</span><span class="s">predicted_defaults
     Percentage defaults correct </span><span class="si">$$</span><span class="s">(predicted_defaults/defaults)"</span><span class="x">)</span>
-</code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults: 317.0
-    Predictions: 258
-    Percentage defaults correct 0.8138801261829653
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="n">println</span><span class="x">(</span><span class="s">"Not defaults: </span><span class="si">$$</span><span class="s">not_defaults
     Predictions: </span><span class="si">$$</span><span class="s">predicted_not_defaults
     Percentage non-defaults correct </span><span class="si">$$</span><span class="s">(predicted_not_defaults/not_defaults)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Not defaults: 9183.0
-    Predictions: 8365
-    Percentage non-defaults correct 0.9109223565283676
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults: 317.0
+    Predictions: 259
+    Percentage defaults correct 0.8170347003154574
+Not defaults: 9183.0
+    Predictions: 8360
+    Percentage non-defaults correct 0.9103778721550692
 </code></pre></div></div>
 
 <p>The above shows that with a threshold of 0.10, we correctly predict a respectable portion of the defaults, and correctly identify most non-defaults. This is fairly sensitive to a choice of threshold, and you may wish to experiment with it.</p>

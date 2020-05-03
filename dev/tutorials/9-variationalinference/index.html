@@ -793,8 +793,8 @@
 <p>The Normal-(Inverse)Gamma conjugate model is defined by the following generative process</p>
 
 <p>\begin{align}
-    s &amp;\sim \mathrm{InverseGamma}(2, 3) \\\<br />
-    m &amp;\sim \mathcal{N}(0, s) \\\<br />
+    s &amp;\sim \mathrm{InverseGamma}(2, 3) <br />
+    m &amp;\sim \mathcal{N}(0, s) <br />
     x_i &amp;\overset{\text{i.i.d.}}{=} \mathcal{N}(m, s), \quad i = 1, \dots, n
 \end{align}</p>
 
@@ -815,7 +815,7 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##model#2317 (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##model#344 (generic function with 2 methods)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># construct model</span>
@@ -831,6 +831,12 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">samples_nuts</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(</span><span class="mi">200</span><span class="x">,</span> <span class="mf">0.65</span><span class="x">),</span> <span class="mi">10000</span><span class="x">);</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
+│   ϵ = 0.025
+└ @ Turing.Inference /home/cameron/.julia/packages/Turing/cReBm/src/inference/hmc.jl:556
+[32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:02[39m
+</code></pre></div></div>
+
 <p>Now let’s try VI. The most important function you need to now about to do VI in Turing is <code class="language-plaintext highlighter-rouge">vi</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">print</span><span class="x">(</span><span class="nd">@doc</span><span class="x">(</span><span class="n">Variational</span><span class="o">.</span><span class="n">vi</span><span class="x">))</span>
@@ -842,21 +848,15 @@ vi(model, alg::VariationalInference, q::VariationalPosterior)
 vi(model, alg::VariationalInference, getq::Function, θ::AbstractArray)
 ```
 
-Constructs the variational posterior from the `model` and performs the opti
-mization following the configuration of the given `VariationalInference` in
-stance.
+Constructs the variational posterior from the `model` and performs the optimization following the configuration of the given `VariationalInference` instance.
 
 # Arguments
 
-  * `model`: `Turing.Model` or `Function` z ↦ log p(x, z) where `x` denotes
- the observations
+  * `model`: `Turing.Model` or `Function` z ↦ log p(x, z) where `x` denotes the observations
   * `alg`: the VI algorithm used
-  * `q`: a `VariationalPosterior` for which it is assumed a specialized imp
-lementation of the variational objective used exists.
-  * `getq`: function taking parameters `θ` as input and returns a `Variatio
-nalPosterior`
-  * `θ`: only required if `getq` is used, in which case it is the initial p
-arameters for the variational posterior
+  * `q`: a `VariationalPosterior` for which it is assumed a specialized implementation of the variational objective used exists.
+  * `getq`: function taking parameters `θ` as input and returns a `VariationalPosterior`
+  * `θ`: only required if `getq` is used, in which case it is the initial parameters for the variational posterior
 </code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">vi</code> takes the <code class="language-plaintext highlighter-rouge">Model</code> you want to approximate, a <code class="language-plaintext highlighter-rouge">VariationalInference</code> whose type specifies the method to use and then its fields specify the configuration of the method.</p>
@@ -877,8 +877,7 @@ meanfield(model::Model)
 meanfield(rng::AbstractRNG, model::Model)
 ```
 
-Creates a mean-field approximation with multivariate normal as underlying d
-istribution.
+Creates a mean-field approximation with multivariate normal as underlying distribution.
 </code></pre></div></div>
 
 <p>Currently the only implementation of <code class="language-plaintext highlighter-rouge">VariationalInference</code> available is <code class="language-plaintext highlighter-rouge">ADVI</code>, which is very convenient and applicable as long as your <code class="language-plaintext highlighter-rouge">Model</code> is differentiable with respect to the <em>variational parameters</em>, that is, the parameters of your variational distribution, e.g. mean and variance in the mean-field approximation.</p>
@@ -890,8 +889,7 @@ istribution.
 struct ADVI{AD} &lt;: Turing.Variational.VariationalInference{AD}
 ```
 
-Automatic Differentiation Variational Inference (ADVI) with automatic diffe
-rentiation backend `AD`.
+Automatic Differentiation Variational Inference (ADVI) with automatic differentiation backend `AD`.
 
 # Fields
 
@@ -906,8 +904,7 @@ rentiation backend `AD`.
 ADVI([samples_per_step=1, max_iters=1000])
 ```
 
-Create an [`ADVI`](@ref) with the currently enabled automatic differentiati
-on backend `ADBackend()`.
+Create an [`ADVI`](@ref) with the currently enabled automatic differentiation backend `ADBackend()`.
 </code></pre></div></div>
 
 <p>To perform VI on the model <code class="language-plaintext highlighter-rouge">m</code> using 10 samples for gradient estimation and taking 1000 gradient steps is then as simple as:</p>
@@ -915,6 +912,12 @@ on backend `ADBackend()`.
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ADVI</span>
 <span class="n">advi</span> <span class="o">=</span> <span class="n">ADVI</span><span class="x">(</span><span class="mi">10</span><span class="x">,</span> <span class="mi">1000</span><span class="x">)</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">);</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
+│   objectid(θ) = 12334556482979097499
+└ @ Turing.Variational /home/cameron/.julia/packages/Turing/cReBm/src/variational/VariationalInference.jl:204
+[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:03[39m
 </code></pre></div></div>
 
 <p>Unfortunately, for such a small problem Turing’s new <code class="language-plaintext highlighter-rouge">NUTS</code> sampler is <em>so</em> efficient now that it’s not that much more efficient to use ADVI. So, so very unfortunate…</p>
@@ -974,7 +977,14 @@ Let’s instead look the actual density <code class="language-plaintext highligh
 <span class="n">pyplot</span><span class="x">()</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Plots.PyPlotBackend()
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling PyPlot [d330b81b-6aea-500a-939a-2ce795aea3ee]
+└ @ Base loading.jl:1260
+
+
+
+
+
+Plots.PyPlotBackend()
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">p1</span> <span class="o">=</span> <span class="n">histogram</span><span class="x">(</span><span class="n">samples</span><span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="o">:</span><span class="x">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="x">,</span> <span class="n">normed</span><span class="o">=</span><span class="nb">true</span><span class="x">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="x">,</span> <span class="n">color</span> <span class="o">=</span> <span class="o">:</span><span class="n">blue</span><span class="x">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">""</span><span class="x">)</span>
@@ -992,7 +1002,7 @@ Let’s instead look the actual density <code class="language-plaintext highligh
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">layout</span><span class="o">=</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">1</span><span class="x">),</span> <span class="n">size</span><span class="o">=</span><span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">500</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_17_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_34_0.png" alt="png" /></p>
 
 <p>For this particular <code class="language-plaintext highlighter-rouge">Model</code>, we can in fact obtain the posterior of the latent variables in closed form. This allows us to compare both <code class="language-plaintext highlighter-rouge">NUTS</code> and <code class="language-plaintext highlighter-rouge">ADVI</code> to the true posterior <script type="math/tex">p(s, m \mid \{x_i\}_{i = 1}^n )</script>.</p>
 
@@ -1068,7 +1078,11 @@ Let’s instead look the actual density <code class="language-plaintext highligh
 <span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">;</span> <span class="n">layout</span><span class="o">=</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">1</span><span class="x">),</span> <span class="n">size</span><span class="o">=</span><span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">500</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_18_1.png" alt="" /></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling ConjugatePriors [1624bea9-42b1-5fc1-afd3-e96f729c8d6c]
+└ @ Base loading.jl:1260
+</code></pre></div></div>
+
+<p><img src="9_VariationalInference_files/9_VariationalInference_36_1.png" alt="png" /></p>
 
 <h1 id="bayesian-linear-regression-example-using-advi">Bayesian linear regression example using <code class="language-plaintext highlighter-rouge">ADVI</code></h1>
 
@@ -1090,6 +1104,10 @@ Let’s instead look the actual density <code class="language-plaintext highligh
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">true</span><span class="x">);</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is enabled globally
+└ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
+</code></pre></div></div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import the "Default" dataset.</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">RDatasets</span><span class="o">.</span><span class="n">dataset</span><span class="x">(</span><span class="s">"datasets"</span><span class="x">,</span> <span class="s">"mtcars"</span><span class="x">);</span>
 
@@ -1097,17 +1115,7 @@ Let’s instead look the actual density <code class="language-plaintext highligh
 <span class="n">first</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="mi">6</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6×12 DataFrame. Omitted printing of 6 columns
-│ Row │ Model             │ MPG     │ Cyl   │ Disp    │ HP    │ DRat    │
-│     │ String            │ Float64 │ Int64 │ Float64 │ Int64 │ Float64 │
-├─────┼───────────────────┼─────────┼───────┼─────────┼───────┼─────────┤
-│ 1   │ Mazda RX4         │ 21.0    │ 6     │ 160.0   │ 110   │ 3.9     │
-│ 2   │ Mazda RX4 Wag     │ 21.0    │ 6     │ 160.0   │ 110   │ 3.9     │
-│ 3   │ Datsun 710        │ 22.8    │ 4     │ 108.0   │ 93    │ 3.85    │
-│ 4   │ Hornet 4 Drive    │ 21.4    │ 6     │ 258.0   │ 110   │ 3.08    │
-│ 5   │ Hornet Sportabout │ 18.7    │ 8     │ 360.0   │ 175   │ 3.15    │
-│ 6   │ Valiant           │ 18.1    │ 6     │ 225.0   │ 105   │ 2.76    │
-</code></pre></div></div>
+<table class="data-frame"><thead><tr><th></th><th>Model</th><th>MPG</th><th>Cyl</th><th>Disp</th><th>HP</th><th>DRat</th><th>WT</th><th>QSec</th><th>VS</th></tr><tr><th></th><th>String</th><th>Float64</th><th>Int64</th><th>Float64</th><th>Int64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Int64</th></tr></thead><tbody><p>6 rows × 12 columns (omitted printing of 3 columns)</p><tr><th>1</th><td>Mazda RX4</td><td>21.0</td><td>6</td><td>160.0</td><td>110</td><td>3.9</td><td>2.62</td><td>16.46</td><td>0</td></tr><tr><th>2</th><td>Mazda RX4 Wag</td><td>21.0</td><td>6</td><td>160.0</td><td>110</td><td>3.9</td><td>2.875</td><td>17.02</td><td>0</td></tr><tr><th>3</th><td>Datsun 710</td><td>22.8</td><td>4</td><td>108.0</td><td>93</td><td>3.85</td><td>2.32</td><td>18.61</td><td>1</td></tr><tr><th>4</th><td>Hornet 4 Drive</td><td>21.4</td><td>6</td><td>258.0</td><td>110</td><td>3.08</td><td>3.215</td><td>19.44</td><td>1</td></tr><tr><th>5</th><td>Hornet Sportabout</td><td>18.7</td><td>8</td><td>360.0</td><td>175</td><td>3.15</td><td>3.44</td><td>17.02</td><td>0</td></tr><tr><th>6</th><td>Valiant</td><td>18.1</td><td>6</td><td>225.0</td><td>105</td><td>2.76</td><td>3.46</td><td>20.22</td><td>1</td></tr></tbody></table>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Function to split samples.</span>
 <span class="k">function</span><span class="nf"> split_data</span><span class="x">(</span><span class="n">df</span><span class="x">,</span> <span class="n">at</span> <span class="o">=</span> <span class="mf">0.70</span><span class="x">)</span>
@@ -1186,9 +1194,7 @@ Let’s instead look the actual density <code class="language-plaintext highligh
 <span class="n">typeof</span><span class="x">(</span><span class="n">q0</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1}
-,Array{Float64,1}},Stacked{Tuple{Inverse{Bijectors.TruncatedBijector{Float6
-4},0},Identity{0},Identity{1}},3},Multivariate}
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}},Bijectors.Stacked{Tuple{Bijectors.Inverse{Bijectors.TruncatedBijector{Float64},0},Bijectors.Identity{0},Bijectors.Identity{1}},3},Multivariate}
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">advi</span> <span class="o">=</span> <span class="n">ADVI</span><span class="x">(</span><span class="mi">10</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">)</span>
@@ -1224,9 +1230,13 @@ as these are well-suited for problems with high-variance stochastic objectives, 
 <span class="n">typeof</span><span class="x">(</span><span class="n">q</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1}
-,Array{Float64,1}},Stacked{Tuple{Inverse{Bijectors.TruncatedBijector{Float6
-4},0},Identity{0},Identity{1}},3},Multivariate}
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:05[39m
+
+
+
+
+
+Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}},Bijectors.Stacked{Tuple{Bijectors.Inverse{Bijectors.TruncatedBijector{Float64},0},Bijectors.Identity{0},Bijectors.Identity{1}},3},Multivariate}
 </code></pre></div></div>
 
 <p><em>Note: as mentioned before, we internally define a <code class="language-plaintext highlighter-rouge">update(q::TransformedDistribution{&lt;:TuringDiagMvNormal}, θ::AbstractVector)</code> method which takes in the current variational approximation <code class="language-plaintext highlighter-rouge">q</code> together with new parameters <code class="language-plaintext highlighter-rouge">z</code> and returns the new variational approximation. This is required so that we can actually update the <code class="language-plaintext highlighter-rouge">Distribution</code> object after each optimization step.</em></p>
@@ -1264,8 +1274,7 @@ as these are well-suited for problems with high-variance stochastic objectives, 
 <span class="n">sym2range</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(intercept = UnitRange{Int64}[2:2], σ₂ = UnitRange{Int64}[1:1], coefficient
-s = UnitRange{Int64}[3:12])
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(intercept = UnitRange{Int64}[2:2], σ₂ = UnitRange{Int64}[1:1], coefficients = UnitRange{Int64}[3:12])
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg</span><span class="x">[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">σ₂</span><span class="x">]</span><span class="o">...</span><span class="x">)]</span>
@@ -1333,17 +1342,23 @@ s = UnitRange{Int64}[3:12])
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_variational_marginals</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="n">sym2range</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_37_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_68_0.png" alt="png" /></p>
 
 <p>And let’s compare this to using the <code class="language-plaintext highlighter-rouge">NUTS</code> sampler:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(</span><span class="mf">0.65</span><span class="x">),</span> <span class="mi">10_000</span><span class="x">);</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
+│   ϵ = 0.4
+└ @ Turing.Inference /home/cameron/.julia/packages/Turing/cReBm/src/inference/hmc.jl:556
+[32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:04[39m
+</code></pre></div></div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_39_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_71_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vi_mean</span> <span class="o">=</span> <span class="n">vec</span><span class="x">(</span><span class="n">mean</span><span class="x">(</span><span class="n">z</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">))[[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">coefficients</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">intercept</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">σ₂</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">]]</span>
 </code></pre></div></div>
@@ -1367,18 +1382,18 @@ s = UnitRange{Int64}[3:12])
 </code></pre></div></div>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
-  0.4055654199541353
- -0.11139418827095977
- -0.09045625214903877
-  0.6091693769635399
-  0.0036736972545771476
-  0.09485748534843351
- -0.07447568533545693
-  0.13841180072583004
-  0.28729790761299895
- -0.8249277100950541
-  0.05066292089563915
-  0.467144388346198
+  0.40737234076000634
+ -0.12119407949255825
+ -0.09258229213058687
+  0.6075161662165318
+  0.010710254061742489
+  0.0962666098260057
+ -0.07340041375352217
+  0.14124748712473906
+  0.2782293300542158
+ -0.8234179979734787
+  0.049650076749642606
+  0.47011974512236054
 </code></pre></div></div>
 
 <p>One thing we can look at is simply the squared error between the means:</p>
@@ -1386,7 +1401,7 @@ s = UnitRange{Int64}[3:12])
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum</span><span class="x">(</span><span class="n">abs2</span><span class="x">,</span> <span class="n">mean</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span><span class="o">.</span><span class="n">nt</span><span class="o">.</span><span class="n">mean</span> <span class="o">.-</span> <span class="n">vi_mean</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.0002887435424083868
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.00038407031406971286
 </code></pre></div></div>
 
 <p>That looks pretty good! But let’s see how the predictive distributions looks for the two.</p>
@@ -1444,17 +1459,7 @@ s = UnitRange{Int64}[3:12])
 <span class="n">first</span><span class="x">(</span><span class="n">test_cut</span><span class="x">,</span> <span class="mi">6</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6×12 DataFrame. Omitted printing of 6 columns
-│ Row │ MPG     │ Cyl      │ Disp      │ HP        │ DRat      │ WT       │
-│     │ Float64 │ Float64  │ Float64   │ Float64   │ Float64   │ Float64  │
-├─────┼─────────┼──────────┼───────────┼───────────┼───────────┼──────────┤
-│ 1   │ 116.195 │ 1.01488  │ 0.591245  │ 0.0483133 │ -0.835198 │ 0.222544 │
-│ 2   │ 114.295 │ 1.01488  │ 0.962396  │ 1.4339    │ 0.249566  │ 0.636461 │
-│ 3   │ 120.195 │ 1.01488  │ 1.36582   │ 0.412942  │ -0.966118 │ 0.641571 │
-│ 4   │ 128.295 │ -1.22486 │ -1.22417  │ -1.17684  │ 0.904164  │ -1.31048 │
-│ 5   │ 126.995 │ -1.22486 │ -0.890939 │ -0.812211 │ 1.55876   │ -1.10097 │
-│ 6   │ 131.395 │ -1.22486 │ -1.09427  │ -0.491337 │ 0.324377  │ -1.74177 │
-</code></pre></div></div>
+<table class="data-frame"><thead><tr><th></th><th>MPG</th><th>Cyl</th><th>Disp</th><th>HP</th><th>DRat</th><th>WT</th><th>QSec</th><th>VS</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>6 rows × 12 columns (omitted printing of 4 columns)</p><tr><th>1</th><td>116.195</td><td>1.01488</td><td>0.591245</td><td>0.0483133</td><td>-0.835198</td><td>0.222544</td><td>-0.307089</td><td>-0.868028</td></tr><tr><th>2</th><td>114.295</td><td>1.01488</td><td>0.962396</td><td>1.4339</td><td>0.249566</td><td>0.636461</td><td>-1.36476</td><td>-0.868028</td></tr><tr><th>3</th><td>120.195</td><td>1.01488</td><td>1.36582</td><td>0.412942</td><td>-0.966118</td><td>0.641571</td><td>-0.446992</td><td>-0.868028</td></tr><tr><th>4</th><td>128.295</td><td>-1.22486</td><td>-1.22417</td><td>-1.17684</td><td>0.904164</td><td>-1.31048</td><td>0.588295</td><td>1.11604</td></tr><tr><th>5</th><td>126.995</td><td>-1.22486</td><td>-0.890939</td><td>-0.812211</td><td>1.55876</td><td>-1.10097</td><td>-0.642858</td><td>-0.868028</td></tr><tr><th>6</th><td>131.395</td><td>-1.22486</td><td>-1.09427</td><td>-0.491337</td><td>0.324377</td><td>-1.74177</td><td>-0.530935</td><td>1.11604</td></tr></tbody></table>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">q</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">);</span>
 </code></pre></div></div>
@@ -1486,12 +1491,12 @@ Test set:
 </code></pre></div></div>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
-    VI loss: 3.0758994856076907
-    Bayes loss: 3.0714707507951924
+    VI loss: 3.0784608943296643
+    Bayes loss: 3.0716118391411906
     OLS loss: 3.070926124893019
 Test set: 
-    VI loss: 27.15895050393437
-    Bayes loss: 26.67363800765536
+    VI loss: 27.159605003619333
+    Bayes loss: 26.58835451660728
     OLS loss: 27.094813070760107
 </code></pre></div></div>
 
@@ -1507,7 +1512,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"Mean-field ADVI (Normal)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_51_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_88_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction_chain</span><span class="x">(</span><span class="n">chain</span><span class="x">[</span><span class="n">i</span><span class="x">],</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">chain</span><span class="x">,</span> <span class="mi">1</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
 
@@ -1518,7 +1523,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"MCMC (NUTS)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_52_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_89_0.png" alt="png" /></p>
 
 <p>Indeed we see that the MCMC approach generally provides better uncertainty estimates than the mean-field ADVI approach! Good. So all the work we’ve done to make MCMC fast isn’t for nothing.</p>
 
@@ -1566,13 +1571,19 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q_mf_normal</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">,</span> <span class="n">getq</span><span class="x">,</span> <span class="n">randn</span><span class="x">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="x">));</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
+│   objectid(θ) = 8127634262038331167
+└ @ Turing.Variational /home/cameron/.julia/packages/Turing/cReBm/src/variational/VariationalInference.jl:204
+[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:06[39m
+</code></pre></div></div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">p1</span> <span class="o">=</span> <span class="n">plot_variational_marginals</span><span class="x">(</span><span class="n">rand</span><span class="x">(</span><span class="n">q_mf_normal</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">),</span> <span class="n">sym2range</span><span class="x">)</span> <span class="c"># MvDiagNormal + Affine transformation + to_constrained</span>
 <span class="n">p2</span> <span class="o">=</span> <span class="n">plot_variational_marginals</span><span class="x">(</span><span class="n">rand</span><span class="x">(</span><span class="n">q</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">),</span> <span class="n">sym2range</span><span class="x">)</span>  <span class="c"># Turing.meanfield(m)</span>
 
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">2000</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_59_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_100_0.png" alt="png" /></p>
 
 <p>As expected, the fits look pretty much identical.</p>
 
@@ -1616,30 +1627,33 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q_full_normal</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">,</span> <span class="n">getq</span><span class="x">,</span> <span class="n">randn</span><span class="x">(</span><span class="n">d</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d</span><span class="x">);</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="n">Variational</span><span class="o">.</span><span class="n">DecayedADAGrad</span><span class="x">(</span><span class="mf">1e-2</span><span class="x">));</span>
 </code></pre></div></div>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:01:05[39m
+</code></pre></div></div>
+
 <p>Let’s have a look at the learned covariance matrix:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="n">q_full_normal</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">ts</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span><span class="o">.</span><span class="n">a</span>
 </code></pre></div></div>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12×12 LowerTriangular{Float64,Array{Float64,2}}:
-  0.15105       ⋅           ⋅         …    ⋅           ⋅           ⋅ 
-  0.0108862    0.172463     ⋅              ⋅           ⋅           ⋅ 
-  0.0123471   -0.0593227   0.436187        ⋅           ⋅           ⋅ 
- -0.00602179   0.0414969  -0.0194838       ⋅           ⋅           ⋅ 
-  0.00331219   0.222362   -0.0901657       ⋅           ⋅           ⋅ 
-  0.00981285  -0.0617415   0.0823293  …    ⋅           ⋅           ⋅ 
-  0.027782    -0.0645315  -0.0273996       ⋅           ⋅           ⋅ 
- -0.00693511  -0.0364331   0.114921        ⋅           ⋅           ⋅ 
- -0.00219156  -0.013773    0.0848747       ⋅           ⋅           ⋅ 
- -0.00771163  -0.0322871   0.0527606      0.148345     ⋅           ⋅ 
-  0.0552412    0.295023    0.0749251  …  -0.144467    0.129711     ⋅ 
- -0.0330741   -0.114734   -0.0595983      0.0310255  -0.00566992  0.125705
+  0.154572       ⋅           ⋅          …    ⋅           ⋅           ⋅ 
+  0.00674249    0.169072     ⋅               ⋅           ⋅           ⋅ 
+ -0.00288782   -0.0283984   0.413288         ⋅           ⋅           ⋅ 
+ -0.030621      0.0450533  -0.0415525        ⋅           ⋅           ⋅ 
+ -0.0115003     0.208366   -0.0420414        ⋅           ⋅           ⋅ 
+  0.00139553   -0.0619506   0.0853589   …    ⋅           ⋅           ⋅ 
+  0.0129097    -0.0647154   0.00228644       ⋅           ⋅           ⋅ 
+ -0.0128701    -0.0531755   0.0999936        ⋅           ⋅           ⋅ 
+  0.00169318    0.0274239   0.0903744        ⋅           ⋅           ⋅ 
+ -0.0172387    -0.0304655   0.0661713       0.14843      ⋅           ⋅ 
+ -0.000468924   0.300281    0.0789093   …  -0.131391    0.128256     ⋅ 
+  0.00160201   -0.122274   -0.0776935       0.0468996  -0.00752499  0.120458
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">heatmap</span><span class="x">(</span><span class="n">cov</span><span class="x">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">A</span><span class="err">'</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_65_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_110_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zs</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">q_full_normal</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">);</span>
 </code></pre></div></div>
@@ -1650,7 +1664,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">2000</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_67_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_112_0.png" alt="png" /></p>
 
 <p>So it seems like the “full” ADVI approach, i.e. no mean-field assumption, obtain the same modes as the mean-field approach but with greater uncertainty for some of the <code class="language-plaintext highlighter-rouge">coefficients</code>. This</p>
 
@@ -1687,14 +1701,14 @@ Test set:
 </code></pre></div></div>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
-    VI loss:        3.0758994856076907
-    VI (full) loss: 3.080642961497418
-    Bayes loss:     3.0714707507951924
+    VI loss:        3.0784608943296643
+    VI (full) loss: 3.0926834377972288
+    Bayes loss:     3.0716118391411906
     OLS loss:       3.070926124893019
 Test set: 
-    VI loss:        27.15895050393437
-    VI (full) loss: 26.278444663514186
-    Bayes loss:     26.67363800765536
+    VI loss:        27.159605003619333
+    VI (full) loss: 26.912162732716684
+    Bayes loss:     26.58835451660728
     OLS loss:       27.094813070760107
 </code></pre></div></div>
 
@@ -1708,7 +1722,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"Mean-field ADVI (Normal)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_71_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_117_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">q_full_normal</span><span class="x">,</span> <span class="mi">1000</span><span class="x">);</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction</span><span class="x">(</span><span class="n">z</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">i</span><span class="x">],</span> <span class="n">sym2range</span><span class="x">,</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="mi">2</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
@@ -1720,7 +1734,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"Full ADVI (Normal)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_72_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_118_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction_chain</span><span class="x">(</span><span class="n">chain</span><span class="x">[</span><span class="n">i</span><span class="x">],</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">chain</span><span class="x">,</span> <span class="mi">1</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
 
@@ -1731,12 +1745,12 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"MCMC (NUTS)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_73_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_119_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">p3</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">250</span><span class="x">),</span> <span class="n">label</span><span class="o">=</span><span class="s">""</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/9_VariationalInference_74_1.png" alt="" /></p>
+<p><img src="9_VariationalInference_files/9_VariationalInference_120_0.png" alt="png" /></p>
 
 <p>Here we actually see that indeed both the full ADVI and the MCMC approaches does a much better job of quantifying the uncertainty of predictions for never-before-seen samples, with full ADVI seemingly <em>overestimating</em> the variance slightly compared to MCMC.</p>
 

@@ -810,7 +810,7 @@
 <span class="n">data</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="x">]</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5-element Array{Int64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5-element Array{Bool,1}:
  1
  0
  1
@@ -864,6 +864,11 @@
         <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="x">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="x">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">3</span><span class="x">)</span>
     <span class="n">vline!</span><span class="x">([</span><span class="n">p_true</span><span class="x">])</span>
 <span class="k">end</span><span class="x">;</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
+│   fn = /home/cameron/code/TuringTutorials/tmp.gif
+└ @ Plots /home/cameron/.julia/packages/Plots/cc8wh/src/animation.jl:98
 </code></pre></div></div>
 
 <p><img src="https://user-images.githubusercontent.com/7974003/44995702-37c1b200-af9c-11e8-8b26-c88a528956af.gif" alt="animation" /></p>
@@ -920,7 +925,7 @@
 <span class="n">plot</span><span class="x">(</span><span class="n">p_summary</span><span class="x">,</span> <span class="n">seriestype</span> <span class="o">=</span> <span class="o">:</span><span class="n">histogram</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/0_Introduction_9_1.png" alt="" /></p>
+<p><img src="0_Introduction_files/0_Introduction_21_0.svg" alt="svg" /></p>
 
 <p>Now we can build our plot:</p>
 
@@ -941,7 +946,7 @@
 <span class="n">vline!</span><span class="x">(</span><span class="n">p</span><span class="x">,</span> <span class="x">[</span><span class="n">p_true</span><span class="x">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"True probability"</span><span class="x">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="../figures/0_Introduction_10_1.png" alt="" /></p>
+<p><img src="0_Introduction_files/0_Introduction_23_0.svg" alt="svg" /></p>
 
 <p>As we can see, the Turing model closely approximates the true probability. Hopefully this tutorial has provided an easy-to-follow, yet informative introduction to Turing’s simpler applications. More advanced usage will be demonstrated in later tutorials.</p>
 
