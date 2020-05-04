@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -779,7 +781,7 @@
 <h3 id="coin-flipping-without-turing">Coin-Flipping Without Turing</h3>
 <p>The following example illustrates the effect of updating our beliefs with every piece of new evidence we observe. In particular, assume that we are unsure about the probability of heads in a coin flip. To get an intuitive understanding of what “updating our beliefs” is, we will visualize the probability of heads in a coin flip after each observed evidence.</p>
 
-<p>First, let’s load some of the packages we need to flip a coin (<code class="language-plaintext highlighter-rouge">Random</code>, <code class="language-plaintext highlighter-rouge">Distributions</code>) and show our results (<code class="language-plaintext highlighter-rouge">Plots</code>). You will note that Turing is not an import here — we do not need it for this example. If you are already familiar with posterior updates, you can proceed to the next step.</p>
+<p>First, let’s load some of the packages we need to flip a coin (<code class="highlighter-rouge">Random</code>, <code class="highlighter-rouge">Distributions</code>) and show our results (<code class="highlighter-rouge">Plots</code>). You will note that Turing is not an import here — we do not need it for this example. If you are already familiar with posterior updates, you can proceed to the next step.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using Base modules.</span>
 <span class="k">using</span> <span class="n">Random</span>
@@ -800,7 +802,7 @@
 <span class="n">Ns</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span><span class="mi">100</span><span class="x">;</span>
 </code></pre></div></div>
 
-<p>We will now use the Bernoulli distribution to flip 100 coins, and collect the results in a variable called <code class="language-plaintext highlighter-rouge">data</code>:</p>
+<p>We will now use the Bernoulli distribution to flip 100 coins, and collect the results in a variable called <code class="highlighter-rouge">data</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Draw data from a Bernoulli distribution, i.e. draw heads or tails.</span>
 <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="x">(</span><span class="mi">12</span><span class="x">)</span>
@@ -810,7 +812,7 @@
 <span class="n">data</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="x">]</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5-element Array{Bool,1}:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5-element Array{Bool,1}:
  1
  0
  1
@@ -826,15 +828,15 @@
 
 <p>With our priors set and our data at hand, we can perform Bayesian inference.</p>
 
-<p>This is a fairly simple process. We expose one additional coin flip to our model every iteration, such that the first run only sees the first coin flip, while the last iteration sees all the coin flips. Then, we set the <code class="language-plaintext highlighter-rouge">updated_belief</code> variable to an updated version of the original Beta distribution that accounts for the new proportion of heads and tails.</p>
+<p>This is a fairly simple process. We expose one additional coin flip to our model every iteration, such that the first run only sees the first coin flip, while the last iteration sees all the coin flips. Then, we set the <code class="highlighter-rouge">updated_belief</code> variable to an updated version of the original Beta distribution that accounts for the new proportion of heads and tails.</p>
 
-<p>For the mathematically inclined, the <code class="language-plaintext highlighter-rouge">Beta</code> distribution is updated by adding each coin flip to the distribution’s <script type="math/tex">\alpha</script> and <script type="math/tex">\beta</script> parameters, which are initially defined as <script type="math/tex">\alpha = 1, \beta = 1</script>. Over time, with more and more coin flips, <script type="math/tex">\alpha</script> and <script type="math/tex">\beta</script> will be approximately equal to each other as we are equally likely to flip a heads or a tails, and the plot of the beta distribution will become more tightly centered around 0.5.</p>
+<p>For the mathematically inclined, the <code class="highlighter-rouge">Beta</code> distribution is updated by adding each coin flip to the distribution’s \(\alpha\) and \(\beta\) parameters, which are initially defined as \(\alpha = 1, \beta = 1\). Over time, with more and more coin flips, \(\alpha\) and \(\beta\) will be approximately equal to each other as we are equally likely to flip a heads or a tails, and the plot of the beta distribution will become more tightly centered around 0.5.</p>
 
-<p>This works because mean of the <code class="language-plaintext highlighter-rouge">Beta</code> distribution is defined as the following:</p>
+<p>This works because mean of the <code class="highlighter-rouge">Beta</code> distribution is defined as the following:</p>
 
 <p>$$ \text{E}[\text{Beta}] = \dfrac{\alpha}{\alpha+\beta} $$</p>
 
-<p>Which is 0.5 when <script type="math/tex">\alpha = \beta</script>, as we expect for a large enough number of coin flips. As we increase the number of samples, our variance will also decrease, such that the distribution will reflect less uncertainty about the probability of receiving a heads. The definition of the variance for the <code class="language-plaintext highlighter-rouge">Beta</code> distribution is the following:</p>
+<p>Which is 0.5 when \(\alpha = \beta\), as we expect for a large enough number of coin flips. As we increase the number of samples, our variance will also decrease, such that the distribution will reflect less uncertainty about the probability of receiving a heads. The definition of the variance for the <code class="highlighter-rouge">Beta</code> distribution is the following:</p>
 
 <p>$$ \text{var}[\text{Beta}] = \dfrac{\alpha\beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} $$</p>
 
@@ -866,7 +868,7 @@
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
 │   fn = /home/cameron/code/TuringTutorials/tmp.gif
 └ @ Plots /home/cameron/.julia/packages/Plots/cc8wh/src/animation.jl:98
 </code></pre></div></div>
@@ -877,9 +879,9 @@
 
 <h3 id="coin-flipping-with-turing">Coin Flipping With Turing</h3>
 
-<p>In the previous example, we used the fact that our prior distribution is a <a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a>. Note that a closed-form expression (the <code class="language-plaintext highlighter-rouge">updated_belief</code> expression) for the posterior is not accessible in general and usually does not exist for more interesting models.</p>
+<p>In the previous example, we used the fact that our prior distribution is a <a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a>. Note that a closed-form expression (the <code class="highlighter-rouge">updated_belief</code> expression) for the posterior is not accessible in general and usually does not exist for more interesting models.</p>
 
-<p>We are now going to move away from the closed-form expression above and specify the same model using <strong>Turing</strong>. To do so, we will first need to import <code class="language-plaintext highlighter-rouge">Turing</code>, <code class="language-plaintext highlighter-rouge">MCMCChains</code>, <code class="language-plaintext highlighter-rouge">Distributions</code>, and <code class="language-plaintext highlighter-rouge">StatPlots</code>. <code class="language-plaintext highlighter-rouge">MCMCChains</code> is a library built by the Turing team to help summarize Markov Chain Monte Carlo (MCMC) simulations, as well as a variety of utility functions for diagnostics and visualizations.</p>
+<p>We are now going to move away from the closed-form expression above and specify the same model using <strong>Turing</strong>. To do so, we will first need to import <code class="highlighter-rouge">Turing</code>, <code class="highlighter-rouge">MCMCChains</code>, <code class="highlighter-rouge">Distributions</code>, and <code class="highlighter-rouge">StatPlots</code>. <code class="highlighter-rouge">MCMCChains</code> is a library built by the Turing team to help summarize Markov Chain Monte Carlo (MCMC) simulations, as well as a variety of utility functions for diagnostics and visualizations.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Load Turing and MCMCChains.</span>
 <span class="k">using</span> <span class="n">Turing</span><span class="x">,</span> <span class="n">MCMCChains</span>
@@ -918,7 +920,7 @@
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">coinflip</span><span class="x">(</span><span class="n">data</span><span class="x">),</span> <span class="n">HMC</span><span class="x">(</span><span class="n">ϵ</span><span class="x">,</span> <span class="n">τ</span><span class="x">),</span> <span class="n">iterations</span><span class="x">,</span> <span class="n">progress</span><span class="o">=</span><span class="nb">false</span><span class="x">);</span>
 </code></pre></div></div>
 
-<p>After finishing the sampling process, we can visualize the posterior distribution approximated using Turing against the posterior distribution in closed-form. We can extract the chain data from the sampler using the <code class="language-plaintext highlighter-rouge">Chains(chain[:p])</code> function, exported from the <code class="language-plaintext highlighter-rouge">MCMCChain</code> module. <code class="language-plaintext highlighter-rouge">Chains(chain[:p])</code> creates an instance of the <code class="language-plaintext highlighter-rouge">Chain</code> type which summarizes the MCMC simulation — the <code class="language-plaintext highlighter-rouge">MCMCChain</code> module supports numerous tools for plotting, summarizing, and describing variables of type <code class="language-plaintext highlighter-rouge">Chain</code>.</p>
+<p>After finishing the sampling process, we can visualize the posterior distribution approximated using Turing against the posterior distribution in closed-form. We can extract the chain data from the sampler using the <code class="highlighter-rouge">Chains(chain[:p])</code> function, exported from the <code class="highlighter-rouge">MCMCChain</code> module. <code class="highlighter-rouge">Chains(chain[:p])</code> creates an instance of the <code class="highlighter-rouge">Chain</code> type which summarizes the MCMC simulation — the <code class="highlighter-rouge">MCMCChain</code> module supports numerous tools for plotting, summarizing, and describing variables of type <code class="highlighter-rouge">Chain</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Construct summary of the sampling process for the parameter p, i.e. the probability of heads in a coin.</span>
 <span class="n">p_summary</span> <span class="o">=</span> <span class="n">chain</span><span class="x">[</span><span class="o">:</span><span class="n">p</span><span class="x">]</span>

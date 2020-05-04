@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -769,13 +771,13 @@
 
 <h1 id="using-dynamichmc">Using DynamicHMC</h1>
 
-<p>Turing supports the use of <a href="https://github.com/tpapp/DynamicHMC.jl">DynamicHMC</a> as a sampler through the <code class="language-plaintext highlighter-rouge">DynamicNUTS</code> function.</p>
+<p>Turing supports the use of <a href="https://github.com/tpapp/DynamicHMC.jl">DynamicHMC</a> as a sampler through the <code class="highlighter-rouge">DynamicNUTS</code> function.</p>
 
-<p><code class="language-plaintext highlighter-rouge">DynamicNUTS</code> is not appropriate for use in compositional inference. If you intend to use <a href="/dev/docs/library/#Turing.Inference.Gibbs">Gibbs</a> sampling, you must use Turing’s native <code class="language-plaintext highlighter-rouge">NUTS</code> function.</p>
+<p><code class="highlighter-rouge">DynamicNUTS</code> is not appropriate for use in compositional inference. If you intend to use <a href="/dev/docs/library/#Turing.Inference.Gibbs">Gibbs</a> sampling, you must use Turing’s native <code class="highlighter-rouge">NUTS</code> function.</p>
 
-<p>To use the <code class="language-plaintext highlighter-rouge">DynamicNUTS</code> function, you must import the <code class="language-plaintext highlighter-rouge">DynamicHMC</code> package as well as Turing. Turing does not formally require <code class="language-plaintext highlighter-rouge">DynamicHMC</code> but will include additional functionality if both packages are present.</p>
+<p>To use the <code class="highlighter-rouge">DynamicNUTS</code> function, you must import the <code class="highlighter-rouge">DynamicHMC</code> package as well as Turing. Turing does not formally require <code class="highlighter-rouge">DynamicHMC</code> but will include additional functionality if both packages are present.</p>
 
-<p>Here is a brief example of how to apply <code class="language-plaintext highlighter-rouge">DynamicNUTS</code>:</p>
+<p>Here is a brief example of how to apply <code class="highlighter-rouge">DynamicNUTS</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import Turing and DynamicHMC.</span>
 <span class="k">using</span> <span class="n">LogDensityProblems</span><span class="x">,</span> <span class="n">DynamicHMC</span><span class="x">,</span> <span class="n">Turing</span>

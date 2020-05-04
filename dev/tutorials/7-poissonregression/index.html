@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -788,7 +790,7 @@
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 
 
@@ -841,7 +843,7 @@ false
 
 <p><img src="7_PoissonRegression_files/7_PoissonRegression_5_0.svg" alt="svg" /></p>
 
-<p>We must convert our <code class="language-plaintext highlighter-rouge">DataFrame</code> data into the <code class="language-plaintext highlighter-rouge">Matrix</code> form as the manipulations that we are about are designed to work with <code class="language-plaintext highlighter-rouge">Matrix</code> data. We also separate the features from the labels which will be later used by the Turing sampler to generate samples from the posterior.</p>
+<p>We must convert our <code class="highlighter-rouge">DataFrame</code> data into the <code class="highlighter-rouge">Matrix</code> form as the manipulations that we are about are designed to work with <code class="highlighter-rouge">Matrix</code> data. We also separate the features from the labels which will be later used by the Turing sampler to generate samples from the posterior.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert the DataFrame object to matrices.</span>
 <span class="n">data</span> <span class="o">=</span> <span class="kt">Matrix</span><span class="x">(</span><span class="n">df</span><span class="x">[</span><span class="o">:</span><span class="x">,[</span><span class="o">:</span><span class="n">alcohol_taken</span><span class="x">,</span> <span class="o">:</span><span class="n">nomeds_taken</span><span class="x">,</span> <span class="o">:</span><span class="n">product_alcohol_meds</span><span class="x">]])</span>
@@ -849,7 +851,7 @@ false
 <span class="n">data</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>400×3 Array{Float64,2}:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>400×3 Array{Float64,2}:
  0.0  0.0  0.0
  0.0  0.0  0.0
  0.0  0.0  0.0
@@ -884,7 +886,7 @@ false
 <span class="n">data</span> <span class="o">=</span> <span class="x">(</span><span class="n">data</span> <span class="o">.-</span> <span class="n">mean</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="x">))</span> <span class="o">./</span> <span class="n">std</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>400×3 Array{Float64,2}:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>400×3 Array{Float64,2}:
  -0.998749  -0.998749  -0.576628
  -0.998749  -0.998749  -0.576628
  -0.998749  -0.998749  -0.576628
@@ -914,26 +916,26 @@ false
 </code></pre></div></div>
 
 <h1 id="declaring-the-model-poisson-regression">Declaring the Model: Poisson Regression</h1>
-<p>Our model, <code class="language-plaintext highlighter-rouge">poisson_regression</code> takes four arguments:</p>
+<p>Our model, <code class="highlighter-rouge">poisson_regression</code> takes four arguments:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">x</code> is our set of independent variables;</li>
-  <li><code class="language-plaintext highlighter-rouge">y</code> is the element we want to predict;</li>
-  <li><code class="language-plaintext highlighter-rouge">n</code> is the number of observations we have; and</li>
-  <li><code class="language-plaintext highlighter-rouge">σ²</code> is the standard deviation we want to assume for our priors.</li>
+  <li><code class="highlighter-rouge">x</code> is our set of independent variables;</li>
+  <li><code class="highlighter-rouge">y</code> is the element we want to predict;</li>
+  <li><code class="highlighter-rouge">n</code> is the number of observations we have; and</li>
+  <li><code class="highlighter-rouge">σ²</code> is the standard deviation we want to assume for our priors.</li>
 </ul>
 
-<p>Within the model, we create four coefficients (<code class="language-plaintext highlighter-rouge">b0</code>, <code class="language-plaintext highlighter-rouge">b1</code>, <code class="language-plaintext highlighter-rouge">b2</code>, and <code class="language-plaintext highlighter-rouge">b3</code>) and assign a prior of normally distributed with means of zero and standard deviations of <code class="language-plaintext highlighter-rouge">σ²</code>. We want to find values of these four coefficients to predict any given <code class="language-plaintext highlighter-rouge">y</code>.</p>
+<p>Within the model, we create four coefficients (<code class="highlighter-rouge">b0</code>, <code class="highlighter-rouge">b1</code>, <code class="highlighter-rouge">b2</code>, and <code class="highlighter-rouge">b3</code>) and assign a prior of normally distributed with means of zero and standard deviations of <code class="highlighter-rouge">σ²</code>. We want to find values of these four coefficients to predict any given <code class="highlighter-rouge">y</code>.</p>
 
 <p>Intuitively, we can think of the coefficients as:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">b1</code> is the coefficient which represents the effect of taking alcohol on the number of sneezes;</li>
-  <li><code class="language-plaintext highlighter-rouge">b2</code> is the coefficient which represents the effect of taking in no medicines on the number of sneezes;</li>
-  <li><code class="language-plaintext highlighter-rouge">b3</code> is the coefficient which represents the effect of interaction between taking alcohol and no medicine on the number of sneezes;</li>
+  <li><code class="highlighter-rouge">b1</code> is the coefficient which represents the effect of taking alcohol on the number of sneezes;</li>
+  <li><code class="highlighter-rouge">b2</code> is the coefficient which represents the effect of taking in no medicines on the number of sneezes;</li>
+  <li><code class="highlighter-rouge">b3</code> is the coefficient which represents the effect of interaction between taking alcohol and no medicine on the number of sneezes;</li>
 </ul>
 
-<p>The <code class="language-plaintext highlighter-rouge">for</code> block creates a variable <code class="language-plaintext highlighter-rouge">theta</code> which is the weighted combination of the input features. We have defined the priors on these weights above. We then observe the likelihood of calculating <code class="language-plaintext highlighter-rouge">theta</code> given the actual label, <code class="language-plaintext highlighter-rouge">y[i]</code>.</p>
+<p>The <code class="highlighter-rouge">for</code> block creates a variable <code class="highlighter-rouge">theta</code> which is the weighted combination of the input features. We have defined the priors on these weights above. We then observe the likelihood of calculating <code class="highlighter-rouge">theta</code> given the actual label, <code class="highlighter-rouge">y[i]</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Bayesian poisson regression (LR)</span>
 <span class="nd">@model</span> <span class="n">poisson_regression</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">,</span> <span class="n">n</span><span class="x">,</span> <span class="n">σ²</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
@@ -949,7 +951,7 @@ false
 </code></pre></div></div>
 
 <h1 id="sampling-from-the-posterior">Sampling from the posterior</h1>
-<p>We use the <code class="language-plaintext highlighter-rouge">NUTS</code> sampler to sample values from the posterior. We run multiple chains using the <code class="language-plaintext highlighter-rouge">mapreduce</code> function to nullify the effect of a problematic chain. We then use the Gelman, Rubin, and Brooks Diagnostic to check the convergence of these multiple chains.</p>
+<p>We use the <code class="highlighter-rouge">NUTS</code> sampler to sample values from the posterior. We run multiple chains using the <code class="highlighter-rouge">mapreduce</code> function to nullify the effect of a problematic chain. We then use the Gelman, Rubin, and Brooks Diagnostic to check the convergence of these multiple chains.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Retrieve the number of observations.</span>
 <span class="n">n</span><span class="x">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">data</span><span class="x">)</span>
@@ -963,7 +965,7 @@ false
     <span class="mi">1</span><span class="o">:</span><span class="n">num_chains</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Warning: The current proposal will be rejected due to numerical error(s).
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Warning: The current proposal will be rejected due to numerical error(s).
 │   isfinite.((θ, r, ℓπ, ℓκ)) = (true, false, false, false)
 └ @ AdvancedHMC /home/cameron/.julia/packages/AdvancedHMC/WJCQA/src/hamiltonian.jl:47
 ┌ Warning: The current proposal will be rejected due to numerical error(s).
@@ -1075,7 +1077,7 @@ false
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gelmandiag</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gelman, Rubin, and Brooks Diagnostic
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gelman, Rubin, and Brooks Diagnostic
   parameters    PSRF   97.5%
   ──────────  ──────  ──────
           b0  1.1861  1.3924
@@ -1086,7 +1088,7 @@ false
 
 <p>From the above diagnostic, we can conclude that the chains have converged because the PSRF values of the coefficients are close to 1.</p>
 
-<p>So, we have obtained the posterior distributions of the parameters. We transform the coefficients and recover theta values by taking the exponent of the meaned values of the coefficients <code class="language-plaintext highlighter-rouge">b0</code>, <code class="language-plaintext highlighter-rouge">b1</code>, <code class="language-plaintext highlighter-rouge">b2</code> and <code class="language-plaintext highlighter-rouge">b3</code>. We take the exponent of the means to get a better comparison of the relative values of the coefficients. We then compare this with the intuitive meaning that was described earlier.</p>
+<p>So, we have obtained the posterior distributions of the parameters. We transform the coefficients and recover theta values by taking the exponent of the meaned values of the coefficients <code class="highlighter-rouge">b0</code>, <code class="highlighter-rouge">b1</code>, <code class="highlighter-rouge">b2</code> and <code class="highlighter-rouge">b3</code>. We take the exponent of the means to get a better comparison of the relative values of the coefficients. We then compare this with the intuitive meaning that was described earlier.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Taking the first chain</span>
 <span class="n">c1</span> <span class="o">=</span> <span class="n">chain</span><span class="x">[</span><span class="o">:</span><span class="x">,</span><span class="o">:</span><span class="x">,</span><span class="mi">1</span><span class="x">]</span>
@@ -1102,7 +1104,7 @@ false
 <span class="n">print</span><span class="x">(</span><span class="s">"The posterior distributions obtained after sampling can be visualised as :</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The exponent of the meaned values of the weights (or coefficients are): 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The exponent of the meaned values of the weights (or coefficients are): 
 b0: 5.116678482496325 
 b1: 1.8791946940293356 
 b2: 2.5245646467859904 
@@ -1118,19 +1120,19 @@ The posterior distributions obtained after sampling can be visualised as :
 <p><img src="7_PoissonRegression_files/7_PoissonRegression_19_0.svg" alt="svg" /></p>
 
 <h1 id="interpreting-the-obtained-mean-values">Interpreting the Obtained Mean Values</h1>
-<p>The exponentiated mean of the coefficient <code class="language-plaintext highlighter-rouge">b1</code> is roughly half of that of <code class="language-plaintext highlighter-rouge">b2</code>. This makes sense because in the data that we generated, the number of sneezes was more sensitive to the medicinal intake as compared to the alcohol consumption. We also get a weaker dependence on the interaction between the alcohol consumption and the medicinal intake as can be seen from the value of <code class="language-plaintext highlighter-rouge">b3</code>.</p>
+<p>The exponentiated mean of the coefficient <code class="highlighter-rouge">b1</code> is roughly half of that of <code class="highlighter-rouge">b2</code>. This makes sense because in the data that we generated, the number of sneezes was more sensitive to the medicinal intake as compared to the alcohol consumption. We also get a weaker dependence on the interaction between the alcohol consumption and the medicinal intake as can be seen from the value of <code class="highlighter-rouge">b3</code>.</p>
 
 <h1 id="removing-the-warmup-samples">Removing the Warmup Samples</h1>
 
 <p>As can be seen from the plots above, the parameters converge to their final distributions after a few iterations. These initial values during the warmup phase increase the standard deviations of the parameters and are not required after we get the desired distributions. Thus, we remove these warmup values and once again view the diagnostics.</p>
 
-<p>To remove these warmup values, we take all values except the first 200. This is because we set the second parameter of the NUTS sampler (which is the number of adaptations) to be equal to 200. <code class="language-plaintext highlighter-rouge">describe(chain)</code> is used to view the standard deviations in the estimates of the parameters. It also gives other useful information such as the means and the quantiles.</p>
+<p>To remove these warmup values, we take all values except the first 200. This is because we set the second parameter of the NUTS sampler (which is the number of adaptations) to be equal to 200. <code class="highlighter-rouge">describe(chain)</code> is used to view the standard deviations in the estimates of the parameters. It also gives other useful information such as the means and the quantiles.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Note the standard deviation before removing the warmup samples</span>
 <span class="n">describe</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
 
 Summary Statistics
   parameters    mean     std  naive_se    mcse      ess   r_hat
@@ -1154,7 +1156,7 @@ Quantiles
 <span class="n">describe</span><span class="x">(</span><span class="n">chains_new</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
 
 Summary Statistics
   parameters    mean     std  naive_se    mcse      ess   r_hat

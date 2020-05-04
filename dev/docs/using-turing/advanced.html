@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -773,7 +775,7 @@
 
 <h2 id="how-to-define-a-customized-distribution">How to Define a Customized Distribution</h2>
 
-<p>Turing.jl supports the use of distributions from the Distributions.jl package. By extension it also supports the use of customized distributions, by defining them as subtypes of <code class="language-plaintext highlighter-rouge">Distribution</code> type of the Distributions.jl package, as well as corresponding functions.</p>
+<p>Turing.jl supports the use of distributions from the Distributions.jl package. By extension it also supports the use of customized distributions, by defining them as subtypes of <code class="highlighter-rouge">Distribution</code> type of the Distributions.jl package, as well as corresponding functions.</p>
 
 <p>Below shows a workflow of how to define a customized distribution, using a flat prior as a simple example.</p>
 
@@ -792,7 +794,7 @@
 
 <h3 id="2-implement-sampling-and-evaluation-of-the-log-pdf">2. Implement Sampling and Evaluation of the log-pdf</h3>
 
-<p>Second, define <code class="language-plaintext highlighter-rouge">rand</code> and <code class="language-plaintext highlighter-rouge">logpdf</code>, which will be used to run the model.</p>
+<p>Second, define <code class="highlighter-rouge">rand</code> and <code class="highlighter-rouge">logpdf</code>, which will be used to run the model.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="o">::</span><span class="kt">AbstractRNG</span><span class="x">,</span> <span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="x">)</span>
 <span class="n">Distributions</span><span class="o">.</span><span class="n">logpdf</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
@@ -802,25 +804,25 @@
 
 <h3 id="3-define-helper-functions">3. Define Helper Functions</h3>
 
-<p>In most cases, it may be required to define helper functions, such as the <code class="language-plaintext highlighter-rouge">minimum</code>, <code class="language-plaintext highlighter-rouge">maximum</code>, <code class="language-plaintext highlighter-rouge">rand</code>, and <code class="language-plaintext highlighter-rouge">logpdf</code> functions, among others.</p>
+<p>In most cases, it may be required to define helper functions, such as the <code class="highlighter-rouge">minimum</code>, <code class="highlighter-rouge">maximum</code>, <code class="highlighter-rouge">rand</code>, and <code class="highlighter-rouge">logpdf</code> functions, among others.</p>
 
 <p><a id=".1-Domain-Transformation-1"></a></p>
 
 <h4 id="31-domain-transformation">3.1 Domain Transformation</h4>
 
-<p>Some helper functions are necessary for domain transformation. For univariate distributions, the necessary ones to implement are <code class="language-plaintext highlighter-rouge">minimum</code> and <code class="language-plaintext highlighter-rouge">maximum</code>.</p>
+<p>Some helper functions are necessary for domain transformation. For univariate distributions, the necessary ones to implement are <code class="highlighter-rouge">minimum</code> and <code class="highlighter-rouge">maximum</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">minimum</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="o">-</span><span class="nb">Inf</span>
 <span class="n">Distributions</span><span class="o">.</span><span class="n">maximum</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="o">+</span><span class="nb">Inf</span>
 </code></pre></div></div>
 
-<p>Functions for domain transformation which may be required by multivariate or matrix-variate distributions are <code class="language-plaintext highlighter-rouge">size</code>, <code class="language-plaintext highlighter-rouge">link</code> and <code class="language-plaintext highlighter-rouge">invlink</code>. Please see Turing’s <a href="https://github.com/TuringLang/Turing.jl/blob/master/src/utilities/transform.jl"><code class="language-plaintext highlighter-rouge">transform.jl</code></a> for examples.</p>
+<p>Functions for domain transformation which may be required by multivariate or matrix-variate distributions are <code class="highlighter-rouge">size</code>, <code class="highlighter-rouge">link</code> and <code class="highlighter-rouge">invlink</code>. Please see Turing’s <a href="https://github.com/TuringLang/Turing.jl/blob/master/src/utilities/transform.jl"><code class="highlighter-rouge">transform.jl</code></a> for examples.</p>
 
 <p><a id=".2-Vectorization-Support-1"></a></p>
 
 <h4 id="32-vectorization-support">3.2 Vectorization Support</h4>
 
-<p>The vectorization syntax follows <code class="language-plaintext highlighter-rouge">rv ~ [distribution]</code>, which requires <code class="language-plaintext highlighter-rouge">rand</code> and <code class="language-plaintext highlighter-rouge">logpdf</code> to be called on multiple data points at once. An appropriate implementation for <code class="language-plaintext highlighter-rouge">Flat</code> is shown below.</p>
+<p>The vectorization syntax follows <code class="highlighter-rouge">rv ~ [distribution]</code>, which requires <code class="highlighter-rouge">rand</code> and <code class="highlighter-rouge">logpdf</code> to be called on multiple data points at once. An appropriate implementation for <code class="highlighter-rouge">Flat</code> is shown below.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">logpdf</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">})</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
 </code></pre></div></div>
@@ -829,7 +831,7 @@
 
 <h2 id="model-internals">Model Internals</h2>
 
-<p>The <code class="language-plaintext highlighter-rouge">@model</code> macro accepts a function definition and generates a <code class="language-plaintext highlighter-rouge">Turing.Model</code> struct for use by the sampler. Models can be constructed by hand without the use of a macro. Taking the <code class="language-plaintext highlighter-rouge">gdemo</code> model as an example, the two code sections below (macro and macro-free) are equivalent.</p>
+<p>The <code class="highlighter-rouge">@model</code> macro accepts a function definition and generates a <code class="highlighter-rouge">Turing.Model</code> struct for use by the sampler. Models can be constructed by hand without the use of a macro. Taking the <code class="highlighter-rouge">gdemo</code> model as an example, the two code sections below (macro and macro-free) are equivalent.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
 
@@ -899,7 +901,7 @@
 
 <h2 id="task-copying">Task Copying</h2>
 
-<p>Turing <a href="https://github.com/JuliaLang/julia/issues/4085">copies</a> Julia tasks to deliver efficient inference algorithms, but it also provides alternative slower implementation as a fallback. Task copying is enabled by default. Task copying requires we use the <code class="language-plaintext highlighter-rouge">CTask</code> facility which is provided by <a href="https://github.com/TuringLang/Libtask.jl">Libtask</a> to create tasks.</p>
+<p>Turing <a href="https://github.com/JuliaLang/julia/issues/4085">copies</a> Julia tasks to deliver efficient inference algorithms, but it also provides alternative slower implementation as a fallback. Task copying is enabled by default. Task copying requires we use the <code class="highlighter-rouge">CTask</code> facility which is provided by <a href="https://github.com/TuringLang/Libtask.jl">Libtask</a> to create tasks.</p>
 
 <p><a id="Maximum-a-Posteriori-Estimation-1"></a></p>
 

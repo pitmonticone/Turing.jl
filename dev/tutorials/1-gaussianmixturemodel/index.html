@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -769,7 +771,7 @@
 
 <p>The following tutorial illustrates the use <em>Turing</em> for clustering data using a Bayesian mixture model. The aim of this task is to infer a latent grouping (hidden structure) from unlabelled data.</p>
 
-<p>More specifically, we are interested in discovering the grouping illustrated in figure below. This example consists of 2-D data points, i.e. <script type="math/tex">\boldsymbol{x} = \{x_i\}_{i=1}^N \,, x_i \in \mathcal{R}^2</script>, which are distributed according to Gaussian distributions. For simplicity, we use isotropic Gaussian distributions but this assumption can easily be relaxed by introducing additional parameters.</p>
+<p>More specifically, we are interested in discovering the grouping illustrated in figure below. This example consists of 2-D data points, i.e. \(\boldsymbol{x} = \{x_i\}_{i=1}^N \,, x_i \in \mathcal{R}^2\), which are distributed according to Gaussian distributions. For simplicity, we use isotropic Gaussian distributions but this assumption can easily be relaxed by introducing additional parameters.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Distributions</span><span class="x">,</span> <span class="n">StatsPlots</span><span class="x">,</span> <span class="n">Random</span>
 
@@ -795,12 +797,12 @@
 
 <p>To cluster the data points shown above, we use a model that consists of two mixture components (clusters) and assigns each datum to one of the components. The assignment thereof determines the distribution that the data point is generated from.</p>
 
-<p>In particular, in a Bayesian Gaussian mixture model with <script type="math/tex">1 \leq k \leq K</script> components for 1-D data each data point <script type="math/tex">x_i</script> with <script type="math/tex">1 \leq i \leq N</script> is generated according to the following generative process.
+<p>In particular, in a Bayesian Gaussian mixture model with \(1 \leq k \leq K\) components for 1-D data each data point \(x_i\) with \(1 \leq i \leq N\) is generated according to the following generative process.
 First we draw the parameters for each cluster, i.e. in our example we draw location of the distributions from a Normal:
 $$
 \mu_k \sim Normal() \, , \;  \forall k <br />
 $$
-and then draw mixing weight for the <script type="math/tex">K</script> clusters from a Dirichlet distribution, i.e.
+and then draw mixing weight for the \(K\) clusters from a Dirichlet distribution, i.e.
 $$
     w \sim Dirichlet(K, \alpha) \, . <br />
 $$
@@ -818,7 +820,7 @@ $$</p>
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 
 
@@ -859,7 +861,7 @@ false
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##GaussianMixtureModel#361 (generic function with 2 methods)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##GaussianMixtureModel#361 (generic function with 2 methods)
 </code></pre></div></div>
 
 <p>After having specified the model in Turing, we can construct the model function and run a MCMC simulation to obtain assignments of the data points.</p>
@@ -869,7 +871,7 @@ false
 
 <p>To draw observations from the posterior distribution, we use a <a href="https://www.stats.ox.ac.uk/~doucet/andrieu_doucet_holenstein_PMCMC.pdf">particle Gibbs</a> sampler to draw the discrete assignment parameters as well as a Hamiltonion Monte Carlo sampler for continous parameters.</p>
 
-<p>Note that we use a <code class="language-plaintext highlighter-rouge">Gibbs</code> sampler to combine both samplers for Bayesian inference in our model. We are also calling <code class="language-plaintext highlighter-rouge">mapreduce</code> to generate multiple chains, particularly so we test for convergence. The <code class="language-plaintext highlighter-rouge">chainscat</code> function simply adds multiple chains together.</p>
+<p>Note that we use a <code class="highlighter-rouge">Gibbs</code> sampler to combine both samplers for Bayesian inference in our model. We are also calling <code class="highlighter-rouge">mapreduce</code> to generate multiple chains, particularly so we test for convergence. The <code class="highlighter-rouge">chainscat</code> function simply adds multiple chains together.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gmm_sampler</span> <span class="o">=</span> <span class="n">Gibbs</span><span class="x">(</span><span class="n">PG</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="o">:</span><span class="n">k</span><span class="x">),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.05</span><span class="x">,</span> <span class="mi">10</span><span class="x">,</span> <span class="o">:</span><span class="n">μ1</span><span class="x">,</span> <span class="o">:</span><span class="n">μ2</span><span class="x">))</span>
 <span class="n">tchain</span> <span class="o">=</span> <span class="n">mapreduce</span><span class="x">(</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="n">sample</span><span class="x">(</span><span class="n">gmm_model</span><span class="x">,</span> <span class="n">gmm_sampler</span><span class="x">,</span> <span class="mi">100</span><span class="x">),</span> <span class="n">chainscat</span><span class="x">,</span> <span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="x">);</span>
@@ -906,7 +908,7 @@ false
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>predict (generic function with 1 method)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>predict (generic function with 1 method)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">contour</span><span class="x">(</span><span class="n">range</span><span class="x">(</span><span class="o">-</span><span class="mi">5</span><span class="x">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="mi">3</span><span class="x">),</span> <span class="n">range</span><span class="x">(</span><span class="o">-</span><span class="mi">6</span><span class="x">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="mi">2</span><span class="x">),</span> 

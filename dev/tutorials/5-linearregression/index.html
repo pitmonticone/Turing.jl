@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -790,11 +792,11 @@
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 </code></pre></div></div>
 
-<p>We will use the <code class="language-plaintext highlighter-rouge">mtcars</code> dataset from the <a href="https://github.com/johnmyleswhite/RDatasets.jl">RDatasets</a> package. <code class="language-plaintext highlighter-rouge">mtcars</code> contains a variety of statistics on different car models, including their miles per gallon, number of cylinders, and horsepower, among others.</p>
+<p>We will use the <code class="highlighter-rouge">mtcars</code> dataset from the <a href="https://github.com/johnmyleswhite/RDatasets.jl">RDatasets</a> package. <code class="highlighter-rouge">mtcars</code> contains a variety of statistics on different car models, including their miles per gallon, number of cylinders, and horsepower, among others.</p>
 
 <p>We want to know if we can construct a Bayesian linear regression model to predict the miles per gallon of a car, given the other statistics it has. Lets take a look at the data we have.</p>
 
@@ -810,12 +812,12 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">size</span><span class="x">(</span><span class="n">data</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(32, 12)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(32, 12)
 </code></pre></div></div>
 
-<p>The next step is to get our data ready for testing. We’ll split the <code class="language-plaintext highlighter-rouge">mtcars</code> dataset into two subsets, one for training our model and one for evaluating our model. Then, we separate the labels we want to learn (<code class="language-plaintext highlighter-rouge">MPG</code>, in this case) and standardize the datasets by subtracting each column’s means and dividing by the standard deviation of that column.</p>
+<p>The next step is to get our data ready for testing. We’ll split the <code class="highlighter-rouge">mtcars</code> dataset into two subsets, one for training our model and one for evaluating our model. Then, we separate the labels we want to learn (<code class="highlighter-rouge">MPG</code>, in this case) and standardize the datasets by subtracting each column’s means and dividing by the standard deviation of that column.</p>
 
-<p>The resulting data is not very familiar looking, but this standardization process helps the sampler converge far easier. We also create a function called <code class="language-plaintext highlighter-rouge">unstandardize</code>, which returns the standardized values to their original form. We will use this function later on when we make predictions.</p>
+<p>The resulting data is not very familiar looking, but this standardization process helps the sampler converge far easier. We also create a function called <code class="highlighter-rouge">unstandardize</code>, which returns the standardized values to their original form. We will use this function later on when we make predictions.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Function to split samples.</span>
 <span class="k">function</span><span class="nf"> split_data</span><span class="x">(</span><span class="n">df</span><span class="x">,</span> <span class="n">at</span> <span class="o">=</span> <span class="mf">0.70</span><span class="x">)</span>
@@ -869,15 +871,15 @@
 MPG_i = \alpha + \boldsymbol{\beta}^T\boldsymbol{X_i}
 $$</p>
 
-<p>where <script type="math/tex">\boldsymbol{\beta}</script> is a vector of coefficients and <script type="math/tex">\boldsymbol{X}</script> is a vector of inputs for observation <script type="math/tex">i</script>. The Bayesian model we are more concerned with is the following:</p>
+<p>where \(\boldsymbol{\beta}\) is a vector of coefficients and \(\boldsymbol{X}\) is a vector of inputs for observation \(i\). The Bayesian model we are more concerned with is the following:</p>
 
 <p>$$
 MPG_i \sim \mathcal{N}(\alpha + \boldsymbol{\beta}^T\boldsymbol{X_i}, \sigma^2)
 $$</p>
 
-<p>where <script type="math/tex">\alpha</script> is an intercept term common to all observations, <script type="math/tex">\boldsymbol{\beta}</script> is a coefficient vector, <script type="math/tex">\boldsymbol{X_i}</script> is the observed data for car <script type="math/tex">i</script>, and <script type="math/tex">\sigma^2</script> is a common variance term.</p>
+<p>where \(\alpha\) is an intercept term common to all observations, \(\boldsymbol{\beta}\) is a coefficient vector, \(\boldsymbol{X_i}\) is the observed data for car \(i\), and \(\sigma^2\) is a common variance term.</p>
 
-<p>For <script type="math/tex">\sigma^2</script>, we assign a prior of <code class="language-plaintext highlighter-rouge">TruncatedNormal(0,100,0,Inf)</code>. This is consistent with <a href="http://www.stat.columbia.edu/~gelman/research/published/taumain.pdf">Andrew Gelman’s recommendations</a> on noninformative priors for variance. The intercept term (<script type="math/tex">\alpha</script>) is assumed to be normally distributed with a mean of zero and a variance of three. This represents our assumptions that miles per gallon can be explained mostly by our assorted variables, but a high variance term indicates our uncertainty about that. Each coefficient is assumed to be normally distributed with a mean of zero and a variance of 10. We do not know that our coefficients are different from zero, and we don’t know which ones are likely to be the most important, so the variance term is quite high. The syntax <code class="language-plaintext highlighter-rouge">::Type{T}=Vector{Float64}</code> allows us to maintain type stability in our model – for more information, please review the <a href="https://turing.ml/dev/docs/using-turing/performancetips#make-your-model-type-stable">performance tips</a>. Lastly, each observation <script type="math/tex">y_i</script> is distributed according to the calculated <code class="language-plaintext highlighter-rouge">mu</code> term given by <script type="math/tex">\alpha + \boldsymbol{\beta}^T\boldsymbol{X_i}</script>.</p>
+<p>For \(\sigma^2\), we assign a prior of <code class="highlighter-rouge">TruncatedNormal(0,100,0,Inf)</code>. This is consistent with <a href="http://www.stat.columbia.edu/~gelman/research/published/taumain.pdf">Andrew Gelman’s recommendations</a> on noninformative priors for variance. The intercept term (\(\alpha\)) is assumed to be normally distributed with a mean of zero and a variance of three. This represents our assumptions that miles per gallon can be explained mostly by our assorted variables, but a high variance term indicates our uncertainty about that. Each coefficient is assumed to be normally distributed with a mean of zero and a variance of 10. We do not know that our coefficients are different from zero, and we don’t know which ones are likely to be the most important, so the variance term is quite high. The syntax <code class="highlighter-rouge">::Type{T}=Vector{Float64}</code> allows us to maintain type stability in our model – for more information, please review the <a href="https://turing.ml/dev/docs/using-turing/performancetips#make-your-model-type-stable">performance tips</a>. Lastly, each observation \(y_i\) is distributed according to the calculated <code class="highlighter-rouge">mu</code> term given by \(\alpha + \boldsymbol{\beta}^T\boldsymbol{X_i}\).</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Bayesian linear regression.</span>
 <span class="nd">@model</span> <span class="n">linear_regression</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">,</span> <span class="n">n_obs</span><span class="x">,</span> <span class="n">n_vars</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span><span class="o">=</span><span class="kt">Vector</span><span class="x">{</span><span class="kt">Float64</span><span class="x">})</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="k">begin</span>
@@ -907,24 +909,24 @@ $$</p>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(</span><span class="mf">0.65</span><span class="x">),</span> <span class="mi">3000</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
 │   ϵ = 0.8
 └ @ Turing.Inference /home/cameron/.julia/packages/Turing/cReBm/src/inference/hmc.jl:556
 </code></pre></div></div>
 
-<p>As a visual check to confirm that our coefficients have converged, we show the densities and trace plots for our parameters using the <code class="language-plaintext highlighter-rouge">plot</code> functionality.</p>
+<p>As a visual check to confirm that our coefficients have converged, we show the densities and trace plots for our parameters using the <code class="highlighter-rouge">plot</code> functionality.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="5_LinearRegression_files/5_LinearRegression_12_0.svg" alt="svg" /></p>
 
-<p>It looks like each of our parameters has converged. We can check our numerical esimates using <code class="language-plaintext highlighter-rouge">describe(chain)</code>, as below.</p>
+<p>It looks like each of our parameters has converged. We can check our numerical esimates using <code class="highlighter-rouge">describe(chain)</code>, as below.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">describe</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
 
 Summary Statistics
         parameters     mean     std  naive_se    mcse        ess   r_hat
@@ -974,7 +976,7 @@ Quantiles
 <span class="n">test_cut</span><span class="o">.</span><span class="n">OLSPrediction</span> <span class="o">=</span> <span class="n">unstandardize</span><span class="x">(</span><span class="n">GLM</span><span class="o">.</span><span class="n">predict</span><span class="x">(</span><span class="n">ols</span><span class="x">,</span> <span class="n">test_cut</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling GLM [38e38edf-8417-5370-95a0-9cbb8c7f171a]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling GLM [38e38edf-8417-5370-95a0-9cbb8c7f171a]
 └ @ Base loading.jl:1260
 </code></pre></div></div>
 
@@ -989,7 +991,7 @@ Quantiles
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prediction (generic function with 1 method)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prediction (generic function with 1 method)
 </code></pre></div></div>
 
 <p>When we make predictions, we unstandardize them so they’re more understandable. We also add them to the original dataframes so they can be placed in context.</p>
@@ -1014,7 +1016,7 @@ Quantiles
 \text{SSE} = \sum{(y_i - \hat{y_i})^2}
 $$</p>
 
-<p>where <script type="math/tex">y_i</script> is the actual value (true MPG) and <script type="math/tex">\hat{y_i}</script> is the predicted value using either OLS or Bayesian linear regression. A lower SSE indicates a closer fit to the data.</p>
+<p>where \(y_i\) is the actual value (true MPG) and \(\hat{y_i}\) is the predicted value using either OLS or Bayesian linear regression. A lower SSE indicates a closer fit to the data.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bayes_loss1</span> <span class="o">=</span> <span class="n">sum</span><span class="x">((</span><span class="n">train_cut</span><span class="o">.</span><span class="n">BayesPredictions</span> <span class="o">-</span> <span class="n">train_cut</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span><span class="o">.^</span><span class="mi">2</span><span class="x">)</span>
 <span class="n">ols_loss1</span> <span class="o">=</span> <span class="n">sum</span><span class="x">((</span><span class="n">train_cut</span><span class="o">.</span><span class="n">OLSPrediction</span> <span class="o">-</span> <span class="n">train_cut</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span><span class="o">.^</span><span class="mi">2</span><span class="x">)</span>
@@ -1030,7 +1032,7 @@ Test set:
     OLS loss: </span><span class="si">$$</span><span class="s">ols_loss2"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
     Bayes loss: 67.61488347514008
     OLS loss: 67.56037474764642
 Test set: 

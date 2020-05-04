@@ -177,9 +177,9 @@ version = "0.2.0"
 
 [[DynamicPPL]]
 deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools", "Random", "ZygoteRules"]
-git-tree-sha1 = "6882d5ae78d8851f70ee256122f21ea88d7ab792"
+git-tree-sha1 = "538a227666be0ef7e9aaaef302789de40813277b"
 uuid = "366bfd00-2699-11ea-058f-f148b4cae6d8"
-version = "0.7.1"
+version = "0.7.2"
 
 [[EllipsisNotation]]
 git-tree-sha1 = "65dad386e877850e6fce4fc77f60fe75a468ce9d"

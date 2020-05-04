@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -874,7 +876,7 @@
 
 <h3 id="gibbs">Gibbs</h3>
 
-<p>Gibbs sampling tends to exhibit a “jittery” trajectory. The example below combines <code class="language-plaintext highlighter-rouge">HMC</code> and <code class="language-plaintext highlighter-rouge">PG</code> sampling to traverse the posterior.</p>
+<p>Gibbs sampling tends to exhibit a “jittery” trajectory. The example below combines <code class="highlighter-rouge">HMC</code> and <code class="highlighter-rouge">PG</code> sampling to traverse the posterior.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">Gibbs</span><span class="x">(</span><span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">,</span> <span class="o">:</span><span class="n">s</span><span class="x">),</span> <span class="n">PG</span><span class="x">(</span><span class="mi">20</span><span class="x">,</span> <span class="o">:</span><span class="n">m</span><span class="x">)),</span> <span class="mi">1000</span><span class="x">)</span>
 <span class="n">plot_sampler</span><span class="x">(</span><span class="n">c</span><span class="x">)</span>
@@ -886,7 +888,7 @@
 
 <h3 id="hmc">HMC</h3>
 
-<p>Hamiltonian Monte Carlo (HMC) sampling is a typical sampler to use, as it tends to be fairly good at converging in a efficient manner. It can often be tricky to set the correct parameters for this sampler however, and the <code class="language-plaintext highlighter-rouge">NUTS</code> sampler is often easier to run if you don’t want to spend too much time fiddling with step size and and the number of steps to take. Note however that <code class="language-plaintext highlighter-rouge">HMC</code> does not explore the positive values μ very well, likely due to the leapfrop and step size parameter settings.</p>
+<p>Hamiltonian Monte Carlo (HMC) sampling is a typical sampler to use, as it tends to be fairly good at converging in a efficient manner. It can often be tricky to set the correct parameters for this sampler however, and the <code class="highlighter-rouge">NUTS</code> sampler is often easier to run if you don’t want to spend too much time fiddling with step size and and the number of steps to take. Note however that <code class="highlighter-rouge">HMC</code> does not explore the positive values μ very well, likely due to the leapfrop and step size parameter settings.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 <span class="n">plot_sampler</span><span class="x">(</span><span class="n">c</span><span class="x">)</span>

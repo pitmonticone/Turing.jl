@@ -39,6 +39,8 @@
 
     
 
+    
+
   </head>
 
   <body dir="ltr" data-md-color-primary="red" data-md-color-accent="red">
@@ -777,11 +779,11 @@
 
 <h3 id="introduction">Introduction</h3>
 
-<p>A probabilistic program is Julia code wrapped in a <code class="language-plaintext highlighter-rouge">@model</code> macro. It can use arbitrary Julia code, but to ensure correctness of inference it should not have external effects or modify global state. Stack-allocated variables are safe, but mutable heap-allocated objects may lead to subtle bugs when using task copying. To help avoid those we provide a Turing-safe datatype <code class="language-plaintext highlighter-rouge">TArray</code> that can be used to create mutable arrays in Turing programs.</p>
+<p>A probabilistic program is Julia code wrapped in a <code class="highlighter-rouge">@model</code> macro. It can use arbitrary Julia code, but to ensure correctness of inference it should not have external effects or modify global state. Stack-allocated variables are safe, but mutable heap-allocated objects may lead to subtle bugs when using task copying. To help avoid those we provide a Turing-safe datatype <code class="highlighter-rouge">TArray</code> that can be used to create mutable arrays in Turing programs.</p>
 
-<p>To specify distributions of random variables, Turing programs should use the <code class="language-plaintext highlighter-rouge">~</code> notation:</p>
+<p>To specify distributions of random variables, Turing programs should use the <code class="highlighter-rouge">~</code> notation:</p>
 
-<p><code class="language-plaintext highlighter-rouge">x ~ distr</code> where <code class="language-plaintext highlighter-rouge">x</code> is a symbol and <code class="language-plaintext highlighter-rouge">distr</code> is a distribution. If <code class="language-plaintext highlighter-rouge">x</code> is undefined in the model function, inside the probabilistic program, this puts a random variable named <code class="language-plaintext highlighter-rouge">x</code>, distributed according to <code class="language-plaintext highlighter-rouge">distr</code>, in the current scope. <code class="language-plaintext highlighter-rouge">distr</code> can be a value of any type that implements <code class="language-plaintext highlighter-rouge">rand(distr)</code>, which samples a value from the distribution <code class="language-plaintext highlighter-rouge">distr</code>. If <code class="language-plaintext highlighter-rouge">x</code> is defined, this is used for conditioning in a style similar to <a href="https://probprog.github.io/anglican/index.html">Anglican</a> (another PPL). In this case, <code class="language-plaintext highlighter-rouge">x</code> is an observed value, assumed to have been drawn from the distribution <code class="language-plaintext highlighter-rouge">distr</code>. The likelihood is computed using <code class="language-plaintext highlighter-rouge">logpdf(distr,y)</code>. The observe statements should be arranged so that every possible run traverses all of them in exactly the same order. This is equivalent to demanding that they are not placed inside stochastic control flow.</p>
+<p><code class="highlighter-rouge">x ~ distr</code> where <code class="highlighter-rouge">x</code> is a symbol and <code class="highlighter-rouge">distr</code> is a distribution. If <code class="highlighter-rouge">x</code> is undefined in the model function, inside the probabilistic program, this puts a random variable named <code class="highlighter-rouge">x</code>, distributed according to <code class="highlighter-rouge">distr</code>, in the current scope. <code class="highlighter-rouge">distr</code> can be a value of any type that implements <code class="highlighter-rouge">rand(distr)</code>, which samples a value from the distribution <code class="highlighter-rouge">distr</code>. If <code class="highlighter-rouge">x</code> is defined, this is used for conditioning in a style similar to <a href="https://probprog.github.io/anglican/index.html">Anglican</a> (another PPL). In this case, <code class="highlighter-rouge">x</code> is an observed value, assumed to have been drawn from the distribution <code class="highlighter-rouge">distr</code>. The likelihood is computed using <code class="highlighter-rouge">logpdf(distr,y)</code>. The observe statements should be arranged so that every possible run traverses all of them in exactly the same order. This is equivalent to demanding that they are not placed inside stochastic control flow.</p>
 
 <p>Available inference methods include Importance Sampling (IS), Sequential Monte Carlo (SMC), Particle Gibbs (PG), Hamiltonian Monte Carlo (HMC), Hamiltonian Monte Carlo with Dual Averaging (HMCDA) and The No-U-Turn Sampler (NUTS).</p>
 
@@ -804,9 +806,9 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Note: As a sanity check, the expectation of <code class="language-plaintext highlighter-rouge">s</code> is 49/24 (2.04166666…) and the expectation of <code class="language-plaintext highlighter-rouge">m</code> is 7/6 (1.16666666…).</p>
+<p>Note: As a sanity check, the expectation of <code class="highlighter-rouge">s</code> is 49/24 (2.04166666…) and the expectation of <code class="highlighter-rouge">m</code> is 7/6 (1.16666666…).</p>
 
-<p>We can perform inference by using the <code class="language-plaintext highlighter-rouge">sample</code> function, the first argument of which is our probabalistic program and the second of which is a sampler. More information on each sampler is located in the <a href="/dev/docs/library">API</a>.</p>
+<p>We can perform inference by using the <code class="highlighter-rouge">sample</code> function, the first argument of which is our probabalistic program and the second of which is a sampler. More information on each sampler is located in the <a href="/dev/docs/library">API</a>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#  Run sampler, collect results.</span>
 <span class="n">c1</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">SMC</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
@@ -817,7 +819,7 @@
 <span class="n">c6</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">NUTS</span><span class="x">(</span><span class="mf">0.65</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">MCMCChains</code> module (which is re-exported by Turing) provides plotting tools for the <code class="language-plaintext highlighter-rouge">Chain</code> objects returned by a <code class="language-plaintext highlighter-rouge">sample</code> function. See the <a href="https://github.com/TuringLang/MCMCChains.jl">MCMCChains</a> repository for more information on the suite of tools available for diagnosing MCMC chains.</p>
+<p>The <code class="highlighter-rouge">MCMCChains</code> module (which is re-exported by Turing) provides plotting tools for the <code class="highlighter-rouge">Chain</code> objects returned by a <code class="highlighter-rouge">sample</code> function. See the <a href="https://github.com/TuringLang/MCMCChains.jl">MCMCChains</a> repository for more information on the suite of tools available for diagnosing MCMC chains.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Summarise results</span>
 <span class="n">describe</span><span class="x">(</span><span class="n">c3</span><span class="x">)</span>
@@ -864,11 +866,11 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_1</span> <span class="o">=</span> <span class="n">mean</span><span class="x">(</span><span class="n">chn</span><span class="x">[</span><span class="o">:</span><span class="n">var_1</span><span class="x">])</span> <span class="c"># Taking the mean of a variable named var_1.</span>
 </code></pre></div></div>
 
-<p>The key (<code class="language-plaintext highlighter-rouge">:var_1</code>) can be a <code class="language-plaintext highlighter-rouge">Symbol</code> or a <code class="language-plaintext highlighter-rouge">String</code>. For example, to fetch <code class="language-plaintext highlighter-rouge">x[1]</code>, one can use <code class="language-plaintext highlighter-rouge">chn[Symbol("x[1]")</code> or <code class="language-plaintext highlighter-rouge">chn["x[1]"]</code>.</p>
+<p>The key (<code class="highlighter-rouge">:var_1</code>) can be a <code class="highlighter-rouge">Symbol</code> or a <code class="highlighter-rouge">String</code>. For example, to fetch <code class="highlighter-rouge">x[1]</code>, one can use <code class="highlighter-rouge">chn[Symbol("x[1]")</code> or <code class="highlighter-rouge">chn["x[1]"]</code>.</p>
 
-<p>The benefit of using a <code class="language-plaintext highlighter-rouge">Symbol</code> to index allows you to retrieve all the parameters associated with that symbol. As an example, if you have the parameters <code class="language-plaintext highlighter-rouge">"x[1]"</code>, <code class="language-plaintext highlighter-rouge">"x[2]"</code>, and <code class="language-plaintext highlighter-rouge">"x[3]"</code>, calling <code class="language-plaintext highlighter-rouge">chn[:x]</code> will return a new chain with only <code class="language-plaintext highlighter-rouge">"x[1]"</code>, <code class="language-plaintext highlighter-rouge">"x[2]"</code>, and <code class="language-plaintext highlighter-rouge">"x[3]"</code>.</p>
+<p>The benefit of using a <code class="highlighter-rouge">Symbol</code> to index allows you to retrieve all the parameters associated with that symbol. As an example, if you have the parameters <code class="highlighter-rouge">"x[1]"</code>, <code class="highlighter-rouge">"x[2]"</code>, and <code class="highlighter-rouge">"x[3]"</code>, calling <code class="highlighter-rouge">chn[:x]</code> will return a new chain with only <code class="highlighter-rouge">"x[1]"</code>, <code class="highlighter-rouge">"x[2]"</code>, and <code class="highlighter-rouge">"x[3]"</code>.</p>
 
-<p>Turing does not have a declarative form. More generally, the order in which you place the lines of a <code class="language-plaintext highlighter-rouge">@model</code> macro matters. For example, the following example works:</p>
+<p>Turing does not have a declarative form. More generally, the order in which you place the lines of a <code class="highlighter-rouge">@model</code> macro matters. For example, the following example works:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define a simple Normal model with unknown mean and variance.</span>
 <span class="nd">@model</span> <span class="n">model_function</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
@@ -880,7 +882,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">model_function</span><span class="x">(</span><span class="mi">10</span><span class="x">),</span> <span class="n">SMC</span><span class="x">(),</span> <span class="mi">100</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>But if we switch the <code class="language-plaintext highlighter-rouge">s ~ Poisson(1)</code> and <code class="language-plaintext highlighter-rouge">y ~ Normal(s, 1)</code> lines, the model will no longer sample correctly:</p>
+<p>But if we switch the <code class="highlighter-rouge">s ~ Poisson(1)</code> and <code class="highlighter-rouge">y ~ Normal(s, 1)</code> lines, the model will no longer sample correctly:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define a simple Normal model with unknown mean and variance.</span>
 <span class="nd">@model</span> <span class="n">model_function</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
@@ -908,21 +910,21 @@
 <span class="n">chains</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">sampler</span><span class="x">,</span> <span class="n">MCMCThreads</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">,</span> <span class="mi">4</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>For older versions of Julia, <code class="language-plaintext highlighter-rouge">sample</code> may not function correctly. If you wish to run multiple chains, you can do so with the <code class="language-plaintext highlighter-rouge">mapreduce</code> function:</p>
+<p>For older versions of Julia, <code class="highlighter-rouge">sample</code> may not function correctly. If you wish to run multiple chains, you can do so with the <code class="highlighter-rouge">mapreduce</code> function:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Replace num_chains below with however many chains you wish to sample.</span>
 <span class="n">chains</span> <span class="o">=</span> <span class="n">mapreduce</span><span class="x">(</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="n">sample</span><span class="x">(</span><span class="n">model_fun</span><span class="x">,</span> <span class="n">sampler</span><span class="x">,</span> <span class="mi">1000</span><span class="x">),</span> <span class="n">chainscat</span><span class="x">,</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_chains</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">chains</code> variable now contains a <code class="language-plaintext highlighter-rouge">Chains</code> object which can be indexed by chain. To pull out the first chain from the <code class="language-plaintext highlighter-rouge">chains</code> object, use <code class="language-plaintext highlighter-rouge">chains[:,:,1]</code>.</p>
+<p>The <code class="highlighter-rouge">chains</code> variable now contains a <code class="highlighter-rouge">Chains</code> object which can be indexed by chain. To pull out the first chain from the <code class="highlighter-rouge">chains</code> object, use <code class="highlighter-rouge">chains[:,:,1]</code>.</p>
 
-<p>Having multiple chains in the same object is valuable for evaluating convergence. Some diagnostic functions like <code class="language-plaintext highlighter-rouge">gelmandiag</code> require multiple chains.</p>
+<p>Having multiple chains in the same object is valuable for evaluating convergence. Some diagnostic functions like <code class="highlighter-rouge">gelmandiag</code> require multiple chains.</p>
 
 <p><a id="Sampling-from-an-Unconditional-Distribution-(The-Prior)-1"></a></p>
 
 <h3 id="sampling-from-an-unconditional-distribution-the-prior">Sampling from an Unconditional Distribution (The Prior)</h3>
 
-<p>Turing allows you to sample from a declared model’s prior by calling the model without specifying inputs or a sampler. In the below example, we specify a <code class="language-plaintext highlighter-rouge">gdemo</code> model which returns two variables, <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code>. The model includes <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> as arguments, but calling the function without passing in <code class="language-plaintext highlighter-rouge">x</code> or <code class="language-plaintext highlighter-rouge">y</code> means that Turing’s compiler will assume they are missing values to draw from the relevant distribution. The <code class="language-plaintext highlighter-rouge">return</code> statement is necessary to retrieve the sampled <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> values.</p>
+<p>Turing allows you to sample from a declared model’s prior by calling the model without specifying inputs or a sampler. In the below example, we specify a <code class="highlighter-rouge">gdemo</code> model which returns two variables, <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code>. The model includes <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> as arguments, but calling the function without passing in <code class="highlighter-rouge">x</code> or <code class="highlighter-rouge">y</code> means that Turing’s compiler will assume they are missing values to draw from the relevant distribution. The <code class="highlighter-rouge">return</code> statement is necessary to retrieve the sampled <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> values.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
   <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
@@ -933,7 +935,7 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Assign the function with <code class="language-plaintext highlighter-rouge">missing</code> inputs to a variable, and Turing will produce a sample from the prior distribution.</p>
+<p>Assign the function with <code class="highlighter-rouge">missing</code> inputs to a variable, and Turing will produce a sample from the prior distribution.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Samples from p(x,y)</span>
 <span class="n">g_prior_sample</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="nb">missing</span><span class="x">,</span> <span class="nb">missing</span><span class="x">)</span>
@@ -942,7 +944,7 @@
 
 <p>Output:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(0.685690547873451, -1.1972706455914328)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(0.685690547873451, -1.1972706455914328)
 </code></pre></div></div>
 
 <p><a id="Sampling-from-a-Conditional-Distribution-(The-Posterior)-1"></a></p>
@@ -953,7 +955,7 @@
 
 <h4 id="treating-observations-as-random-variables">Treating observations as random variables</h4>
 
-<p>Inputs to the model that have a value <code class="language-plaintext highlighter-rouge">missing</code> are treated as parameters, aka random variables, to be estimated/sampled. This can be useful if you want to simulate draws for that parameter, or if you are sampling from a conditional distribution. Turing supports the following syntax:</p>
+<p>Inputs to the model that have a value <code class="highlighter-rouge">missing</code> are treated as parameters, aka random variables, to be estimated/sampled. This can be useful if you want to simulate draws for that parameter, or if you are sampling from a conditional distribution. Turing supports the following syntax:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="k">begin</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">===</span> <span class="nb">missing</span>
@@ -972,9 +974,9 @@
 <span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">500</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>Note the need to initialize <code class="language-plaintext highlighter-rouge">x</code> when missing since we are iterating over its elements later in the model. The generated values for <code class="language-plaintext highlighter-rouge">x</code> can be extracted from the <code class="language-plaintext highlighter-rouge">Chains</code> object using <code class="language-plaintext highlighter-rouge">c[:x]</code>.</p>
+<p>Note the need to initialize <code class="highlighter-rouge">x</code> when missing since we are iterating over its elements later in the model. The generated values for <code class="highlighter-rouge">x</code> can be extracted from the <code class="highlighter-rouge">Chains</code> object using <code class="highlighter-rouge">c[:x]</code>.</p>
 
-<p>Turing also supports mixed <code class="language-plaintext highlighter-rouge">missing</code> and non-<code class="language-plaintext highlighter-rouge">missing</code> values in <code class="language-plaintext highlighter-rouge">x</code>, where the missing ones will be treated as random variables to be sampled while the others get treated as observations. For example:</p>
+<p>Turing also supports mixed <code class="highlighter-rouge">missing</code> and non-<code class="highlighter-rouge">missing</code> values in <code class="highlighter-rouge">x</code>, where the missing ones will be treated as random variables to be sampled while the others get treated as observations. For example:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
     <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
@@ -993,7 +995,7 @@
 
 <h4 id="default-values">Default Values</h4>
 
-<p>Arguments to Turing models can have default values much like how default values work in normal Julia functions. For instance, the following will assign <code class="language-plaintext highlighter-rouge">missing</code> to <code class="language-plaintext highlighter-rouge">x</code> and treat it as a random variable. If the default value is not <code class="language-plaintext highlighter-rouge">missing</code>, <code class="language-plaintext highlighter-rouge">x</code> will be assigned that value and will be treated as an observation instead.</p>
+<p>Arguments to Turing models can have default values much like how default values work in normal Julia functions. For instance, the following will assign <code class="highlighter-rouge">missing</code> to <code class="highlighter-rouge">x</code> and treat it as a random variable. If the default value is not <code class="highlighter-rouge">missing</code>, <code class="highlighter-rouge">x</code> will be assigned that value and will be treated as an observation instead.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
 
@@ -1021,24 +1023,24 @@
 <p>You can access the values inside a chain several ways:</p>
 
 <ol>
-  <li>Turn them into a <code class="language-plaintext highlighter-rouge">DataFrame</code> object</li>
-  <li>Use their raw <code class="language-plaintext highlighter-rouge">AxisArray</code> form</li>
-  <li>Create a three-dimensional <code class="language-plaintext highlighter-rouge">Array</code> object</li>
+  <li>Turn them into a <code class="highlighter-rouge">DataFrame</code> object</li>
+  <li>Use their raw <code class="highlighter-rouge">AxisArray</code> form</li>
+  <li>Create a three-dimensional <code class="highlighter-rouge">Array</code> object</li>
 </ol>
 
-<p>For example, let <code class="language-plaintext highlighter-rouge">c</code> be a <code class="language-plaintext highlighter-rouge">Chain</code>:     1. <code class="language-plaintext highlighter-rouge">DataFrame(c)</code> converts <code class="language-plaintext highlighter-rouge">c</code> to a <code class="language-plaintext highlighter-rouge">DataFrame</code>,     2. <code class="language-plaintext highlighter-rouge">c.value</code> retrieves the values inside <code class="language-plaintext highlighter-rouge">c</code> as an <code class="language-plaintext highlighter-rouge">AxisArray</code>, and     3. <code class="language-plaintext highlighter-rouge">c.value.data</code> retrieves the values inside <code class="language-plaintext highlighter-rouge">c</code> as a 3D <code class="language-plaintext highlighter-rouge">Array</code>.</p>
+<p>For example, let <code class="highlighter-rouge">c</code> be a <code class="highlighter-rouge">Chain</code>:     1. <code class="highlighter-rouge">DataFrame(c)</code> converts <code class="highlighter-rouge">c</code> to a <code class="highlighter-rouge">DataFrame</code>,     2. <code class="highlighter-rouge">c.value</code> retrieves the values inside <code class="highlighter-rouge">c</code> as an <code class="highlighter-rouge">AxisArray</code>, and     3. <code class="highlighter-rouge">c.value.data</code> retrieves the values inside <code class="highlighter-rouge">c</code> as a 3D <code class="highlighter-rouge">Array</code>.</p>
 
 <p><a id="Variable-Types-and-Type-Parameters-1"></a></p>
 
 <h4 id="variable-types-and-type-parameters">Variable Types and Type Parameters</h4>
 
-<p>The element type of a vector (or matrix) of random variables should match the <code class="language-plaintext highlighter-rouge">eltype</code> of the its prior distribution, <code class="language-plaintext highlighter-rouge">&lt;: Integer</code> for discrete distributions and <code class="language-plaintext highlighter-rouge">&lt;: AbstractFloat</code> for continuous distributions. Moreover, if the continuous random variable is to be sampled using a Hamiltonian sampler, the vector’s element type needs to either be:     1. <code class="language-plaintext highlighter-rouge">Real</code> to enable auto-differentiation through the model which uses special number types that are sub-types of <code class="language-plaintext highlighter-rouge">Real</code>, or     2. Some type parameter <code class="language-plaintext highlighter-rouge">T</code> defined in the model header using the type parameter syntax, e.g. <code class="language-plaintext highlighter-rouge">gdemo(x, ::Type{T} = Float64) where {T} = begin</code>. Similarly, when using a particle sampler, the Julia variable used should either be:     1. A <code class="language-plaintext highlighter-rouge">TArray</code>, or     2. An instance of some type parameter <code class="language-plaintext highlighter-rouge">T</code> defined in the model header using the type parameter syntax, e.g. <code class="language-plaintext highlighter-rouge">gdemo(x, ::Type{T} = Vector{Float64}) where {T} = begin</code>.</p>
+<p>The element type of a vector (or matrix) of random variables should match the <code class="highlighter-rouge">eltype</code> of the its prior distribution, <code class="highlighter-rouge">&lt;: Integer</code> for discrete distributions and <code class="highlighter-rouge">&lt;: AbstractFloat</code> for continuous distributions. Moreover, if the continuous random variable is to be sampled using a Hamiltonian sampler, the vector’s element type needs to either be:     1. <code class="highlighter-rouge">Real</code> to enable auto-differentiation through the model which uses special number types that are sub-types of <code class="highlighter-rouge">Real</code>, or     2. Some type parameter <code class="highlighter-rouge">T</code> defined in the model header using the type parameter syntax, e.g. <code class="highlighter-rouge">gdemo(x, ::Type{T} = Float64) where {T} = begin</code>. Similarly, when using a particle sampler, the Julia variable used should either be:     1. A <code class="highlighter-rouge">TArray</code>, or     2. An instance of some type parameter <code class="highlighter-rouge">T</code> defined in the model header using the type parameter syntax, e.g. <code class="highlighter-rouge">gdemo(x, ::Type{T} = Vector{Float64}) where {T} = begin</code>.</p>
 
 <p><a id="Querying-Probabilities-from-Model-or-Chain-1"></a></p>
 
 <h3 id="querying-probabilities-from-model-or-chain">Querying Probabilities from Model or Chain</h3>
 
-<p>Consider the following <code class="language-plaintext highlighter-rouge">gdemo</code> model:</p>
+<p>Consider the following <code class="highlighter-rouge">gdemo</code> model:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
   <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
@@ -1048,19 +1050,19 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>The following are examples of valid queries of the <code class="language-plaintext highlighter-rouge">Turing</code> model or chain:</p>
+<p>The following are examples of valid queries of the <code class="highlighter-rouge">Turing</code> model or chain:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">prob"x = 1.0, y = 1.0 | model = gdemo, s = 1.0, m = 1.0"</code> calculates the likelihood of <code class="language-plaintext highlighter-rouge">x = 1</code> and <code class="language-plaintext highlighter-rouge">y = 1</code> given <code class="language-plaintext highlighter-rouge">s = 1</code> and <code class="language-plaintext highlighter-rouge">m = 1</code>.</li>
-  <li><code class="language-plaintext highlighter-rouge">prob"s = 1.0, m = 1.0 | model = gdemo, x = nothing, y = nothing"</code> calculates the joint probability of <code class="language-plaintext highlighter-rouge">s = 1</code> and <code class="language-plaintext highlighter-rouge">m = 1</code> ignoring <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code>. <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> are ignored so they can be optionally dropped from the RHS of <code class="language-plaintext highlighter-rouge">|</code>, but it is recommended to define them.</li>
-  <li><code class="language-plaintext highlighter-rouge">prob"s = 1.0, m = 1.0, x = 1.0 | model = gdemo, y = nothing"</code> calculates the joint probability of <code class="language-plaintext highlighter-rouge">s = 1</code>, <code class="language-plaintext highlighter-rouge">m = 1</code> and <code class="language-plaintext highlighter-rouge">x = 1</code> ignoring <code class="language-plaintext highlighter-rouge">y</code>.</li>
-  <li><code class="language-plaintext highlighter-rouge">prob"s = 1.0, m = 1.0, x = 1.0, y = 1.0 | model = gdemo"</code> calculates the joint probability of all the variables.</li>
-  <li>After the MCMC sampling, given a <code class="language-plaintext highlighter-rouge">chain</code>, <code class="language-plaintext highlighter-rouge">prob"x = 1.0, y = 1.0 | chain = chain, model = gdemo"</code> calculates the element-wise likelihood of <code class="language-plaintext highlighter-rouge">x = 1.0</code> and <code class="language-plaintext highlighter-rouge">y = 1.0</code> for each sample in <code class="language-plaintext highlighter-rouge">chain</code>.</li>
+  <li><code class="highlighter-rouge">prob"x = 1.0, y = 1.0 | model = gdemo, s = 1.0, m = 1.0"</code> calculates the likelihood of <code class="highlighter-rouge">x = 1</code> and <code class="highlighter-rouge">y = 1</code> given <code class="highlighter-rouge">s = 1</code> and <code class="highlighter-rouge">m = 1</code>.</li>
+  <li><code class="highlighter-rouge">prob"s = 1.0, m = 1.0 | model = gdemo, x = nothing, y = nothing"</code> calculates the joint probability of <code class="highlighter-rouge">s = 1</code> and <code class="highlighter-rouge">m = 1</code> ignoring <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code>. <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> are ignored so they can be optionally dropped from the RHS of <code class="highlighter-rouge">|</code>, but it is recommended to define them.</li>
+  <li><code class="highlighter-rouge">prob"s = 1.0, m = 1.0, x = 1.0 | model = gdemo, y = nothing"</code> calculates the joint probability of <code class="highlighter-rouge">s = 1</code>, <code class="highlighter-rouge">m = 1</code> and <code class="highlighter-rouge">x = 1</code> ignoring <code class="highlighter-rouge">y</code>.</li>
+  <li><code class="highlighter-rouge">prob"s = 1.0, m = 1.0, x = 1.0, y = 1.0 | model = gdemo"</code> calculates the joint probability of all the variables.</li>
+  <li>After the MCMC sampling, given a <code class="highlighter-rouge">chain</code>, <code class="highlighter-rouge">prob"x = 1.0, y = 1.0 | chain = chain, model = gdemo"</code> calculates the element-wise likelihood of <code class="highlighter-rouge">x = 1.0</code> and <code class="highlighter-rouge">y = 1.0</code> for each sample in <code class="highlighter-rouge">chain</code>.</li>
   <li>
     <table>
       <tbody>
         <tr>
-          <td>If <code class="language-plaintext highlighter-rouge">save_state=true</code> was used during sampling (i.e., <code class="language-plaintext highlighter-rouge">sample(model, sampler, N; save_state=true)</code>), you can simply do ``prob”x = 1.0, y = 1.0</td>
+          <td>If <code class="highlighter-rouge">save_state=true</code> was used during sampling (i.e., <code class="highlighter-rouge">sample(model, sampler, N; save_state=true)</code>), you can simply do ``prob”x = 1.0, y = 1.0</td>
           <td>chain = chain”`.</td>
         </tr>
       </tbody>
@@ -1068,7 +1070,7 @@
   </li>
 </ul>
 
-<p>In all the above cases, <code class="language-plaintext highlighter-rouge">logprob</code> can be used instead of <code class="language-plaintext highlighter-rouge">prob</code> to calculate the log probabilities instead.</p>
+<p>In all the above cases, <code class="highlighter-rouge">logprob</code> can be used instead of <code class="highlighter-rouge">prob</code> to calculate the log probabilities instead.</p>
 
 <p><a id="Beyond-the-Basics-1"></a></p>
 
@@ -1078,7 +1080,7 @@
 
 <h3 id="compositional-sampling-using-gibbs">Compositional Sampling Using Gibbs</h3>
 
-<p>Turing.jl provides a Gibbs interface to combine different samplers. For example, one can combine an <code class="language-plaintext highlighter-rouge">HMC</code> sampler with a <code class="language-plaintext highlighter-rouge">PG</code> sampler to run inference for different parameters in a single model as below.</p>
+<p>Turing.jl provides a Gibbs interface to combine different samplers. For example, one can combine an <code class="highlighter-rouge">HMC</code> sampler with a <code class="highlighter-rouge">PG</code> sampler to run inference for different parameters in a single model as below.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">simple_choice</span><span class="x">(</span><span class="n">xs</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
   <span class="n">p</span> <span class="o">~</span> <span class="n">Beta</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
@@ -1097,7 +1099,7 @@
 <span class="n">chn</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">simple_choice_f</span><span class="x">,</span> <span class="n">Gibbs</span><span class="x">(</span><span class="n">HMC</span><span class="x">(</span><span class="mf">0.2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="o">:</span><span class="n">p</span><span class="x">),</span> <span class="n">PG</span><span class="x">(</span><span class="mi">20</span><span class="x">,</span> <span class="o">:</span><span class="n">z</span><span class="x">)),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">Gibbs</code> sampler can be used to specify unique automatic differentation backends for different variable spaces. Please see the <a href="/dev/docs/using-turing/autodiff">Automatic Differentiation</a> article for more.</p>
+<p>The <code class="highlighter-rouge">Gibbs</code> sampler can be used to specify unique automatic differentation backends for different variable spaces. Please see the <a href="/dev/docs/using-turing/autodiff">Automatic Differentiation</a> article for more.</p>
 
 <p>For more details of compositional sampling in Turing.jl, please check the corresponding <a href="http://proceedings.mlr.press/v84/ge18b.html">paper</a>.</p>
 
@@ -1105,31 +1107,31 @@
 
 <h3 id="working-with-mcmcchainsjl">Working with MCMCChains.jl</h3>
 
-<p>Turing.jl wraps its samples using <code class="language-plaintext highlighter-rouge">MCMCChains.Chain</code> so that all the functions working for <code class="language-plaintext highlighter-rouge">MCMCChains.Chain</code> can be re-used in Turing.jl. Two typical functions are <code class="language-plaintext highlighter-rouge">MCMCChains.describe</code> and <code class="language-plaintext highlighter-rouge">MCMCChains.plot</code>, which can be used as follows for an obtained chain <code class="language-plaintext highlighter-rouge">chn</code>. For more information on <code class="language-plaintext highlighter-rouge">MCMCChains</code>, please see the <a href="https://github.com/TuringLang/MCMCChains.jl">GitHub repository</a>.</p>
+<p>Turing.jl wraps its samples using <code class="highlighter-rouge">MCMCChains.Chain</code> so that all the functions working for <code class="highlighter-rouge">MCMCChains.Chain</code> can be re-used in Turing.jl. Two typical functions are <code class="highlighter-rouge">MCMCChains.describe</code> and <code class="highlighter-rouge">MCMCChains.plot</code>, which can be used as follows for an obtained chain <code class="highlighter-rouge">chn</code>. For more information on <code class="highlighter-rouge">MCMCChains</code>, please see the <a href="https://github.com/TuringLang/MCMCChains.jl">GitHub repository</a>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">describe</span><span class="x">(</span><span class="n">chn</span><span class="x">)</span> <span class="c"># Lists statistics of the samples.</span>
 <span class="n">plot</span><span class="x">(</span><span class="n">chn</span><span class="x">)</span> <span class="c"># Plots statistics of the samples.</span>
 </code></pre></div></div>
 
-<p>There are numerous functions in addition to <code class="language-plaintext highlighter-rouge">describe</code> and <code class="language-plaintext highlighter-rouge">plot</code> in the <code class="language-plaintext highlighter-rouge">MCMCChains</code> package, such as those used in convergence diagnostics. For more information on the package, please see the <a href="https://github.com/TuringLang/MCMCChains.jl">GitHub repository</a>.</p>
+<p>There are numerous functions in addition to <code class="highlighter-rouge">describe</code> and <code class="highlighter-rouge">plot</code> in the <code class="highlighter-rouge">MCMCChains</code> package, such as those used in convergence diagnostics. For more information on the package, please see the <a href="https://github.com/TuringLang/MCMCChains.jl">GitHub repository</a>.</p>
 
 <p><a id="Working-with-Libtask.jl-1"></a></p>
 
 <h3 id="working-with-libtaskjl">Working with Libtask.jl</h3>
 
-<p>The <a href="https://github.com/TuringLang/Libtask.jl">Libtask.jl</a> library provides write-on-copy data structures that are safe for use in Turing’s particle-based samplers. One data structure in particular is often required for use – the <a href="http://turing.ml/docs/library/#Libtask.TArray"><code class="language-plaintext highlighter-rouge">TArray</code></a>. The following sampler types require the use of a <code class="language-plaintext highlighter-rouge">TArray</code> to store distributions:</p>
+<p>The <a href="https://github.com/TuringLang/Libtask.jl">Libtask.jl</a> library provides write-on-copy data structures that are safe for use in Turing’s particle-based samplers. One data structure in particular is often required for use – the <a href="http://turing.ml/docs/library/#Libtask.TArray"><code class="highlighter-rouge">TArray</code></a>. The following sampler types require the use of a <code class="highlighter-rouge">TArray</code> to store distributions:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">IPMCMC</code></li>
-  <li><code class="language-plaintext highlighter-rouge">IS</code></li>
-  <li><code class="language-plaintext highlighter-rouge">PG</code></li>
-  <li><code class="language-plaintext highlighter-rouge">PMMH</code></li>
-  <li><code class="language-plaintext highlighter-rouge">SMC</code></li>
+  <li><code class="highlighter-rouge">IPMCMC</code></li>
+  <li><code class="highlighter-rouge">IS</code></li>
+  <li><code class="highlighter-rouge">PG</code></li>
+  <li><code class="highlighter-rouge">PMMH</code></li>
+  <li><code class="highlighter-rouge">SMC</code></li>
 </ul>
 
-<p>If you do not use a <code class="language-plaintext highlighter-rouge">TArray</code> to store arrays of distributions when using a particle-based sampler, you may experience errors.</p>
+<p>If you do not use a <code class="highlighter-rouge">TArray</code> to store arrays of distributions when using a particle-based sampler, you may experience errors.</p>
 
-<p>Here is an example of how the <code class="language-plaintext highlighter-rouge">TArray</code> (using a <code class="language-plaintext highlighter-rouge">TArray</code> constructor function called <code class="language-plaintext highlighter-rouge">tzeros</code>) can be applied in this way:</p>
+<p>Here is an example of how the <code class="highlighter-rouge">TArray</code> (using a <code class="highlighter-rouge">TArray</code> constructor function called <code class="highlighter-rouge">tzeros</code>) can be applied in this way:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Turing model definition.</span>
 <span class="nd">@model</span> <span class="n">BayesHmm</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
@@ -1162,13 +1164,13 @@
 
 <h4 id="ad-chunk-size">AD Chunk Size</h4>
 
-<p>ForwardDiff (Turing’s default AD backend) uses forward-mode chunk-wise AD. The chunk size can be manually set by <code class="language-plaintext highlighter-rouge">setchunksize(new_chunk_size)</code>; alternatively, use an auto-tuning helper function <code class="language-plaintext highlighter-rouge">auto_tune_chunk_size!(mf::Function, rep_num=10)</code>, which will profile various chunk sizes. Here <code class="language-plaintext highlighter-rouge">mf</code> is the model function, e.g. <code class="language-plaintext highlighter-rouge">gdemo(1.5, 2)</code>, and <code class="language-plaintext highlighter-rouge">rep_num</code> is the number of repetitions during profiling.</p>
+<p>ForwardDiff (Turing’s default AD backend) uses forward-mode chunk-wise AD. The chunk size can be manually set by <code class="highlighter-rouge">setchunksize(new_chunk_size)</code>; alternatively, use an auto-tuning helper function <code class="highlighter-rouge">auto_tune_chunk_size!(mf::Function, rep_num=10)</code>, which will profile various chunk sizes. Here <code class="highlighter-rouge">mf</code> is the model function, e.g. <code class="highlighter-rouge">gdemo(1.5, 2)</code>, and <code class="highlighter-rouge">rep_num</code> is the number of repetitions during profiling.</p>
 
 <p><a id="AD-Backend-1"></a></p>
 
 <h4 id="ad-backend">AD Backend</h4>
 
-<p>Turing supports four packages of automatic differentiation (AD) in the back end during sampling. The default AD backend is <a href="https://github.com/JuliaDiff/ForwardDiff.jl">ForwardDiff</a> for forward-mode AD. Three reverse-mode AD backends are also supported, namely <a href="https://github.com/FluxML/Tracker.jl">Tracker</a>, <a href="https://github.com/FluxML/Zygote.jl">Zygote</a> and <a href="https://github.com/JuliaDiff/ReverseDiff.jl">ReverseDiff</a>. <code class="language-plaintext highlighter-rouge">Zygote</code> and <code class="language-plaintext highlighter-rouge">ReverseDiff</code> are supported optionally if explicitly loaded by the user with <code class="language-plaintext highlighter-rouge">using Zygote</code> or <code class="language-plaintext highlighter-rouge">using ReverseDiff</code> next to <code class="language-plaintext highlighter-rouge">using Turing</code>.</p>
+<p>Turing supports four packages of automatic differentiation (AD) in the back end during sampling. The default AD backend is <a href="https://github.com/JuliaDiff/ForwardDiff.jl">ForwardDiff</a> for forward-mode AD. Three reverse-mode AD backends are also supported, namely <a href="https://github.com/FluxML/Tracker.jl">Tracker</a>, <a href="https://github.com/FluxML/Zygote.jl">Zygote</a> and <a href="https://github.com/JuliaDiff/ReverseDiff.jl">ReverseDiff</a>. <code class="highlighter-rouge">Zygote</code> and <code class="highlighter-rouge">ReverseDiff</code> are supported optionally if explicitly loaded by the user with <code class="highlighter-rouge">using Zygote</code> or <code class="highlighter-rouge">using ReverseDiff</code> next to <code class="highlighter-rouge">using Turing</code>.</p>
 
 <p>For more information on Turing’s automatic differentiation backend, please see the <a href="/dev/docs/using-turing/autodiff">Automatic Differentiation</a> article.</p>
 
@@ -1176,7 +1178,7 @@
 
 <h4 id="progress-logging">Progress Logging</h4>
 
-<p>Turing.jl uses ProgressLogging.jl to log the progress of sampling. Progress logging is enabled as default but might slow down inference. It can be turned on or off by setting the keyword argument <code class="language-plaintext highlighter-rouge">progress</code> of <code class="language-plaintext highlighter-rouge">sample</code> to <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>, respectively. Moreover, you can enable or disable progress logging globally by calling <code class="language-plaintext highlighter-rouge">turnprogress(true)</code> or <code class="language-plaintext highlighter-rouge">turnprogress(false)</code>, respectively.</p>
+<p>Turing.jl uses ProgressLogging.jl to log the progress of sampling. Progress logging is enabled as default but might slow down inference. It can be turned on or off by setting the keyword argument <code class="highlighter-rouge">progress</code> of <code class="highlighter-rouge">sample</code> to <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code>, respectively. Moreover, you can enable or disable progress logging globally by calling <code class="highlighter-rouge">turnprogress(true)</code> or <code class="highlighter-rouge">turnprogress(false)</code>, respectively.</p>
 
 <p>Turing uses heuristics to select an appropriate visualization backend. If you use <a href="https://junolab.org/">Juno</a>, the progress is displayed with a <a href="http://docs.junolab.org/latest/man/juno_frontend/#Progress-Meters-1">progress bar in the Atom window</a>. For Jupyter notebooks the default backend is <a href="https://github.com/tkf/ConsoleProgressMonitor.jl">ConsoleProgressMonitor.jl</a>. In all other cases progress logs are displayed with <a href="https://github.com/c42f/TerminalLoggers.jl">TerminalLoggers.jl</a>. Alternatively, if you provide a custom visualization backend, Turing uses it instead of the default backend.</p>
 
