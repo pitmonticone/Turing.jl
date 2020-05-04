@@ -82,9 +82,9 @@ version = "0.5.0"
 
 [[Bijectors]]
 deps = ["ArgCheck", "Compat", "Distributions", "LinearAlgebra", "MappedArrays", "NNlib", "Random", "Reexport", "Requires", "Roots", "SparseArrays", "Statistics", "StatsFuns"]
-git-tree-sha1 = "3ba8eb8e5ea05bc5c3fa2617f4e362e7c528d004"
+git-tree-sha1 = "08d4ea4d6aff3a359314d8a048b05c460258be7b"
 uuid = "76274a88-744f-5084-9051-94815aaf08c4"
-version = "0.6.7"
+version = "0.7.1"
 
 [[BinaryProvider]]
 deps = ["Libdl", "Logging", "SHA"]

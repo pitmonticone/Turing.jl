@@ -774,21 +774,20 @@
   <li><a href="/dev/docs/library/bijectors/#Bijectors.AbstractBijector"><code class="language-plaintext highlighter-rouge">Bijectors.AbstractBijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Bijector"><code class="language-plaintext highlighter-rouge">Bijectors.Bijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Composed"><code class="language-plaintext highlighter-rouge">Bijectors.Composed</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.DistributionBijector"><code class="language-plaintext highlighter-rouge">Bijectors.DistributionBijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Inverse"><code class="language-plaintext highlighter-rouge">Bijectors.Inverse</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Permute"><code class="language-plaintext highlighter-rouge">Bijectors.Permute</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Stacked"><code class="language-plaintext highlighter-rouge">Bijectors.Stacked</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.bijector-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.bijector</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}"><code class="language-plaintext highlighter-rouge">Bijectors.bijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N"><code class="language-plaintext highlighter-rouge">Bijectors.composel</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N"><code class="language-plaintext highlighter-rouge">Bijectors.composer</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.isclosedform-Tuple{Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.isclosedform</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{Inverse{#s23,N} where N where #s23&lt;:Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{ADBijector,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{Inverse{#s25,N} where N where #s25&lt;:Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{TransformedDistribution{#s106,#s89,Univariate} where #s89&lt;:Bijector where #s106&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logpdf_with_jac-Tuple{TransformedDistribution{#s106,#s89,Univariate} where #s89&lt;:Bijector where #s106&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logpdf_with_jac</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logpdf_with_jac-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logpdf_with_jac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.transformed-Tuple{Distribution,Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.transformed</code></a></li>
 </ul>
 
@@ -796,7 +795,7 @@
 
 <h2 id="functions">Functions</h2>
 
-<p><a id="Bijectors.bijector-Tuple{Distribution}" href="#Bijectors.bijector-Tuple{Distribution}">#</a>
+<p><a id="Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}" href="#Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.bijector</code></strong> — <em>Method</em>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bijector</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Distribution</span><span class="x">)</span>
@@ -857,7 +856,7 @@
 
 <p>Computes the absolute determinant of the Jacobian of the inverse-transformation.</p>
 
-<p><a id="Bijectors.logabsdetjac-Tuple{Inverse{#s25,N} where N where #s25&lt;:Bijector,Any}" href="#Bijectors.logabsdetjac-Tuple{Inverse{#s25,N} where N where #s25&lt;:Bijector,Any}">#</a>
+<p><a id="Bijectors.logabsdetjac-Tuple{Inverse{#s23,N} where N where #s23&lt;:Bijector,Any}" href="#Bijectors.logabsdetjac-Tuple{Inverse{#s23,N} where N where #s23&lt;:Bijector,Any}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></strong> — <em>Method</em>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logabsdetjac</span><span class="x">(</span><span class="n">b</span><span class="o">::</span><span class="n">Bijector</span><span class="x">,</span> <span class="n">x</span><span class="x">)</span>
@@ -876,7 +875,7 @@
 
 <p>Just an alias for <code class="language-plaintext highlighter-rouge">logabsdetjac(inv(b), y)</code>.</p>
 
-<p><a id="Bijectors.logabsdetjacinv-Tuple{TransformedDistribution{#s106,#s89,Univariate} where #s89&lt;:Bijector where #s106&lt;:Distribution,Real}" href="#Bijectors.logabsdetjacinv-Tuple{TransformedDistribution{#s106,#s89,Univariate} where #s89&lt;:Bijector where #s106&lt;:Distribution,Real}">#</a>
+<p><a id="Bijectors.logabsdetjacinv-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}" href="#Bijectors.logabsdetjacinv-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></strong> — <em>Method</em>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logabsdetjacinv</span><span class="x">(</span><span class="n">td</span><span class="o">::</span><span class="n">UnivariateTransformed</span><span class="x">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span>
@@ -885,7 +884,7 @@
 
 <p>Computes the <code class="language-plaintext highlighter-rouge">logabsdetjac</code> of the <em>inverse</em> transformation, since <code class="language-plaintext highlighter-rouge">rand(td)</code> returns the <em>transformed</em> random variable.</p>
 
-<p><a id="Bijectors.logpdf_with_jac-Tuple{TransformedDistribution{#s106,#s89,Univariate} where #s89&lt;:Bijector where #s106&lt;:Distribution,Real}" href="#Bijectors.logpdf_with_jac-Tuple{TransformedDistribution{#s106,#s89,Univariate} where #s89&lt;:Bijector where #s106&lt;:Distribution,Real}">#</a>
+<p><a id="Bijectors.logpdf_with_jac-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}" href="#Bijectors.logpdf_with_jac-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.logpdf_with_jac</code></strong> — <em>Method</em>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logpdf_with_jac</span><span class="x">(</span><span class="n">td</span><span class="o">::</span><span class="n">UnivariateTransformed</span><span class="x">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span>
@@ -1025,17 +1024,6 @@ julia&gt; Bijectors.composer(cb1, cb2).ts
 julia&gt; Bijectors.composer(cb1, cb2).ts isa Tuple{Composed, Composed}
 true
 </code></pre>
-
-<p><a id="Bijectors.DistributionBijector" href="#Bijectors.DistributionBijector">#</a>
-<strong><code class="language-plaintext highlighter-rouge">Bijectors.DistributionBijector</code></strong> — <em>Type</em>.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DistributionBijector</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Distribution</span><span class="x">)</span>
-<span class="n">DistributionBijector</span><span class="x">{</span><span class="o">&lt;:</span><span class="n">ADBackend</span><span class="x">,</span> <span class="n">D</span><span class="x">}(</span><span class="n">d</span><span class="o">::</span><span class="n">Distribution</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>This is the default <code class="language-plaintext highlighter-rouge">Bijector</code> for a distribution.</p>
-
-<p>It uses <code class="language-plaintext highlighter-rouge">link</code> and <code class="language-plaintext highlighter-rouge">invlink</code> to compute the transformations, and <code class="language-plaintext highlighter-rouge">AD</code> to compute the <code class="language-plaintext highlighter-rouge">jacobian</code> and <code class="language-plaintext highlighter-rouge">logabsdetjac</code>.</p>
 
 <p><a id="Bijectors.Inverse" href="#Bijectors.Inverse">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.Inverse</code></strong> — <em>Type</em>.</p>
