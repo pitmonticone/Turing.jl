@@ -784,6 +784,9 @@
 <span class="c"># We need a logistic function, which is provided by StatsFuns.</span>
 <span class="k">using</span> <span class="n">StatsFuns</span><span class="o">:</span> <span class="n">logistic</span>
 
+<span class="c"># Functionality for splitting and normalizing the data</span>
+<span class="k">using</span> <span class="n">MLDataUtils</span><span class="o">:</span> <span class="n">shuffleobs</span><span class="x">,</span> <span class="n">stratifiedobs</span><span class="x">,</span> <span class="n">rescale!</span>
+
 <span class="c"># Set a seed for reproducibility.</span>
 <span class="k">using</span> <span class="n">Random</span>
 <span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="x">(</span><span class="mi">0</span><span class="x">);</span>
@@ -792,9 +795,7 @@
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling RDatasets [ce6b1742-4840-55fa-b093-852dadbb1d8b]
-└ @ Base loading.jl:1260
-┌ Info: [Turing]: progress logging is disabled globally
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 
 
@@ -806,7 +807,7 @@ false
 
 <h2 id="data-cleaning--set-up">Data Cleaning &amp; Set Up</h2>
 
-<p>Now we’re going to import our dataset. The first six rows of the dataset are shown below so you capn get a good feel for what kind of data we have.</p>
+<p>Now we’re going to import our dataset. The first six rows of the dataset are shown below so you can get a good feel for what kind of data we have.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import the "Default" dataset.</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">RDatasets</span><span class="o">.</span><span class="n">dataset</span><span class="x">(</span><span class="s">"ISLR"</span><span class="x">,</span> <span class="s">"Default"</span><span class="x">);</span>
@@ -821,7 +822,7 @@ false
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert "Default" and "Student" to numeric values.</span>
 <span class="n">data</span><span class="x">[</span><span class="o">!</span><span class="x">,</span><span class="o">:</span><span class="n">DefaultNum</span><span class="x">]</span> <span class="o">=</span> <span class="x">[</span><span class="n">r</span><span class="o">.</span><span class="n">Default</span> <span class="o">==</span> <span class="s">"Yes"</span> <span class="o">?</span> <span class="mf">1.0</span> <span class="o">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">r</span> <span class="k">in</span> <span class="n">eachrow</span><span class="x">(</span><span class="n">data</span><span class="x">)]</span>
-<span class="n">data</span><span class="x">[</span><span class="o">!</span><span class="x">,</span> <span class="o">:</span><span class="n">StudentNum</span><span class="x">]</span> <span class="o">=</span> <span class="x">[</span><span class="n">r</span><span class="o">.</span><span class="n">Student</span> <span class="o">==</span> <span class="s">"Yes"</span> <span class="o">?</span> <span class="mf">1.0</span> <span class="o">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">r</span> <span class="k">in</span> <span class="n">eachrow</span><span class="x">(</span><span class="n">data</span><span class="x">)]</span>
+<span class="n">data</span><span class="x">[</span><span class="o">!</span><span class="x">,</span><span class="o">:</span><span class="n">StudentNum</span><span class="x">]</span> <span class="o">=</span> <span class="x">[</span><span class="n">r</span><span class="o">.</span><span class="n">Student</span> <span class="o">==</span> <span class="s">"Yes"</span> <span class="o">?</span> <span class="mf">1.0</span> <span class="o">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">r</span> <span class="k">in</span> <span class="n">eachrow</span><span class="x">(</span><span class="n">data</span><span class="x">)]</span>
 
 <span class="c"># Delete the old columns which say "Yes" and "No".</span>
 <span class="n">select!</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">Not</span><span class="x">([</span><span class="o">:</span><span class="n">Default</span><span class="x">,</span> <span class="o">:</span><span class="n">Student</span><span class="x">]))</span>
@@ -834,38 +835,29 @@ false
 
 <p>After we’ve done that tidying, it’s time to split our dataset into training and testing sets, and separate the labels from the data. We separate our data into two halves, <code class="language-plaintext highlighter-rouge">train</code> and <code class="language-plaintext highlighter-rouge">test</code>. You can use a higher percentage of splitting (or a lower one) by modifying the <code class="language-plaintext highlighter-rouge">at = 0.05</code> argument. We have highlighted the use of only a 5% sample to show the power of Bayesian inference with small sample sizes.</p>
 
-<p>We must rescale our variables so that they are centered around zero by subtracting each column by the mean and dividing it by the standard deviation. Without this step, Turing’s sampler will have a hard time finding a place to start searching for parameter estimates.</p>
+<p>We must rescale our variables so that they are centered around zero by subtracting each column by the mean and dividing it by the standard deviation. Without this step, Turing’s sampler will have a hard time finding a place to start searching for parameter estimates. To do this we will leverage <code class="language-plaintext highlighter-rouge">MLDataUtils</code>, which also lets us effortlessly shuffle our observations and perform a stratified split to get a representative test set.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Function to split samples.</span>
-<span class="k">function</span><span class="nf"> split_data</span><span class="x">(</span><span class="n">df</span><span class="x">,</span> <span class="n">at</span> <span class="o">=</span> <span class="mf">0.70</span><span class="x">)</span>
-    <span class="x">(</span><span class="n">r</span><span class="x">,</span> <span class="n">_</span><span class="x">)</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">df</span><span class="x">)</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">round</span><span class="x">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">at</span><span class="x">))</span>
-    <span class="n">train</span> <span class="o">=</span> <span class="n">df</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">index</span><span class="x">,</span> <span class="o">:</span><span class="x">]</span>
-    <span class="n">test</span>  <span class="o">=</span> <span class="n">df</span><span class="x">[(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="x">)</span><span class="o">:</span><span class="k">end</span><span class="x">,</span> <span class="o">:</span><span class="x">]</span>
-    <span class="k">return</span> <span class="n">train</span><span class="x">,</span> <span class="n">test</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> split_data</span><span class="x">(</span><span class="n">df</span><span class="x">,</span> <span class="n">target</span><span class="x">;</span> <span class="n">at</span> <span class="o">=</span> <span class="mf">0.70</span><span class="x">)</span>
+    <span class="n">shuffled</span> <span class="o">=</span> <span class="n">shuffleobs</span><span class="x">(</span><span class="n">df</span><span class="x">)</span>
+    <span class="n">trainset</span><span class="x">,</span> <span class="n">testset</span> <span class="o">=</span> <span class="n">stratifiedobs</span><span class="x">(</span><span class="n">row</span> <span class="o">-&gt;</span> <span class="n">row</span><span class="x">[</span><span class="n">target</span><span class="x">],</span> 
+                                      <span class="n">shuffled</span><span class="x">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">at</span><span class="x">)</span>
 <span class="k">end</span>
 
-<span class="c"># Rescale our columns.</span>
-<span class="n">data</span><span class="o">.</span><span class="n">Balance</span> <span class="o">=</span> <span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">Balance</span> <span class="o">.-</span> <span class="n">mean</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">Balance</span><span class="x">))</span> <span class="o">./</span> <span class="n">std</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">Balance</span><span class="x">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">Income</span> <span class="o">=</span> <span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">Income</span> <span class="o">.-</span> <span class="n">mean</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">Income</span><span class="x">))</span> <span class="o">./</span> <span class="n">std</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">Income</span><span class="x">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="x">[</span><span class="o">:</span><span class="n">StudentNum</span><span class="x">,</span> <span class="o">:</span><span class="n">Balance</span><span class="x">,</span> <span class="o">:</span><span class="n">Income</span><span class="x">]</span>
+<span class="n">numerics</span> <span class="o">=</span> <span class="x">[</span><span class="o">:</span><span class="n">Balance</span><span class="x">,</span> <span class="o">:</span><span class="n">Income</span><span class="x">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="o">:</span><span class="n">DefaultNum</span>
 
-<span class="c"># Split our dataset 5/95 into training/test sets.</span>
-<span class="n">train</span><span class="x">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">split_data</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="mf">0.05</span><span class="x">);</span>
+<span class="n">trainset</span><span class="x">,</span> <span class="n">testset</span> <span class="o">=</span> <span class="n">split_data</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">target</span><span class="x">,</span> <span class="n">at</span> <span class="o">=</span> <span class="mf">0.05</span><span class="x">)</span>
+<span class="k">for</span> <span class="n">feature</span> <span class="k">in</span> <span class="n">numerics</span>
+  <span class="n">μ</span><span class="x">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">rescale!</span><span class="x">(</span><span class="n">trainset</span><span class="x">[</span><span class="o">!</span><span class="x">,</span> <span class="n">feature</span><span class="x">],</span> <span class="n">obsdim</span><span class="o">=</span><span class="mi">1</span><span class="x">)</span>
+  <span class="n">rescale!</span><span class="x">(</span><span class="n">testset</span><span class="x">[</span><span class="o">!</span><span class="x">,</span> <span class="n">feature</span><span class="x">],</span> <span class="n">μ</span><span class="x">,</span> <span class="n">σ</span><span class="x">,</span> <span class="n">obsdim</span><span class="o">=</span><span class="mi">1</span><span class="x">)</span>
+<span class="k">end</span>
 
-<span class="c"># Create our labels. These are the values we are trying to predict.</span>
-<span class="n">train_label</span> <span class="o">=</span> <span class="n">train</span><span class="x">[</span><span class="o">:</span><span class="x">,</span><span class="o">:</span><span class="n">DefaultNum</span><span class="x">]</span>
-<span class="n">test_label</span> <span class="o">=</span> <span class="n">test</span><span class="x">[</span><span class="o">:</span><span class="x">,</span><span class="o">:</span><span class="n">DefaultNum</span><span class="x">]</span>
-
-<span class="c"># Remove the columns that are not our predictors.</span>
-<span class="n">train</span> <span class="o">=</span> <span class="n">train</span><span class="x">[</span><span class="o">:</span><span class="x">,[</span><span class="o">:</span><span class="n">StudentNum</span><span class="x">,</span> <span class="o">:</span><span class="n">Balance</span><span class="x">,</span> <span class="o">:</span><span class="n">Income</span><span class="x">]];</span>
-<span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="x">[</span><span class="o">:</span><span class="x">,[</span><span class="o">:</span><span class="n">StudentNum</span><span class="x">,</span> <span class="o">:</span><span class="n">Balance</span><span class="x">,</span> <span class="o">:</span><span class="n">Income</span><span class="x">]];</span>
-</code></pre></div></div>
-
-<p>Our <code class="language-plaintext highlighter-rouge">train</code> and <code class="language-plaintext highlighter-rouge">test</code> matrices are still in the <code class="language-plaintext highlighter-rouge">DataFrame</code> format, which tends not to play too well with the kind of manipulations we’re about to do, so we convert them into <code class="language-plaintext highlighter-rouge">Matrix</code> objects.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert the DataFrame objects to matrices.</span>
-<span class="n">train</span> <span class="o">=</span> <span class="kt">Matrix</span><span class="x">(</span><span class="n">train</span><span class="x">);</span>
-<span class="n">test</span> <span class="o">=</span> <span class="kt">Matrix</span><span class="x">(</span><span class="n">test</span><span class="x">);</span>
+<span class="c"># Turing requires data in matrix form, not dataframe</span>
+<span class="n">train</span> <span class="o">=</span> <span class="kt">Matrix</span><span class="x">(</span><span class="n">trainset</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">features</span><span class="x">])</span>
+<span class="n">test</span> <span class="o">=</span> <span class="kt">Matrix</span><span class="x">(</span><span class="n">testset</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">features</span><span class="x">])</span>
+<span class="n">train_label</span> <span class="o">=</span> <span class="n">trainset</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">target</span><span class="x">]</span>
+<span class="n">test_label</span> <span class="o">=</span> <span class="n">testset</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">target</span><span class="x">];</span>
 </code></pre></div></div>
 
 <h2 id="model-declaration">Model Declaration</h2>
@@ -918,20 +910,20 @@ false
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
 
 Summary Statistics
-  parameters     mean     std  naive_se    mcse       ess   r_hat
-  ──────────  ───────  ──────  ────────  ──────  ────────  ──────
-     balance   1.7910  0.3220    0.0048  0.0087  271.8875  1.0019
-      income  -0.1394  0.3320    0.0049  0.0111  991.7991  1.0010
-   intercept  -4.1193  0.4756    0.0071  0.0147  163.4210  1.0001
-     student  -0.9149  0.6302    0.0094  0.0302  650.1722  1.0046
+  parameters     mean     std  naive_se    mcse        ess   r_hat
+  ──────────  ───────  ──────  ────────  ──────  ─────────  ──────
+     balance   1.6517  0.3099    0.0046  0.0080   110.2122  1.0004
+      income  -0.5174  0.3241    0.0048  0.0081  1440.4337  1.0010
+   intercept  -3.8265  0.5148    0.0077  0.0148    54.8792  1.0004
+     student  -1.8662  0.6088    0.0091  0.0223   840.9122  1.0037
 
 Quantiles
   parameters     2.5%    25.0%    50.0%    75.0%    97.5%
   ──────────  ───────  ───────  ───────  ───────  ───────
-     balance   1.2168   1.5819   1.7784   1.9798   2.3970
-      income  -0.7735  -0.3582  -0.1372   0.0831   0.4892
-   intercept  -5.0109  -4.3876  -4.0866  -3.8198  -3.3232
-     student  -2.1533  -1.3321  -0.9115  -0.5011   0.3324
+     balance   1.1418   1.4534   1.6331   1.8242   2.2196
+      income  -1.1678  -0.7300  -0.5094  -0.3006   0.1079
+   intercept  -4.6202  -4.0685  -3.7947  -3.5465  -3.0855
+     student  -3.0690  -2.2803  -1.8574  -1.4528  -0.7137
 </code></pre></div></div>
 
 <p>Since we ran multiple chains, we may as well do a spot check to make sure each chain converges around similar points.</p>
@@ -939,7 +931,7 @@ Quantiles
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="2_LogisticRegression_files/2_LogisticRegression_15_0.svg" alt="svg" /></p>
+<p><img src="2_LogisticRegression_files/2_LogisticRegression_13_0.svg" alt="svg" /></p>
 
 <p>Looks good!</p>
 
@@ -952,7 +944,7 @@ Quantiles
 <span class="n">corner</span><span class="x">(</span><span class="n">chain</span><span class="x">,</span> <span class="n">l</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="2_LogisticRegression_files/2_LogisticRegression_17_0.svg" alt="svg" /></p>
+<p><img src="2_LogisticRegression_files/2_LogisticRegression_15_0.svg" alt="svg" /></p>
 
 <p>Fortunately the corner plot appears to demonstrate unimodal distributions for each of our parameters, so it should be straightforward to take the means of each parameter’s sampled values to estimate our model to make predictions.</p>
 
@@ -987,10 +979,10 @@ Quantiles
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
-<p>Let’s see how we did! We run the test matrix through the prediction function, and compute the <a href="https://en.wikipedia.org/wiki/Mean_squared_error">mean squared error</a> (MSE) for our prediction. The <code class="language-plaintext highlighter-rouge">threshold</code> variable sets the sensitivity of the predictions. For example, a threshold of 0.10 will predict a defualt value of 1 for any predicted value greater than 1.0 and no default if it is less than 0.10.</p>
+<p>Let’s see how we did! We run the test matrix through the prediction function, and compute the <a href="https://en.wikipedia.org/wiki/Mean_squared_error">mean squared error</a> (MSE) for our prediction. The <code class="language-plaintext highlighter-rouge">threshold</code> variable sets the sensitivity of the predictions. For example, a threshold of 0.07 will predict a defualt value of 1 for any predicted value greater than 0.07 and no default if it is less than 0.07.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set the prediction threshold.</span>
-<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.10</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.07</span>
 
 <span class="c"># Make the predictions.</span>
 <span class="n">predictions</span> <span class="o">=</span> <span class="n">prediction</span><span class="x">(</span><span class="n">test</span><span class="x">,</span> <span class="n">chain</span><span class="x">,</span> <span class="n">threshold</span><span class="x">)</span>
@@ -999,7 +991,7 @@ Quantiles
 <span class="n">loss</span> <span class="o">=</span> <span class="n">sum</span><span class="x">((</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">test_label</span><span class="x">)</span><span class="o">.^</span><span class="mi">2</span><span class="x">)</span> <span class="o">/</span> <span class="n">length</span><span class="x">(</span><span class="n">test_label</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.09273684210526316
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.1163157894736842
 </code></pre></div></div>
 
 <p>Perhaps more important is to see what percentage of defaults we correctly predicted. The code below simply counts defaults and predictions and presents the results.</p>
@@ -1019,15 +1011,15 @@ Quantiles
     Percentage non-defaults correct </span><span class="si">$$</span><span class="s">(predicted_not_defaults/not_defaults)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults: 317.0
-    Predictions: 259
-    Percentage defaults correct 0.8170347003154574
-Not defaults: 9183.0
-    Predictions: 8360
-    Percentage non-defaults correct 0.9103778721550692
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults: 316.0
+    Predictions: 265
+    Percentage defaults correct 0.8386075949367089
+Not defaults: 9184.0
+    Predictions: 8130
+    Percentage non-defaults correct 0.8852351916376306
 </code></pre></div></div>
 
-<p>The above shows that with a threshold of 0.10, we correctly predict a respectable portion of the defaults, and correctly identify most non-defaults. This is fairly sensitive to a choice of threshold, and you may wish to experiment with it.</p>
+<p>The above shows that with a threshold of 0.07, we correctly predict a respectable portion of the defaults, and correctly identify most non-defaults. This is fairly sensitive to a choice of threshold, and you may wish to experiment with it.</p>
 
 <p>This tutorial has demonstrated how to use Turing to perform Bayesian logistic regression.</p>
 
