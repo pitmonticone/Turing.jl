@@ -188,10 +188,10 @@ uuid = "997ab1e6-3595-5248-9280-8efb232c3433"
 version = "0.2.0"
 
 [[DynamicPPL]]
-deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools", "ZygoteRules"]
-git-tree-sha1 = "ef91448d0e730589dd085b14fa15f03062aa47a6"
+deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools", "Random", "ZygoteRules"]
+git-tree-sha1 = "6882d5ae78d8851f70ee256122f21ea88d7ab792"
 uuid = "366bfd00-2699-11ea-058f-f148b4cae6d8"
-version = "0.6.0"
+version = "0.7.1"
 
 [[EllipsisNotation]]
 git-tree-sha1 = "65dad386e877850e6fce4fc77f60fe75a468ce9d"
