@@ -246,13 +246,6 @@
 
 <p>We want to emphasize that you should look to the original paper rather than this post for developments and analysis of the model. We are not aiming to make any claims about the validity or the implications of the model and refer to <a href="https://www.imperial.ac.uk/mrc-global-infectious-disease-analysis/covid-19/report-13-europe-npi-impact/">Imperial Report 13</a> for details on the model itself. This post’s purpose is only to add tiny bit of validation to the <em>inference</em> performed in the paper by obtaining the same results using a different probabilistic programming language (PPL) and to explore whether or not <code class="highlighter-rouge">Turing.jl</code> can be useful for researchers working on these problems.</p>
 
-<div id="plot-3" class="plotly"></div>
-<script>
- Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/plot2.json", function(err, fig) {
-   Plotly.plot("plot-3", fig.data, fig.layout, {responsive: true});
- });
-</script>
-
 <p>All code and inference results shown in this post can be found <a href="https://github.com/TuringLang/Covid19">here</a>.</p>
 
 <h1 id="setup">Setup</h1>
@@ -284,79 +277,39 @@
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4
 </code></pre></div></div>
 
-<p>Here’s a summary of the setup:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Pkg</span>
-<span class="n">Pkg</span><span class="o">.</span><span class="n">status</span><span class="x">()</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Project Covid19 v0.1.0
-Status `~/Projects/mine/Covid19/Project.toml`
-  [dce04be8] ArgCheck v2.0.0
-  [c7e460c6] ArgParse v1.1.0
-  [131c737c] ArviZ v0.4.1
-  [76274a88] Bijectors v0.6.7 #tor/using-bijectors-in-link-and-invlink (https://github.com/TuringLang/Bijectors.jl.git)
-  [336ed68f] CSV v0.6.1
-  [a93c6f00] DataFrames v0.20.2
-  [31c24e10] Distributions v0.23.2
-  [ced4e74d] DistributionsAD v0.4.10
-  [634d3b9d] DrWatson v1.10.2
-  [1a297f60] FillArrays v0.8.7
-  [58dd65bb] Plotly v0.3.0
-  [f0f68f2c] PlotlyJS v0.13.1
-  [91a5bcdd] Plots v1.1.2
-  [438e738f] PyCall v1.91.4
-  [d330b81b] PyPlot v2.9.0
-  [df47a6cb] RData v0.7.1
-  [2913bbd2] StatsBase v0.33.0
-  [f3b207a7] StatsPlots v0.14.5
-  [fce5fe82] Turing v0.11.0 #tor/modelling-temporary (https://github.com/TuringLang/Turing.jl.git)
-  [9a3f8284] Random 
-  [10745b16] Statistics 
-</code></pre></div></div>
-
 <p>In the Github project you will find a <code class="highlighter-rouge">Manifest.toml</code>. This means that if you’re working directory is the project directory, and you do <code class="highlighter-rouge">julia --project</code> followed by <code class="highlighter-rouge">] instantiate</code> you will have <em>exactly</em> the same enviroment as we had when performing this analysis.</p>
 
 <details><summary><p>Overloading some functionality in <code class="highlighter-rouge">DrWatson.jl</code></p>
 </summary>
-<p>As mentioned <code class="highlighter-rouge">DrWatson.jl</code> provides a lot of convenience functions for working in a project, and one of them is <code class="highlighter-rouge">projectdir(args...)</code> which will resolve join the <code class="highlighter-rouge">args</code> to the absolute path of the project directory. In similar fashion it provides a <code class="highlighter-rouge">datadir</code> method which defaults to <code class="highlighter-rouge">projectdir("data")</code>. But to remove the possibility of making a type later on when writing <code class="highlighter-rouge">datadir("imperial-report13")</code>, we’ll overload this method for this notebook:</p>
+<p>As mentioned <code class="highlighter-rouge">DrWatson.jl</code> provides a lot of convenience functions for working in a project, and one of them is <code class="highlighter-rouge">projectdir(args...)</code> which will resolve join the <code class="highlighter-rouge">args</code> to the absolute path of the project directory. We add a <code class="highlighter-rouge">outdir</code> method for resolving the paths for some of the files we will be loading.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="n">DrWatson</span><span class="o">:</span> <span class="n">datadir</span>
-
-<span class="n">outdir</span><span class="x">()</span> <span class="o">=</span> <span class="n">projectdir</span><span class="x">(</span><span class="s">"out"</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">outdir</span><span class="x">()</span> <span class="o">=</span> <span class="n">projectdir</span><span class="x">(</span><span class="s">"out"</span><span class="x">)</span>
 <span class="n">outdir</span><span class="x">(</span><span class="n">args</span><span class="o">...</span><span class="x">)</span> <span class="o">=</span> <span class="n">projectdir</span><span class="x">(</span><span class="s">"out"</span><span class="x">,</span> <span class="n">args</span><span class="o">...</span><span class="x">)</span>
-
-<span class="n">datadir</span><span class="x">()</span> <span class="o">=</span> <span class="n">projectdir</span><span class="x">(</span><span class="s">"data"</span><span class="x">,</span> <span class="s">"imperial-report13"</span><span class="x">)</span>
-<span class="n">datadir</span><span class="x">(</span><span class="n">s</span><span class="o">...</span><span class="x">)</span> <span class="o">=</span> <span class="n">projectdir</span><span class="x">(</span><span class="s">"data"</span><span class="x">,</span> <span class="s">"imperial-report13"</span><span class="x">,</span> <span class="n">s</span><span class="o">...</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>datadir (generic function with 2 methods)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>outdir (generic function with 2 methods)
 </code></pre></div></div>
 
 </details>
 
 <h1 id="data">Data</h1>
 
-<p>To ensure consistency with the original model from the paper (and to stay up-to-date with the changes made), we preprocessed the data using the <code class="highlighter-rouge">base.r</code> script from the <a href="https://github.com/ImperialCollegeLondon/covid19model/tree/6ee3010a58a57cc14a16545ae897ca668b7c9096">original repository (#6ee3010)</a> and store the processed data in a <code class="highlighter-rouge">processed.rds</code> file. To load this RDS file obtained from the R script, we make use of the RData.jl package which allows us to load the RDS file into a Julia <code class="highlighter-rouge">Dict</code>.</p>
+<p>To ensure consistency with the original implementation from the paper, the <code class="highlighter-rouge">data</code> (or input) is obtained using the <code class="highlighter-rouge">base.r</code> script from the <a href="https://github.com/ImperialCollegeLondon/covid19model/tree/6ee3010a58a57cc14a16545ae897ca668b7c9096">original repository (#6ee3010)</a>, with the exception of renaming some variables. Hence the input should be identical to the input outlined in the paper, and we defer a thorough description of the inputs to their excellent <a href="https://github.com/ImperialCollegeLondon/covid19model/tree/6ee3010a58a57cc14a16545ae897ca668b7c9096/Technical_description_of_Imperial_COVID_19_Model.pdf">techical report (#6ee3010)</a>. Here’s a short summary of the inputs to the model:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">RData</span>
+<ul>
+  <li><code class="highlighter-rouge">cases</code> and <code class="highlighter-rouge">deaths</code> which are <em>daily</em> recorded cases and deaths, respectively</li>
+  <li><code class="highlighter-rouge">covariates</code> which refers to different interventions taken by the country, e.g. closing schools and universities</li>
+  <li><code class="highlighter-rouge">epidemic_start</code> which refers to be “start of the epidemic” in a specific country, which is defined as 30 days prior to the first 10 cumulative recorded deaths</li>
+  <li><code class="highlighter-rouge">serial_intervals</code> which are pre-computed serial intervals → see their technical report for their estimation technique</li>
+  <li><code class="highlighter-rouge">π</code> (see model definition below)</li>
+</ul>
+
+<p>The procssed data (using their <code class="highlighter-rouge">base.r</code>) is stored in <code class="highlighter-rouge">out/imperial-report13/processed.rds</code> in the project. To load this RDS we simply do:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">ImperialReport13</span><span class="o">.</span><span class="n">load_data</span><span class="x">(</span><span class="n">datadir</span><span class="x">(</span><span class="s">"imperial-report13"</span><span class="x">,</span> <span class="s">"processed.rds"</span><span class="x">));</span>
 </code></pre></div></div>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rdata_full</span> <span class="o">=</span> <span class="n">load</span><span class="x">(</span><span class="n">datadir</span><span class="x">(</span><span class="s">"processed.rds"</span><span class="x">))</span>
-<span class="n">rdata</span> <span class="o">=</span> <span class="n">rdata_full</span><span class="x">[</span><span class="s">"stan_data"</span><span class="x">];</span>
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">keys</span><span class="x">(</span><span class="n">rdata_full</span><span class="x">)</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Base.KeySet for a Dict{String,Int64} with 4 entries. Keys:
-  "reported_cases"
-  "stan_data"
-  "deaths_by_country"
-  "dates"
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_to_dates</span> <span class="o">=</span> <span class="n">d</span> <span class="o">=</span> <span class="kt">Dict</span><span class="x">([(</span><span class="n">k</span><span class="x">,</span> <span class="n">rdata_full</span><span class="x">[</span><span class="s">"dates"</span><span class="x">][</span><span class="n">k</span><span class="x">])</span> <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="n">keys</span><span class="x">(</span><span class="n">rdata_full</span><span class="x">[</span><span class="s">"dates"</span><span class="x">])])</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_to_dates</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">country_to_dates</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dict{String,Array{Date,1}} with 14 entries:
@@ -376,105 +329,20 @@ Status `~/Projects/mine/Covid19/Project.toml`
   "Austria"        =&gt; Date[2020-02-22, 2020-02-23, 2020-02-24, 2020-02-25, 2020…
 </code></pre></div></div>
 
-<p>Since the data-format is not native Julia there might be some discrepancies in the <em>types</em> of the some data fields, and so we need to do some type-conversion of the loaded <code class="highlighter-rouge">rdata</code>. We also rename a lot of the fields to make it more understandable and for an easier mapping to our implementation of the model. Feel free to skip this snippet.</p>
+<p>For convenience we can extract the some of the loadeded data into global variables:</p>
 
-<details><summary><p>Data wrangling</p>
-</summary>
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert some misparsed fields</span>
-<span class="n">rdata</span><span class="x">[</span><span class="s">"N2"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">rdata</span><span class="x">[</span><span class="s">"N2"</span><span class="x">]);</span>
-<span class="n">rdata</span><span class="x">[</span><span class="s">"N0"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">rdata</span><span class="x">[</span><span class="s">"N0"</span><span class="x">]);</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">countries</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">countries</span><span class="x">;</span>
+<span class="n">num_countries</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">countries</span><span class="x">);</span>
+<span class="n">covariate_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">covariate_names</span><span class="x">;</span>
 
-<span class="n">rdata</span><span class="x">[</span><span class="s">"EpidemicStart"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">rdata</span><span class="x">[</span><span class="s">"EpidemicStart"</span><span class="x">]);</span>
+<span class="n">lockdown_index</span> <span class="o">=</span> <span class="n">findfirst</span><span class="x">(</span><span class="o">==</span><span class="x">(</span><span class="s">"lockdown"</span><span class="x">),</span> <span class="n">covariate_names</span><span class="x">)</span>
 
-<span class="n">rdata</span><span class="x">[</span><span class="s">"cases"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">rdata</span><span class="x">[</span><span class="s">"cases"</span><span class="x">]);</span>
-<span class="n">rdata</span><span class="x">[</span><span class="s">"deaths"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">rdata</span><span class="x">[</span><span class="s">"deaths"</span><span class="x">]);</span>
-
-<span class="c"># Stan will fail if these are `nothing` so we make them empty arrays</span>
-<span class="n">rdata</span><span class="x">[</span><span class="s">"x"</span><span class="x">]</span> <span class="o">=</span> <span class="x">[]</span>
-<span class="n">rdata</span><span class="x">[</span><span class="s">"features"</span><span class="x">]</span> <span class="o">=</span> <span class="x">[]</span>
-
-<span class="n">countries</span> <span class="o">=</span> <span class="x">(</span>
-  <span class="s">"Denmark"</span><span class="x">,</span>
-  <span class="s">"Italy"</span><span class="x">,</span>
-  <span class="s">"Germany"</span><span class="x">,</span>
-  <span class="s">"Spain"</span><span class="x">,</span>
-  <span class="s">"United_Kingdom"</span><span class="x">,</span>
-  <span class="s">"France"</span><span class="x">,</span>
-  <span class="s">"Norway"</span><span class="x">,</span>
-  <span class="s">"Belgium"</span><span class="x">,</span>
-  <span class="s">"Austria"</span><span class="x">,</span> 
-  <span class="s">"Sweden"</span><span class="x">,</span>
-  <span class="s">"Switzerland"</span><span class="x">,</span>
-  <span class="s">"Greece"</span><span class="x">,</span>
-  <span class="s">"Portugal"</span><span class="x">,</span>
-  <span class="s">"Netherlands"</span>
-<span class="x">)</span>
-<span class="n">num_countries</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">countries</span><span class="x">)</span>
-
-<span class="n">names_covariates</span> <span class="o">=</span> <span class="x">(</span><span class="s">"schools_universities"</span><span class="x">,</span> <span class="s">"self_isolating_if_ill"</span><span class="x">,</span> <span class="s">"public_events"</span><span class="x">,</span> <span class="s">"any"</span><span class="x">,</span> <span class="s">"lockdown"</span><span class="x">,</span> <span class="s">"social_distancing_encouraged"</span><span class="x">)</span>
-<span class="n">lockdown_index</span> <span class="o">=</span> <span class="n">findfirst</span><span class="x">(</span><span class="o">==</span><span class="x">(</span><span class="s">"lockdown"</span><span class="x">),</span> <span class="n">names_covariates</span><span class="x">)</span>
-
-
-<span class="k">function</span><span class="nf"> rename</span><span class="o">!</span><span class="x">(</span><span class="n">d</span><span class="x">,</span> <span class="n">names</span><span class="o">::</span><span class="kt">Pair</span><span class="o">...</span><span class="x">)</span>
-    <span class="c"># check that keys are not yet present before updating `d`</span>
-    <span class="k">for</span> <span class="n">k_new</span> <span class="k">in</span> <span class="n">values</span><span class="o">.</span><span class="x">(</span><span class="n">names</span><span class="x">)</span>
-        <span class="nd">@assert</span> <span class="n">k_new</span> <span class="n">∉</span> <span class="n">keys</span><span class="x">(</span><span class="n">d</span><span class="x">)</span> <span class="s">"</span><span class="si">$(k_new) </span><span class="s">already in dictionary"</span>
-    <span class="k">end</span>
-
-    <span class="k">for</span> <span class="x">(</span><span class="n">k_old</span><span class="x">,</span> <span class="n">k_new</span><span class="x">)</span> <span class="k">in</span> <span class="n">names</span>
-        <span class="n">d</span><span class="x">[</span><span class="n">k_new</span><span class="x">]</span> <span class="o">=</span> <span class="n">pop!</span><span class="x">(</span><span class="n">d</span><span class="x">,</span> <span class="n">k_old</span><span class="x">)</span>
-    <span class="k">end</span>
-    <span class="k">return</span> <span class="n">d</span>
-<span class="k">end</span>
-
-<span class="c"># `rdata` is a `DictOfVector` so we convert to a simple `Dict` for simplicity</span>
-<span class="n">d</span> <span class="o">=</span> <span class="kt">Dict</span><span class="x">([(</span><span class="n">k</span><span class="x">,</span> <span class="n">rdata</span><span class="x">[</span><span class="n">k</span><span class="x">])</span> <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="n">keys</span><span class="x">(</span><span class="n">rdata</span><span class="x">)])</span> <span class="c"># `values(df)` and `keys(df)` have different ordering so DON'T do `Dict(keys(df), values(df))`</span>
-
-<span class="c"># Rename some columns</span>
-<span class="n">rename!</span><span class="x">(</span>
-    <span class="n">d</span><span class="x">,</span>
-    <span class="s">"f"</span> <span class="o">=&gt;</span> <span class="s">"π"</span><span class="x">,</span> <span class="s">"SI"</span> <span class="o">=&gt;</span> <span class="s">"serial_intervals"</span><span class="x">,</span> <span class="s">"pop"</span> <span class="o">=&gt;</span> <span class="s">"population"</span><span class="x">,</span>
-    <span class="s">"M"</span> <span class="o">=&gt;</span> <span class="s">"num_countries"</span><span class="x">,</span> <span class="s">"N0"</span> <span class="o">=&gt;</span> <span class="s">"num_impute"</span><span class="x">,</span> <span class="s">"N"</span> <span class="o">=&gt;</span> <span class="s">"num_obs_countries"</span><span class="x">,</span>
-    <span class="s">"N2"</span> <span class="o">=&gt;</span> <span class="s">"num_total_days"</span><span class="x">,</span> <span class="s">"EpidemicStart"</span> <span class="o">=&gt;</span> <span class="s">"epidemic_start"</span><span class="x">,</span>
-    <span class="s">"X"</span> <span class="o">=&gt;</span> <span class="s">"covariates"</span><span class="x">,</span> <span class="s">"P"</span> <span class="o">=&gt;</span> <span class="s">"num_covariates"</span>
-<span class="x">)</span>
-
-<span class="c"># Add some type-information to arrays and replace `-1` with `missing` (as `-1` is supposed to represent, well, missing data)</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"deaths"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"deaths"</span><span class="x">])</span>
-<span class="c"># d["deaths"] = replace(d["deaths"], -1 =&gt; missing)</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"deaths"</span><span class="x">]</span> <span class="o">=</span> <span class="n">collect</span><span class="x">(</span><span class="n">eachcol</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"deaths"</span><span class="x">]))</span> <span class="c"># convert into Array of arrays instead of matrix</span>
-
-<span class="n">d</span><span class="x">[</span><span class="s">"cases"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"cases"</span><span class="x">])</span>
-<span class="c"># d["cases"] = replace(d["cases"], -1 =&gt; missing)</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"cases"</span><span class="x">]</span> <span class="o">=</span> <span class="n">collect</span><span class="x">(</span><span class="n">eachcol</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"cases"</span><span class="x">]))</span> <span class="c"># convert into Array of arrays instead of matrix</span>
-
-<span class="n">d</span><span class="x">[</span><span class="s">"num_covariates"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"num_covariates"</span><span class="x">])</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"num_countries"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"num_countries"</span><span class="x">])</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"num_total_days"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"num_total_days"</span><span class="x">])</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"num_impute"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"num_impute"</span><span class="x">])</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"num_obs_countries"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"num_obs_countries"</span><span class="x">])</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"epidemic_start"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"epidemic_start"</span><span class="x">])</span>
-<span class="n">d</span><span class="x">[</span><span class="s">"population"</span><span class="x">]</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">.</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"population"</span><span class="x">])</span>
-
-<span class="n">d</span><span class="x">[</span><span class="s">"π"</span><span class="x">]</span> <span class="o">=</span> <span class="n">collect</span><span class="x">(</span><span class="n">eachcol</span><span class="x">(</span><span class="n">d</span><span class="x">[</span><span class="s">"π"</span><span class="x">]))</span> <span class="c"># convert into Array of arrays instead of matrix</span>
-
-<span class="c"># Convert 3D array into Array{Matrix}</span>
-<span class="n">covariates</span> <span class="o">=</span> <span class="x">[</span><span class="n">rdata</span><span class="x">[</span><span class="s">"X"</span><span class="x">][</span><span class="n">m</span><span class="x">,</span> <span class="o">:</span><span class="x">,</span> <span class="o">:</span><span class="x">]</span> <span class="k">for</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span><span class="x">]</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="x">(;</span> <span class="x">(</span><span class="n">k</span> <span class="o">=&gt;</span> <span class="n">d</span><span class="x">[</span><span class="kt">String</span><span class="x">(</span><span class="n">k</span><span class="x">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="x">[</span><span class="o">:</span><span class="n">num_countries</span><span class="x">,</span> <span class="o">:</span><span class="n">num_impute</span><span class="x">,</span> <span class="o">:</span><span class="n">num_obs_countries</span><span class="x">,</span> <span class="o">:</span><span class="n">num_total_days</span><span class="x">,</span> <span class="o">:</span><span class="n">cases</span><span class="x">,</span> <span class="o">:</span><span class="n">deaths</span><span class="x">,</span> <span class="o">:</span><span class="nb">π</span><span class="x">,</span> <span class="o">:</span><span class="n">epidemic_start</span><span class="x">,</span> <span class="o">:</span><span class="n">population</span><span class="x">,</span> <span class="o">:</span><span class="n">serial_intervals</span><span class="x">])</span><span class="o">...</span><span class="x">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">merge</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="x">(</span><span class="n">covariates</span> <span class="o">=</span> <span class="n">covariates</span><span class="x">,</span> <span class="x">));</span>
-
-<span class="c"># Can deal with ragged arrays, so we can shave off unobserved data (future) which are just filled with -1</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">merge</span><span class="x">(</span>
-    <span class="n">data</span><span class="x">,</span>
-    <span class="x">(</span><span class="n">cases</span> <span class="o">=</span> <span class="x">[</span><span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">m</span><span class="x">][</span><span class="mi">1</span><span class="o">:</span><span class="n">data</span><span class="o">.</span><span class="n">num_obs_countries</span><span class="x">[</span><span class="n">m</span><span class="x">]]</span> <span class="k">for</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">data</span><span class="o">.</span><span class="n">num_countries</span><span class="x">],</span>
-     <span class="n">deaths</span> <span class="o">=</span> <span class="x">[</span><span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">[</span><span class="n">m</span><span class="x">][</span><span class="mi">1</span><span class="o">:</span><span class="n">data</span><span class="o">.</span><span class="n">num_obs_countries</span><span class="x">[</span><span class="n">m</span><span class="x">]]</span> <span class="k">for</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">data</span><span class="o">.</span><span class="n">num_countries</span><span class="x">])</span>
-<span class="x">);</span>
+<span class="c"># Need to pass arguments to `pystan` as a `Dict` with different names, so we have one instance tailored for `Stan` and one for `Turing.jl`</span>
+<span class="n">stan_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">stan_data</span><span class="x">;</span>
+<span class="n">turing_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="x">;</span>
 </code></pre></div></div>
 
-</details>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="o">.</span><span class="n">num_countries</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num_countries</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>14
@@ -488,7 +356,9 @@ Status `~/Projects/mine/Covid19/Project.toml`
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5
 </code></pre></div></div>
 
-<p>It’s worth noting that the data user here is not quite up-to-date for UK because on <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-30 to.&gt; </span></span> they updated their <em>past</em> numbers by including deaths from care- and nursing-homes (data source: <a href="https://www.ecdc.europa.eu/en">ECDC</a>). Thus if you compare the prediction of the model to real numbers, it’s likely that the real numbers will be a bit higher than what the model predicts.</p>
+<p><span style="color: red;">TODO: remove the text below when we’ve re-run models with updated data!!!</span></p>
+
+<p>It’s worth noting that the data user here is not quite up-to-date for UK because on <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-04-30 to.&gt; </span></span> deaths from care- and nursing-homes were included, and this has then been smoothed over the past days by the <a href="https://www.ecdc.europa.eu/en">ECDC</a>, which is the data source. Thus if you compare the prediction of the model to real numbers, it’s likely that the real numbers will be a bit higher than what the model predicts with the current data.</p>
 
 <h1 id="model">Model</h1>
 
@@ -743,6 +613,8 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
 <span class="n">Turing</span><span class="o">.</span><span class="n">acclogp!</span><span class="x">(</span><span class="n">_varinfo</span><span class="x">,</span> <span class="n">sum</span><span class="x">(</span><span class="n">logps</span><span class="x">))</span>
 </code></pre></div></div>
 
+<p>You can find the resulting model in the project.</p>
+
 <details><summary><p>Explanation of what we just did</p>
 </summary>
 <p>It might be worth explaining a bit about what’s going on here. First we should explain what the deal is with <code class="highlighter-rouge">_varinfo</code>. <code class="highlighter-rouge">_varinfo</code> is basically the object used internally in Turing to track the sampled variables and the log-pdf <em>for a particular evaluation</em> of the model, and so <code class="highlighter-rouge">acclogp!(_varinfo, lp)</code> will increment the log-pdf stored in <code class="highlighter-rouge">_varinfo</code> by <code class="highlighter-rouge">lp</code>. With that we can explain what happens to <code class="highlighter-rouge">~</code> inside the <code class="highlighter-rouge">@macro</code>. Using the old observe-snippet as an example, the <code class="highlighter-rouge">@model</code> macro replaces <code class="highlighter-rouge">~</code> with</p>
@@ -756,141 +628,26 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
 
 </details>
 
-<h3 id="final-model">Final model</h3>
-
-<p>This results in the following model definition</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> model_v2</span><span class="x">(</span>
-    <span class="n">num_impute</span><span class="x">,</span>        <span class="c"># [Int] num. of days for which to impute infections</span>
-    <span class="n">num_total_days</span><span class="x">,</span>    <span class="c"># [Int] days of observed data + num. of days to forecast</span>
-    <span class="n">cases</span><span class="x">,</span>             <span class="c"># [AbstractVector{&lt;:AbstractVector{&lt;:Int}}] reported cases</span>
-    <span class="n">deaths</span><span class="x">,</span>            <span class="c"># [AbstractVector{&lt;:AbstractVector{&lt;:Int}}] reported deaths; rows indexed by i &gt; N contain -1 and should be ignored</span>
-    <span class="nb">π</span><span class="x">,</span>                 <span class="c"># [AbstractVector{&lt;:AbstractVector{&lt;:Real}}] h * s</span>
-    <span class="n">covariates</span><span class="x">,</span>        <span class="c"># [Vector{&lt;:AbstractMatrix}]</span>
-    <span class="n">epidemic_start</span><span class="x">,</span>    <span class="c"># [AbstractVector{&lt;:Int}]</span>
-    <span class="n">population</span><span class="x">,</span>        <span class="c"># [AbstractVector{&lt;:Real}]</span>
-    <span class="n">serial_intervals</span><span class="x">,</span>  <span class="c"># [AbstractVector{&lt;:Real}] fixed pre-calculated serial interval (SI) using empirical data from Neil</span>
-    <span class="n">lockdown_index</span><span class="x">,</span>    <span class="c"># [Int] the index for the `lockdown` covariate in `covariates`</span>
-    <span class="n">predict</span><span class="o">=</span><span class="nb">false</span><span class="x">,</span>     <span class="c"># [Bool] if `false`, will only compute what's needed to `observe` but not more</span>
-    <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">TV</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">Float64</span><span class="x">}</span>
-<span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">TV</span><span class="x">}</span>
-    <span class="c"># `covariates` should be of length `num_countries` and each entry correspond to a matrix of size `(num_total_days, num_covariates)`</span>
-    <span class="n">num_covariates</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">covariates</span><span class="x">[</span><span class="mi">1</span><span class="x">],</span> <span class="mi">2</span><span class="x">)</span>
-    <span class="n">num_countries</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">cases</span><span class="x">)</span>
-    <span class="n">num_obs_countries</span> <span class="o">=</span> <span class="n">length</span><span class="o">.</span><span class="x">(</span><span class="n">cases</span><span class="x">)</span>
-
-    <span class="c"># If we don't want to predict the future, we only need to compute up-to time-step `num_obs_countries[m]`</span>
-    <span class="n">last_time_steps</span> <span class="o">=</span> <span class="n">predict</span> <span class="o">?</span> <span class="n">fill</span><span class="x">(</span><span class="n">num_total_days</span><span class="x">,</span> <span class="n">num_countries</span><span class="x">)</span> <span class="o">:</span> <span class="n">num_obs_countries</span>
-
-    <span class="c"># Latent variables</span>
-    <span class="n">τ</span> <span class="o">~</span> <span class="n">Exponential</span><span class="x">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">0.03</span><span class="x">)</span> <span class="c"># `Exponential` has inverse parameterization of the one in Stan</span>
-    <span class="n">y</span> <span class="o">~</span> <span class="n">filldist</span><span class="x">(</span><span class="n">Exponential</span><span class="x">(</span><span class="n">τ</span><span class="x">),</span> <span class="n">num_countries</span><span class="x">)</span>
-    <span class="n">ϕ</span> <span class="o">~</span> <span class="n">truncated</span><span class="x">(</span><span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">0</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">)</span>
-    <span class="n">κ</span> <span class="o">~</span> <span class="n">truncated</span><span class="x">(</span><span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="mf">0.5</span><span class="x">),</span> <span class="mi">0</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">)</span>
-    <span class="n">μ</span> <span class="o">~</span> <span class="n">filldist</span><span class="x">(</span><span class="n">truncated</span><span class="x">(</span><span class="n">Normal</span><span class="x">(</span><span class="mf">3.28</span><span class="x">,</span> <span class="n">κ</span><span class="x">),</span> <span class="mi">0</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">),</span> <span class="n">num_countries</span><span class="x">)</span>
-
-    <span class="n">α_hier</span> <span class="o">~</span> <span class="n">filldist</span><span class="x">(</span><span class="n">Gamma</span><span class="x">(</span><span class="o">.</span><span class="mi">1667</span><span class="x">,</span> <span class="mi">1</span><span class="x">),</span> <span class="n">num_covariates</span><span class="x">)</span>
-    <span class="n">α</span> <span class="o">=</span> <span class="n">α_hier</span> <span class="o">.-</span> <span class="n">log</span><span class="x">(</span><span class="mf">1.05</span><span class="x">)</span> <span class="o">/</span> <span class="mf">6.</span>
-
-    <span class="n">ifr_noise</span> <span class="o">~</span> <span class="n">filldist</span><span class="x">(</span><span class="n">truncated</span><span class="x">(</span><span class="n">Normal</span><span class="x">(</span><span class="mf">1.</span><span class="x">,</span> <span class="mf">0.1</span><span class="x">),</span> <span class="mi">0</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">),</span> <span class="n">num_countries</span><span class="x">)</span>
-
-    <span class="c"># lockdown-related</span>
-    <span class="n">γ</span> <span class="o">~</span> <span class="n">truncated</span><span class="x">(</span><span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="mf">0.2</span><span class="x">),</span> <span class="mi">0</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">)</span>
-    <span class="n">lockdown</span> <span class="o">~</span> <span class="n">filldist</span><span class="x">(</span><span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">γ</span><span class="x">),</span> <span class="n">num_countries</span><span class="x">)</span>
-
-    <span class="c"># Initialization of some quantities</span>
-    <span class="n">expected_daily_cases</span> <span class="o">=</span> <span class="n">TV</span><span class="x">[</span><span class="n">TV</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">last_time_steps</span><span class="x">[</span><span class="n">m</span><span class="x">])</span> <span class="k">for</span> <span class="n">m</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span><span class="x">]</span>
-    <span class="n">cases_pred</span> <span class="o">=</span> <span class="n">TV</span><span class="x">[</span><span class="n">TV</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">last_time_steps</span><span class="x">[</span><span class="n">m</span><span class="x">])</span> <span class="k">for</span> <span class="n">m</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span><span class="x">]</span>
-    <span class="n">expected_daily_deaths</span> <span class="o">=</span> <span class="n">TV</span><span class="x">[</span><span class="n">TV</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">last_time_steps</span><span class="x">[</span><span class="n">m</span><span class="x">])</span> <span class="k">for</span> <span class="n">m</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span><span class="x">]</span>
-    <span class="n">Rt</span> <span class="o">=</span> <span class="n">TV</span><span class="x">[</span><span class="n">TV</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">last_time_steps</span><span class="x">[</span><span class="n">m</span><span class="x">])</span> <span class="k">for</span> <span class="n">m</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span><span class="x">]</span>
-    <span class="n">Rt_adj</span> <span class="o">=</span> <span class="n">TV</span><span class="x">[</span><span class="n">TV</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">last_time_steps</span><span class="x">[</span><span class="n">m</span><span class="x">])</span> <span class="k">for</span> <span class="n">m</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span><span class="x">]</span>
-
-    <span class="c"># Loops over countries and perform independent computations for each country</span>
-    <span class="c"># since this model does not include any notion of migration across borders.</span>
-    <span class="c"># =&gt; might has well wrap it in a `@threads` to perform the computation in parallel.</span>
-    <span class="nd">@threads</span> <span class="k">for</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span>
-        <span class="c"># Country-specific parameters</span>
-        <span class="n">π_m</span> <span class="o">=</span> <span class="nb">π</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">pop_m</span> <span class="o">=</span> <span class="n">population</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">expected_daily_cases_m</span> <span class="o">=</span> <span class="n">expected_daily_cases</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">cases_pred_m</span> <span class="o">=</span> <span class="n">cases_pred</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">expected_daily_deaths_m</span> <span class="o">=</span> <span class="n">expected_daily_deaths</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">Rt_m</span> <span class="o">=</span> <span class="n">Rt</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">Rt_adj_m</span> <span class="o">=</span> <span class="n">Rt_adj</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-
-        <span class="n">last_time_step</span> <span class="o">=</span> <span class="n">last_time_steps</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-
-        <span class="c"># Imputation of `num_impute` days</span>
-        <span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">num_impute</span><span class="x">]</span> <span class="o">.=</span> <span class="n">y</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="n">cases_pred_m</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">cases_pred_m</span><span class="x">[</span><span class="mi">1</span><span class="x">])</span>
-        <span class="n">cases_pred_m</span><span class="x">[</span><span class="mi">2</span><span class="o">:</span><span class="n">num_impute</span><span class="x">]</span> <span class="o">.=</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">num_impute</span> <span class="o">-</span> <span class="mi">1</span><span class="x">])</span>
-
-        <span class="n">xs</span> <span class="o">=</span> <span class="n">covariates</span><span class="x">[</span><span class="n">m</span><span class="x">][</span><span class="mi">1</span><span class="o">:</span><span class="n">last_time_step</span><span class="x">,</span> <span class="o">:</span><span class="x">]</span> <span class="c"># extract covariates for the wanted time-steps and country `m`</span>
-        <span class="n">Rt_m</span> <span class="o">.=</span> <span class="n">μ</span><span class="x">[</span><span class="n">m</span><span class="x">]</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="x">(</span><span class="n">xs</span> <span class="o">*</span> <span class="x">(</span><span class="o">-</span><span class="n">α</span><span class="x">)</span> <span class="o">+</span> <span class="x">(</span><span class="o">-</span> <span class="n">lockdown</span><span class="x">[</span><span class="n">m</span><span class="x">])</span> <span class="o">*</span> <span class="n">xs</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">lockdown_index</span><span class="x">])</span>
-
-        <span class="c"># Adjusts for portion of pop that are susceptible</span>
-        <span class="n">Rt_adj_m</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">num_impute</span><span class="x">]</span> <span class="o">.=</span> <span class="x">(</span><span class="n">max</span><span class="o">.</span><span class="x">(</span><span class="n">pop_m</span> <span class="o">.-</span> <span class="n">cases_pred_m</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">num_impute</span><span class="x">],</span> <span class="n">zero</span><span class="x">(</span><span class="n">cases_pred_m</span><span class="x">[</span><span class="mi">1</span><span class="x">]))</span> <span class="o">./</span> <span class="n">pop_m</span><span class="x">)</span> <span class="o">.*</span> <span class="n">Rt_m</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">num_impute</span><span class="x">]</span>
-
-        <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="x">(</span><span class="n">num_impute</span> <span class="o">+</span> <span class="mi">1</span><span class="x">)</span><span class="o">:</span><span class="n">last_time_step</span>
-            <span class="c"># Update cumulative cases</span>
-            <span class="n">cases_pred_m</span><span class="x">[</span><span class="n">t</span><span class="x">]</span> <span class="o">=</span> <span class="n">cases_pred_m</span><span class="x">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="x">]</span> <span class="o">+</span> <span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="x">]</span>
-
-            <span class="c"># Adjusts for portion of pop that are susceptible</span>
-            <span class="n">Rt_adj_m</span><span class="x">[</span><span class="n">t</span><span class="x">]</span> <span class="o">=</span> <span class="x">(</span><span class="n">max</span><span class="x">(</span><span class="n">pop_m</span> <span class="o">-</span> <span class="n">cases_pred_m</span><span class="x">[</span><span class="n">t</span><span class="x">],</span> <span class="n">zero</span><span class="x">(</span><span class="n">cases_pred_m</span><span class="x">[</span><span class="n">t</span><span class="x">]))</span> <span class="o">/</span> <span class="n">pop_m</span><span class="x">)</span> <span class="o">*</span> <span class="n">Rt_m</span><span class="x">[</span><span class="n">t</span><span class="x">]</span>
-
-            <span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="n">t</span><span class="x">]</span> <span class="o">=</span> <span class="n">Rt_adj_m</span><span class="x">[</span><span class="n">t</span><span class="x">]</span> <span class="o">*</span> <span class="n">sum</span><span class="x">(</span><span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="n">τ</span><span class="x">]</span> <span class="o">*</span> <span class="n">serial_intervals</span><span class="x">[</span><span class="n">t</span> <span class="o">-</span> <span class="n">τ</span><span class="x">]</span> <span class="k">for</span> <span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="x">(</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="x">))</span>
-        <span class="k">end</span>
-
-        <span class="n">expected_daily_deaths_m</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span> <span class="o">=</span> <span class="mf">1e-15</span> <span class="o">*</span> <span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">:</span><span class="n">last_time_step</span>
-            <span class="n">expected_daily_deaths_m</span><span class="x">[</span><span class="n">t</span><span class="x">]</span> <span class="o">=</span> <span class="n">sum</span><span class="x">(</span><span class="n">expected_daily_cases_m</span><span class="x">[</span><span class="n">τ</span><span class="x">]</span> <span class="o">*</span> <span class="n">π_m</span><span class="x">[</span><span class="n">t</span> <span class="o">-</span> <span class="n">τ</span><span class="x">]</span> <span class="o">*</span> <span class="n">ifr_noise</span><span class="x">[</span><span class="n">m</span><span class="x">]</span> <span class="k">for</span> <span class="n">τ</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="x">(</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="x">))</span>
-        <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="c"># Observe</span>
-    <span class="c"># Doing observations in parallel provides a small speedup</span>
-    <span class="n">logps</span> <span class="o">=</span> <span class="n">TV</span><span class="x">(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">num_countries</span><span class="x">)</span>
-    <span class="nd">@threads</span> <span class="k">for</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span>
-        <span class="c"># Extract the estimated expected daily deaths for country `m`</span>
-        <span class="n">expected_daily_deaths_m</span> <span class="o">=</span> <span class="n">expected_daily_deaths</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="c"># Extract time-steps for which we have observations</span>
-        <span class="n">ts</span> <span class="o">=</span> <span class="n">epidemic_start</span><span class="x">[</span><span class="n">m</span><span class="x">]</span><span class="o">:</span><span class="n">num_obs_countries</span><span class="x">[</span><span class="n">m</span><span class="x">]</span>
-        <span class="c"># Observe!</span>
-        <span class="n">logps</span><span class="x">[</span><span class="n">m</span><span class="x">]</span> <span class="o">=</span> <span class="n">logpdf</span><span class="x">(</span><span class="n">arraydist</span><span class="x">(</span><span class="n">NegativeBinomial2</span><span class="o">.</span><span class="x">(</span><span class="n">expected_daily_deaths_m</span><span class="x">[</span><span class="n">ts</span><span class="x">],</span> <span class="n">ϕ</span><span class="x">)),</span> <span class="n">deaths</span><span class="x">[</span><span class="n">m</span><span class="x">][</span><span class="n">ts</span><span class="x">])</span>
-    <span class="k">end</span>
-    <span class="n">Turing</span><span class="o">.</span><span class="n">acclogp!</span><span class="x">(</span><span class="n">_varinfo</span><span class="x">,</span> <span class="n">sum</span><span class="x">(</span><span class="n">logps</span><span class="x">))</span>
-
-    <span class="k">return</span> <span class="x">(</span>
-        <span class="n">expected_daily_cases</span> <span class="o">=</span> <span class="n">expected_daily_cases</span><span class="x">,</span>
-        <span class="n">expected_daily_deaths</span> <span class="o">=</span> <span class="n">expected_daily_deaths</span><span class="x">,</span>
-        <span class="n">Rt</span> <span class="o">=</span> <span class="n">Rt</span><span class="x">,</span>
-        <span class="n">Rt_adjusted</span> <span class="o">=</span> <span class="n">Rt_adj</span>
-    <span class="x">)</span>
-<span class="k">end</span><span class="x">;</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Warning: you are using the internal variable `_varinfo`
-└ @ DynamicPPL /homes/tef30/.julia/packages/DynamicPPL/3jy49/src/compiler.jl:175
-</code></pre></div></div>
+<h3 id="instantiating-the-model">Instantiating the model</h3>
 
 <p>We define an alias <code class="highlighter-rouge">model_def</code> so that if we want to try out a different model, there’s only one point in the notebook which we need to change.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model_def</span> <span class="o">=</span> <span class="n">model_v2</span><span class="x">;</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model_def</span> <span class="o">=</span> <span class="n">ImperialReport13</span><span class="o">.</span><span class="n">model_v2</span><span class="x">;</span>
 </code></pre></div></div>
 
 <p>The input data have up to 30-40 days of unobserved future data which we might want to predict on. But during sampling we don’t want to waste computation on sampling for the future for which we do not have any observations. Therefore we have an argument <code class="highlighter-rouge">predict::Bool</code> in the model which allows us to specify whether or not to generate future quantities.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Model instantance used to for inference</span>
 <span class="n">m_no_pred</span> <span class="o">=</span> <span class="n">model_def</span><span class="x">(</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
     <span class="n">lockdown_index</span><span class="x">,</span>
     <span class="nb">false</span> <span class="c"># &lt;= DON'T predict</span>
 <span class="x">);</span>
@@ -898,15 +655,15 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Model instance used for prediction</span>
 <span class="n">m</span> <span class="o">=</span> <span class="n">model_def</span><span class="x">(</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
     <span class="n">lockdown_index</span><span class="x">,</span>
     <span class="nb">true</span> <span class="c"># &lt;= predict</span>
 <span class="x">);</span>
@@ -919,104 +676,100 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>100-element Array{Float64,1}:
- 0.2978422827487166
- 0.2978422827487166
- 0.2978422827487166
- 0.2978422827487166
- 0.2978422827487166
- 0.2978422827487166
- 0.832817101553483
- 1.0346063917235566
- 1.3678178161493468
- 1.8604943842674377
- 2.546129501657631
- 3.4852378065416523
- 4.768875412263893
- ⋮
- 0.24406116233616038
- 0.17186744515247868
- 0.1208474970159245
- 0.08485139699103932
- 0.05949579772505278
- 0.04166274540068994
- 0.029138775736189983
- 0.02035555519759347
- 0.014203911930339133
- 0.009900796534873262
- 0.00689432670057081
- 0.004796166095549548
+      5.887664668479525
+      5.887664668479525
+      5.887664668479525
+      5.887664668479525
+      5.887664668479525
+      5.887664668479525
+      8.854759426344241
+     10.606503398588705
+     12.602788016861936
+     14.993166658770727
+     17.866451002220067
+     21.30827613672178
+     25.420827498883103
+      ⋮
+ 855054.8042720843
+ 942514.8202567706
+      1.0349380137200175e6
+      1.1316017068846978e6
+      1.2315014612695938e6
+      1.333325285600925e6
+      1.4354406924536768e6
+      1.5359002737704832e6
+      1.6324714430765258e6
+      1.7226950769818595e6
+      1.803975729475767e6
+      1.873702782384192e6
 </code></pre></div></div>
 
 <h1 id="visualization-utilities">Visualization utilities</h1>
 
 <p>For visualisation we of course use <a href="https://github.com/JuliaPlots/Plots.jl">Plots.jl</a>, and in this case we’re going to use the <code class="highlighter-rouge">pyplot</code> backend which uses Python’s matplotlib under the hood.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Plots</span><span class="x">,</span> <span class="n">StatsPlots</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Plots</span><span class="x">,</span> <span class="n">StatsPlots</span><span class="x">,</span> <span class="n">LaTeXStrings</span>
 </code></pre></div></div>
 
 <details><summary><p>Method definition for plotting the predictive distribution</p>
 </summary>
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Ehh, this can be made nicer...</span>
-<span class="k">function</span><span class="nf"> country_prediction_plot</span><span class="x">(</span><span class="n">country_idx</span><span class="x">,</span> <span class="n">predictions_country</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">,</span> <span class="n">e_deaths_country</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">,</span> <span class="n">Rt_country</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">;</span> <span class="n">normalize_pop</span><span class="o">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">main_title</span><span class="o">=</span><span class="s">""</span><span class="x">)</span>
-    <span class="n">pop</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
-    <span class="n">num_total_days</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span>
-    <span class="n">num_observed_days</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">country_idx</span><span class="x">])</span>
+<span class="k">function</span><span class="nf"> country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="o">::</span><span class="n">ImperialReport13</span><span class="o">.</span><span class="n">Data</span><span class="x">,</span> <span class="n">country_idx</span><span class="x">,</span> <span class="n">predictions_country</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">,</span> <span class="n">e_deaths_country</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">,</span> <span class="n">Rt_country</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">;</span> <span class="n">normalize_pop</span><span class="o">::</span><span class="kt">Bool</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">main_title</span><span class="o">=</span><span class="s">""</span><span class="x">)</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
+    <span class="n">num_total_days</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span>
+    <span class="n">num_observed_days</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">country_idx</span><span class="x">])</span>
 
     <span class="n">country_name</span> <span class="o">=</span> <span class="n">countries</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
     <span class="n">start_date</span> <span class="o">=</span> <span class="n">first</span><span class="x">(</span><span class="n">country_to_dates</span><span class="x">[</span><span class="n">country_name</span><span class="x">])</span>
-    <span class="n">dates</span> <span class="o">=</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">fill</span><span class="x">(</span><span class="kt">Day</span><span class="x">(</span><span class="mi">1</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">))</span> <span class="o">+</span> <span class="x">(</span><span class="n">start_date</span> <span class="o">-</span> <span class="kt">Day</span><span class="x">(</span><span class="mi">1</span><span class="x">))</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">fill</span><span class="x">(</span><span class="kt">Day</span><span class="x">(</span><span class="mi">1</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">))</span> <span class="o">+</span> <span class="x">(</span><span class="n">start_date</span> <span class="o">-</span> <span class="kt">Day</span><span class="x">(</span><span class="mi">1</span><span class="x">))</span>
     <span class="n">date_strings</span> <span class="o">=</span> <span class="n">Dates</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="x">(</span><span class="n">dates</span><span class="x">,</span> <span class="s">"Y-mm-dd"</span><span class="x">)</span>
 
     <span class="c"># A tiny bit of preprocessing of the data</span>
     <span class="n">preproc</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="n">normalize_pop</span> <span class="o">?</span> <span class="n">x</span> <span class="o">./</span> <span class="n">pop</span> <span class="o">:</span> <span class="n">x</span>
 
-    <span class="n">daily_deaths</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
-    <span class="n">daily_cases</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
+    <span class="n">daily_deaths</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">deaths</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
+    <span class="n">daily_cases</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
 
     <span class="n">p1</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(;</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topleft</span><span class="x">)</span>
     <span class="n">bar!</span><span class="x">(</span><span class="n">preproc</span><span class="x">(</span><span class="n">daily_deaths</span><span class="x">),</span> <span class="n">label</span><span class="o">=</span><span class="s">"Observed daily deaths"</span><span class="x">)</span>
     <span class="n">title!</span><span class="x">(</span><span class="n">replace</span><span class="x">(</span><span class="n">country_name</span><span class="x">,</span> <span class="s">"_"</span> <span class="o">=&gt;</span> <span class="s">" "</span><span class="x">)</span> <span class="o">*</span> <span class="s">" "</span> <span class="o">*</span> <span class="n">main_title</span><span class="x">)</span>
-    <span class="n">vline!</span><span class="x">([</span><span class="n">data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]],</span> <span class="n">label</span><span class="o">=</span><span class="s">"epidemic start"</span><span class="x">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="x">)</span>
+    <span class="n">vline!</span><span class="x">([</span><span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]],</span> <span class="n">label</span><span class="o">=</span><span class="s">"epidemic start"</span><span class="x">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="x">)</span>
     <span class="n">vline!</span><span class="x">([</span><span class="n">num_observed_days</span><span class="x">],</span> <span class="n">label</span><span class="o">=</span><span class="s">"end of observations"</span><span class="x">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="x">)</span>
     <span class="n">xlims!</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">num_total_days</span><span class="x">)</span>
 
     <span class="n">p2</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(;</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topleft</span><span class="x">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="nb">false</span><span class="x">)</span>
     <span class="n">plot_confidence_timeseries!</span><span class="x">(</span><span class="n">p2</span><span class="x">,</span> <span class="n">preproc</span><span class="x">(</span><span class="n">e_deaths_country</span><span class="x">);</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Expected daily deaths"</span><span class="x">)</span>
-    <span class="c"># title!("Expected daily deaths (pred)")</span>
     <span class="n">bar!</span><span class="x">(</span><span class="n">preproc</span><span class="x">(</span><span class="n">daily_deaths</span><span class="x">),</span> <span class="n">label</span><span class="o">=</span><span class="s">"Recorded daily deaths (observed)"</span><span class="x">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="x">)</span>
 
     <span class="n">p3</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(;</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">bottomleft</span><span class="x">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="nb">false</span><span class="x">)</span>
     <span class="n">plot_confidence_timeseries!</span><span class="x">(</span><span class="n">p3</span><span class="x">,</span> <span class="n">Rt_country</span><span class="x">;</span> <span class="n">no_label</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
-    <span class="k">for</span> <span class="x">(</span><span class="n">c_idx</span><span class="x">,</span> <span class="n">c_time</span><span class="x">)</span> <span class="k">in</span> <span class="n">enumerate</span><span class="x">(</span><span class="n">findfirst</span><span class="o">.</span><span class="x">(</span><span class="o">==</span><span class="x">(</span><span class="mi">1</span><span class="x">),</span> <span class="n">eachcol</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">[</span><span class="n">country_idx</span><span class="x">])))</span>
+    <span class="k">for</span> <span class="x">(</span><span class="n">c_idx</span><span class="x">,</span> <span class="n">c_time</span><span class="x">)</span> <span class="k">in</span> <span class="n">enumerate</span><span class="x">(</span><span class="n">findfirst</span><span class="o">.</span><span class="x">(</span><span class="o">==</span><span class="x">(</span><span class="mi">1</span><span class="x">),</span> <span class="n">eachcol</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">[</span><span class="n">country_idx</span><span class="x">])))</span>
         <span class="k">if</span> <span class="n">c_time</span> <span class="o">!==</span> <span class="nb">nothing</span>
-            <span class="n">c_name</span> <span class="o">=</span> <span class="n">names_covariates</span><span class="x">[</span><span class="n">c_idx</span><span class="x">]</span>
+            <span class="n">c_name</span> <span class="o">=</span> <span class="n">covariate_names</span><span class="x">[</span><span class="n">c_idx</span><span class="x">]</span>
             <span class="k">if</span> <span class="x">(</span><span class="n">c_name</span> <span class="o">!=</span> <span class="s">"any"</span><span class="x">)</span>
                 <span class="c"># Don't add the "any intervention" stuff</span>
                 <span class="n">vline!</span><span class="x">([</span><span class="n">c_time</span> <span class="o">-</span> <span class="mi">1</span><span class="x">],</span> <span class="n">label</span><span class="o">=</span><span class="n">c_name</span><span class="x">)</span>
             <span class="k">end</span>
         <span class="k">end</span>
     <span class="k">end</span>
-    <span class="n">title!</span><span class="x">(</span><span class="s">"Rt"</span><span class="x">)</span>
+    <span class="n">title!</span><span class="x">(</span><span class="s">L"</span><span class="si">$</span><span class="s">R_t</span><span class="si">$</span><span class="s">"</span><span class="x">)</span>
     <span class="n">qs</span> <span class="o">=</span> <span class="x">[</span><span class="n">quantile</span><span class="x">(</span><span class="n">v</span><span class="x">,</span> <span class="x">[</span><span class="mf">0.025</span><span class="x">,</span> <span class="mf">0.975</span><span class="x">])</span> <span class="k">for</span> <span class="n">v</span> <span class="k">in</span> <span class="n">eachrow</span><span class="x">(</span><span class="n">Rt_country</span><span class="x">)]</span>
     <span class="n">lq</span><span class="x">,</span> <span class="n">hq</span> <span class="o">=</span> <span class="x">(</span><span class="n">eachrow</span><span class="x">(</span><span class="n">hcat</span><span class="x">(</span><span class="n">qs</span><span class="o">...</span><span class="x">))</span><span class="o">...</span><span class="x">,</span> <span class="x">)</span>
     <span class="n">ylims!</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">maximum</span><span class="x">(</span><span class="n">hq</span><span class="x">)</span> <span class="o">+</span> <span class="mf">0.1</span><span class="x">)</span>
 
     <span class="n">p4</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(;</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topleft</span><span class="x">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="nb">false</span><span class="x">)</span>
     <span class="n">plot_confidence_timeseries!</span><span class="x">(</span><span class="n">p4</span><span class="x">,</span> <span class="n">preproc</span><span class="x">(</span><span class="n">predictions_country</span><span class="x">);</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Expected daily cases"</span><span class="x">)</span>
-    <span class="c"># title!("Expected daily cases (pred)")</span>
     <span class="n">bar!</span><span class="x">(</span><span class="n">preproc</span><span class="x">(</span><span class="n">daily_cases</span><span class="x">),</span> <span class="n">label</span><span class="o">=</span><span class="s">"Recorded daily cases (observed)"</span><span class="x">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="x">)</span>
 
     <span class="n">vals</span> <span class="o">=</span> <span class="n">preproc</span><span class="x">(</span><span class="n">cumsum</span><span class="x">(</span><span class="n">e_deaths_country</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">1</span><span class="x">))</span>
     <span class="n">p5</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(;</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topleft</span><span class="x">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="nb">false</span><span class="x">)</span>
     <span class="n">plot_confidence_timeseries!</span><span class="x">(</span><span class="n">p5</span><span class="x">,</span> <span class="n">vals</span><span class="x">;</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Expected deaths"</span><span class="x">)</span>
     <span class="n">plot!</span><span class="x">(</span><span class="n">preproc</span><span class="x">(</span><span class="n">cumsum</span><span class="x">(</span><span class="n">daily_deaths</span><span class="x">)),</span> <span class="n">label</span><span class="o">=</span><span class="s">"Recorded deaths (observed)"</span><span class="x">,</span> <span class="n">color</span><span class="o">=:</span><span class="n">red</span><span class="x">)</span>
-    <span class="c"># title!("Expected deaths (pred)")</span>
 
     <span class="n">vals</span> <span class="o">=</span> <span class="n">preproc</span><span class="x">(</span><span class="n">cumsum</span><span class="x">(</span><span class="n">predictions_country</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">1</span><span class="x">))</span>
     <span class="n">p6</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(;</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">topleft</span><span class="x">)</span>
     <span class="n">plot_confidence_timeseries!</span><span class="x">(</span><span class="n">p6</span><span class="x">,</span> <span class="n">vals</span><span class="x">;</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Expected cases"</span><span class="x">)</span>
     <span class="n">plot!</span><span class="x">(</span><span class="n">preproc</span><span class="x">(</span><span class="n">daily_cases</span><span class="x">),</span> <span class="n">label</span><span class="o">=</span><span class="s">"Recorded cases (observed)"</span><span class="x">,</span> <span class="n">color</span><span class="o">=:</span><span class="n">red</span><span class="x">)</span>
-    <span class="c"># title!("Expected cases (pred)")</span>
 
     <span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p3</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">p4</span><span class="x">,</span> <span class="n">p5</span><span class="x">,</span> <span class="n">p6</span><span class="x">,</span> <span class="n">layout</span><span class="o">=</span><span class="x">(</span><span class="mi">6</span><span class="x">,</span> <span class="mi">1</span><span class="x">),</span> <span class="n">size</span><span class="o">=</span><span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">1200</span><span class="x">),</span> <span class="n">sharex</span><span class="o">=</span><span class="nb">true</span><span class="x">)</span>
     <span class="n">xticks!</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="o">:</span><span class="n">num_total_days</span><span class="x">,</span> <span class="n">date_strings</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="o">:</span><span class="k">end</span><span class="x">],</span> <span class="n">xrotation</span><span class="o">=</span><span class="mi">45</span><span class="x">)</span>
@@ -1024,17 +777,17 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
     <span class="k">return</span> <span class="n">p</span>
 <span class="k">end</span>
 
-<span class="k">function</span><span class="nf"> country_prediction_plot</span><span class="x">(</span><span class="n">country_idx</span><span class="x">,</span> <span class="n">cases</span><span class="x">,</span> <span class="n">e_deaths</span><span class="x">,</span> <span class="n">Rt</span><span class="x">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
+<span class="k">function</span><span class="nf"> country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="o">::</span><span class="n">ImperialReport13</span><span class="o">.</span><span class="n">Data</span><span class="x">,</span> <span class="n">country_idx</span><span class="x">,</span> <span class="n">cases</span><span class="x">,</span> <span class="n">e_deaths</span><span class="x">,</span> <span class="n">Rt</span><span class="x">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">cases</span><span class="x">)</span>
     <span class="n">e_deaths_country</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">e_deaths</span><span class="x">[</span><span class="n">t</span><span class="x">][</span><span class="n">country_idx</span><span class="x">]</span> <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="x">]</span><span class="o">...</span><span class="x">)</span>
     <span class="n">Rt_country</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">Rt</span><span class="x">[</span><span class="n">t</span><span class="x">][</span><span class="n">country_idx</span><span class="x">]</span> <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="x">]</span><span class="o">...</span><span class="x">)</span>
     <span class="n">predictions_country</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">cases</span><span class="x">[</span><span class="n">t</span><span class="x">][</span><span class="n">country_idx</span><span class="x">]</span> <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="x">]</span><span class="o">...</span><span class="x">)</span>
 
-    <span class="k">return</span> <span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">country_idx</span><span class="x">,</span> <span class="n">predictions_country</span><span class="x">,</span> <span class="n">e_deaths_country</span><span class="x">,</span> <span class="n">Rt_country</span><span class="x">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
+    <span class="k">return</span> <span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">country_idx</span><span class="x">,</span> <span class="n">predictions_country</span><span class="x">,</span> <span class="n">e_deaths_country</span><span class="x">,</span> <span class="n">Rt_country</span><span class="x">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>country_prediction_plot (generic function with 2 methods)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>country_prediction_plot (generic function with 4 methods)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> arrarrarr2arr</span><span class="x">(</span><span class="n">a</span><span class="o">::</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="n">T</span><span class="x">}}})</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">}</span>
@@ -1052,24 +805,27 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
     <span class="k">return</span> <span class="n">A</span>
 <span class="k">end</span>
 
-<span class="k">function</span><span class="nf"> country_cumulative_prediction</span><span class="x">(</span><span class="n">vals</span><span class="o">::</span><span class="kt">AbstractArray</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">,</span> <span class="mi">3</span><span class="x">};</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">no_label</span><span class="o">=</span><span class="nb">false</span><span class="x">,</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
+<span class="k">function</span><span class="nf"> countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="o">::</span><span class="n">ImperialReport13</span><span class="o">.</span><span class="n">Data</span><span class="x">,</span> <span class="n">vals</span><span class="o">::</span><span class="kt">AbstractArray</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">,</span> <span class="mi">3</span><span class="x">};</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">false</span><span class="x">,</span> <span class="n">no_label</span><span class="o">=</span><span class="nb">false</span><span class="x">,</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
     <span class="n">lqs</span><span class="x">,</span> <span class="n">mqs</span><span class="x">,</span> <span class="n">hqs</span> <span class="o">=</span> <span class="x">[],</span> <span class="x">[],</span> <span class="x">[]</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="x">[]</span>
 
-    <span class="k">for</span> <span class="n">country_idx</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">countries</span><span class="x">)</span>
+    <span class="c"># `vals` is assumed to be of the shape `(num_countries, num_days, num_samples)`</span>
+    <span class="n">num_countries</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">vals</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+
+    <span class="k">for</span> <span class="n">country_idx</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_countries</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">vals</span><span class="x">[</span><span class="n">country_idx</span><span class="x">,</span> <span class="o">:</span><span class="x">,</span> <span class="o">:</span><span class="x">]</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">val</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
 
-        <span class="n">pop</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
-        <span class="n">num_total_days</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span>
-        <span class="n">num_observed_days</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">country_idx</span><span class="x">])</span>
+        <span class="n">pop</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
+        <span class="n">num_total_days</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span>
+        <span class="n">num_observed_days</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">data</span><span class="o">.</span><span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">[</span><span class="n">country_idx</span><span class="x">])</span>
 
-        <span class="n">country_name</span> <span class="o">=</span> <span class="n">countries</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
+        <span class="n">country_name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">countries</span><span class="x">[</span><span class="n">country_idx</span><span class="x">]</span>
 
         <span class="c"># A tiny bit of preprocessing of the data</span>
         <span class="n">preproc</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="n">normalize_pop</span> <span class="o">?</span> <span class="n">x</span> <span class="o">./</span> <span class="n">pop</span> <span class="o">:</span> <span class="n">x</span>
 
-        <span class="n">tmp</span> <span class="o">=</span> <span class="n">preproc</span><span class="x">(</span><span class="n">cumsum</span><span class="x">(</span><span class="n">val</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">1</span><span class="x">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">preproc</span><span class="x">(</span><span class="n">val</span><span class="x">)</span>
         <span class="n">qs</span> <span class="o">=</span> <span class="x">[</span><span class="n">quantile</span><span class="x">(</span><span class="n">tmp</span><span class="x">[</span><span class="n">t</span><span class="x">,</span> <span class="o">:</span><span class="x">],</span> <span class="x">[</span><span class="mf">0.025</span><span class="x">,</span> <span class="mf">0.5</span><span class="x">,</span> <span class="mf">0.975</span><span class="x">])</span> <span class="k">for</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="x">]</span>
         <span class="n">lq</span><span class="x">,</span> <span class="n">mq</span><span class="x">,</span> <span class="n">hq</span> <span class="o">=</span> <span class="x">(</span><span class="n">eachrow</span><span class="x">(</span><span class="n">hcat</span><span class="x">(</span><span class="n">qs</span><span class="o">...</span><span class="x">))</span><span class="o">...</span><span class="x">,</span> <span class="x">)</span>
 
@@ -1093,149 +849,12 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>country_cumulative_prediction (generic function with 1 method)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>countries_prediction_plot (generic function with 1 method)
 </code></pre></div></div>
 
 </details>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">daily_deaths_arr</span> <span class="o">=</span> <span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">daily_deaths_posterior</span><span class="x">)</span>
-<span class="n">daily_deaths_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">daily_deaths_arr</span><span class="x">,</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">))</span>
-
-<span class="n">daily_cases_arr</span> <span class="o">=</span> <span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">daily_cases_posterior</span><span class="x">)</span>
-<span class="n">daily_cases_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">daily_cases_arr</span><span class="x">,</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">))</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>14×100×4000 Array{Float64,3}:
-[:, :, 1] =
- 31.6314   31.6314   31.6314   31.6314   …    156.61        151.178
- 35.2791   35.2791   35.2791   35.2791       3646.08       3431.64
-  5.82819   5.82819   5.82819   5.82819      6416.22       6282.52
- 32.4507   32.4507   32.4507   32.4507       9749.19       9408.06
- 33.8585   33.8585   33.8585   33.8585       6107.9        5812.33
- 14.4027   14.4027   14.4027   14.4027   …  13849.1       13444.2
- 13.4485   13.4485   13.4485   13.4485         73.396        70.6272
-  5.32057   5.32057   5.32057   5.32057     45867.8       45212.0
- 31.3424   31.3424   31.3424   31.3424        191.955       186.097
- 93.6691   93.6691   93.6691   93.6691      53568.5       53719.7
- 25.9993   25.9993   25.9993   25.9993   …    130.31        122.522
- 63.4528   63.4528   63.4528   63.4528          0.135277      0.120549
- 30.3088   30.3088   30.3088   30.3088         86.6885       82.4991
- 58.7329   58.7329   58.7329   58.7329        364.967       341.81
-
-[:, :, 2] =
- 21.8248   21.8248   21.8248   21.8248   …     59.4495        56.6651
- 17.6305   17.6305   17.6305   17.6305       2751.21        2577.23
- 17.5398   17.5398   17.5398   17.5398       2514.87        2422.85
- 39.3773   39.3773   39.3773   39.3773       2572.54        2435.6
- 13.8745   13.8745   13.8745   13.8745       7143.99        6796.27
-  2.43846   2.43846   2.43846   2.43846  …  21861.8        21394.1
- 16.6948   16.6948   16.6948   16.6948         12.4779        11.7615
-  7.64907   7.64907   7.64907   7.64907     43911.9        43155.0
- 54.9893   54.9893   54.9893   54.9893        164.217        158.063
- 96.3331   96.3331   96.3331   96.3331      52492.8        52575.9
-  6.69537   6.69537   6.69537   6.69537  …    291.955        278.593
- 41.8925   41.8925   41.8925   41.8925          0.0549723      0.0484776
- 10.4633   10.4633   10.4633   10.4633       1133.48        1110.4
- 53.9036   53.9036   53.9036   53.9036        285.281        266.222
-
-[:, :, 3] =
-  45.2317   45.2317   45.2317   45.2317  …     61.406         58.6976
-  29.357    29.357    29.357    29.357       3176.11        2995.15
-  30.394    30.394    30.394    30.394       1196.45        1139.83
- 125.299   125.299   125.299   125.299       6239.52        5961.07
-  36.4959   36.4959   36.4959   36.4959      4289.44        4052.54
-  19.2367   19.2367   19.2367   19.2367  …  19999.4        19513.5
-  16.405    16.405    16.405    16.405         13.0237        12.2817
-  15.1937   15.1937   15.1937   15.1937     36906.7        36324.8
-  47.9864   47.9864   47.9864   47.9864       198.327        192.355
- 145.876   145.876   145.876   145.876      95512.4        93517.3
-  12.7606   12.7606   12.7606   12.7606  …    140.283        132.076
-  84.0577   84.0577   84.0577   84.0577         0.0887854      0.078702
-  66.317    66.317    66.317    66.317         26.8103        25.0513
-  50.1513   50.1513   50.1513   50.1513       385.437        362.086
-
-...
-
-[:, :, 3998] =
- 40.6005   40.6005   40.6005   40.6005   …     41.3201      39.257
- 37.4406   37.4406   37.4406   37.4406       5168.87      4928.88
-  6.66627   6.66627   6.66627   6.66627      1796.71      1724.79
- 19.2496   19.2496   19.2496   19.2496       2893.68      2735.41
- 21.6056   21.6056   21.6056   21.6056      13520.2      13034.5
-  4.69097   4.69097   4.69097   4.69097  …  12729.8      12386.1
- 42.8182   42.8182   42.8182   42.8182        326.627      322.394
-  7.19116   7.19116   7.19116   7.19116     50203.4      49797.1
- 26.3942   26.3942   26.3942   26.3942        263.88       256.656
- 53.6565   53.6565   53.6565   53.6565      83072.5      82676.3
- 24.4936   24.4936   24.4936   24.4936   …    153.229      144.346
- 46.8848   46.8848   46.8848   46.8848          3.16499      2.94815
- 74.0729   74.0729   74.0729   74.0729         34.9909      32.6986
- 84.5948   84.5948   84.5948   84.5948        600.202      567.397
-
-[:, :, 3999] =
-  17.5754    17.5754    17.5754    17.5754   …     246.31         239.819
-  46.9688    46.9688    46.9688    46.9688        2641.87        2474.16
-   5.1029     5.1029     5.1029     5.1029        2141.21        2071.62
-  30.5983    30.5983    30.5983    30.5983        2429.53        2299.52
-  15.1354    15.1354    15.1354    15.1354       15339.1        14856.2
-  12.5852    12.5852    12.5852    12.5852   …   19716.9        19184.8
-  20.7569    20.7569    20.7569    20.7569         198.359        193.751
-   9.44519    9.44519    9.44519    9.44519      67919.1        66470.7
-  46.0889    46.0889    46.0889    46.0889         106.309        102.061
-  87.7028    87.7028    87.7028    87.7028      103695.0       102949.0
-  34.3861    34.3861    34.3861    34.3861   …     299.303        285.163
- 114.996    114.996    114.996    114.996            0.367775       0.332197
-  51.0231    51.0231    51.0231    51.0231         306.67         296.26
-  95.074     95.074     95.074     95.074          683.525        647.794
-
-[:, :, 4000] =
- 41.9978   41.9978   41.9978   41.9978   …    267.147        260.315
- 29.6776   29.6776   29.6776   29.6776       6149.86        5851.81
- 45.4262   45.4262   45.4262   45.4262       2766.05        2682.29
- 67.3271   67.3271   67.3271   67.3271       3339.49        3174.33
- 72.374    72.374    72.374    72.374       13353.4        12889.1
-  5.65709   5.65709   5.65709   5.65709  …  39438.8        38904.1
- 17.4738   17.4738   17.4738   17.4738         49.7947        47.6519
- 16.4718   16.4718   16.4718   16.4718      33295.2        32990.2
- 65.9772   65.9772   65.9772   65.9772        199.27         193.239
- 87.5592   87.5592   87.5592   87.5592      32651.7        32673.7
- 11.5608   11.5608   11.5608   11.5608   …    480.357        461.34
- 88.1057   88.1057   88.1057   88.1057          0.0795788      0.070559
- 27.258    27.258    27.258    27.258          97.7505        92.8548
- 28.6621   28.6621   28.6621   28.6621        577.574        545.546
-</code></pre></div></div>
-
-<p>To make the plots interactive, we’re going to use the <a href="https://github.com/sglyon/PlotlyJS.jl"><code class="highlighter-rouge">PlotlyJS.jl</code></a> backend (which generates <a href="https://github.com/plotly/plotly.js/">plotly.js</a> plots under the hood):</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plotlyjs</span><span class="x">()</span>
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Plots.PlotlyJSBackend()
-</code></pre></div></div>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_cumulative_prediction</span><span class="x">(</span><span class="n">daily_deaths_arr</span><span class="x">;</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
-<span class="n">title!</span><span class="x">(</span><span class="s">"Expected deaths (95% intervals)"</span><span class="x">)</span>
-</code></pre></div></div>
-
-<div id="plot1" class="plotly"></div>
-<script>
- Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/plot1.json", function(err, fig) {
-   Plotly.plot("plot1", fig.data, fig.layout, {responsive: true});
- });
-</script>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_cumulative_prediction</span><span class="x">(</span><span class="n">daily_deaths_arr</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">,</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
-<span class="n">title!</span><span class="x">(</span><span class="s">"Expected deaths / population (95% intervals)"</span><span class="x">)</span>
-</code></pre></div></div>
-
-<div id="plot2" class="plotly"></div>
-<script>
- Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/plot2.json", function(err, fig) {
-   Plotly.plot("plot2", fig.data, fig.layout, {responsive: true});
- });
-</script>
-
-<p>In the following sections we’re instead going to use <code class="highlighter-rouge">PyPlot.jl</code> as backend (which uses Python’s <code class="highlighter-rouge">matplotlib</code> under the hood) instead of <code class="highlighter-rouge">Plotly.js</code> since too many <code class="highlighter-rouge">Plotly.js</code> plots can slow down even the finest of computers.</p>
+<p>For the most part we will use the <code class="highlighter-rouge">PyPlot.jl</code> (which uses Python’s <code class="highlighter-rouge">matplotlib</code> under the hood) backend for <code class="highlighter-rouge">Plots.jl</code>, but certain parts will be more useful to display using the <code class="highlighter-rouge">PlotlyJS.jl</code> (which uses <code class="highlighter-rouge">plotly.js</code> under the hood) backend.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyplot</span><span class="x">()</span>
 </code></pre></div></div>
@@ -1259,22 +878,24 @@ d_m(t) = \mathrm{ifr}_m^{ * } \int_0^t c_m(\tau) \pi(t - \tau) dt
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compute the "generated quantities" for the PRIOR</span>
 <span class="n">generated_prior</span> <span class="o">=</span> <span class="n">vectup2tupvec</span><span class="x">(</span><span class="n">generated_quantities</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">chain_prior</span><span class="x">));</span>
-<span class="n">daily_cases_prior</span><span class="x">,</span> <span class="n">daily_deaths_prior</span><span class="x">,</span> <span class="n">Rt_prior</span><span class="x">,</span> <span class="n">Rt_adj_prior</span> <span class="o">=</span> <span class="n">generated_prior</span><span class="x">;</span>
+<span class="n">daily_cases_prior</span><span class="x">,</span> <span class="n">daily_deaths_prior</span><span class="x">,</span> <span class="n">Rt_prior</span><span class="x">,</span> <span class="n">Rt_adj_prior</span> <span class="o">=</span> <span class="n">generated_prior</span><span class="x">;</span> <span class="c"># &lt;= tuple of `Vector{&lt;:Vector{&lt;:Vector}}`</span>
 </code></pre></div></div>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_prior</span><span class="x">,</span> <span class="n">daily_deaths_prior</span><span class="x">,</span> <span class="n">Rt_prior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(prior)"</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_prior</span><span class="x">,</span> <span class="n">daily_deaths_prior</span><span class="x">,</span> <span class="n">Rt_prior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(prior)"</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/uk-predictive-prior-Rt.png" alt="nil" /></p>
 
 <p>And with the Rt <em>adjusted for remaining population</em>:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_prior</span><span class="x">,</span> <span class="n">daily_deaths_prior</span><span class="x">,</span> <span class="n">Rt_adj_prior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(prior)"</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_prior</span><span class="x">,</span> <span class="n">daily_deaths_prior</span><span class="x">,</span> <span class="n">Rt_adj_prior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(prior)"</span><span class="x">)</span>
 </code></pre></div></div>
+
+<p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/uk-predictive-prior-Rt-adjusted.png" alt="nil" /></p>
 
 <p>At this point it might be useful to remind ourselves of the total population of UK is:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">[</span><span class="n">uk_index</span><span class="x">]</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">[</span><span class="n">uk_index</span><span class="x">]</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>67886004
@@ -1454,11 +1075,6 @@ generated quantities {
 """</span>
 </code></pre></div></div>
 
-<p>We need the data to be in a format compatible with the Stan model, which we can accomplish by converting <code class="highlighter-rouge">rdata</code> into a <code class="highlighter-rouge">Dict</code>:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span> <span class="o">=</span> <span class="kt">Dict</span><span class="x">([(</span><span class="n">k</span><span class="x">,</span> <span class="n">rdata</span><span class="x">[</span><span class="n">k</span><span class="x">])</span> <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="n">keys</span><span class="x">(</span><span class="n">rdata</span><span class="x">)]);</span> <span class="c"># `values(df)` and `keys(df)` have different ordering so DON'T do `Dict(keys(df), values(df))`</span>
-</code></pre></div></div>
-
 <p>Then we can compile the <code class="highlighter-rouge">Stan</code> model</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sm</span> <span class="o">=</span> <span class="n">pystan</span><span class="o">.</span><span class="n">StanModel</span><span class="x">(</span><span class="n">model_code</span><span class="o">=</span><span class="n">model_str</span><span class="x">)</span>
@@ -1467,7 +1083,7 @@ generated quantities {
 <p>And finally fit:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fit_stan</span><span class="x">(</span><span class="n">n_iters</span><span class="o">=</span><span class="mi">300</span><span class="x">,</span> <span class="n">warmup</span><span class="o">=</span><span class="mi">100</span><span class="x">)</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">sampling</span><span class="x">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">d</span><span class="x">,</span> <span class="n">iter</span><span class="o">=</span><span class="n">n_iters</span><span class="x">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">1</span><span class="x">,</span> <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span><span class="x">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s">"NUTS"</span><span class="x">,</span> 
+    <span class="n">data</span><span class="o">=</span><span class="n">stan_data</span><span class="x">,</span> <span class="n">iter</span><span class="o">=</span><span class="n">n_iters</span><span class="x">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">1</span><span class="x">,</span> <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span><span class="x">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s">"NUTS"</span><span class="x">,</span> 
     <span class="n">control</span><span class="o">=</span><span class="kt">Dict</span><span class="x">(</span>
         <span class="s">"adapt_delta"</span> <span class="o">=&gt;</span> <span class="mf">0.95</span><span class="x">,</span>
         <span class="s">"max_treedepth"</span> <span class="o">=&gt;</span> <span class="mi">10</span>
@@ -1511,7 +1127,7 @@ generated quantities {
 
 <p>And if we want to compare it with the results from <code class="highlighter-rouge">Turing.jl</code> it can be convenient to rename some of the variables</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rename!</span><span class="x">(</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Covid19</span><span class="o">.</span><span class="n">rename!</span><span class="x">(</span>
     <span class="n">la</span><span class="x">,</span>
     <span class="s">"alpha"</span> <span class="o">=&gt;</span> <span class="s">"α"</span><span class="x">,</span>
     <span class="s">"alpha_hier"</span> <span class="o">=&gt;</span> <span class="s">"α_hier"</span><span class="x">,</span>
@@ -1564,7 +1180,8 @@ generated quantities {
 
 <p>In <code class="highlighter-rouge">Covid19.jl</code> we’ve added a constructor for <code class="highlighter-rouge">MCMCChains.Chains</code> which takes a <code class="highlighter-rouge">Dict</code> as an argument, easily allowing us to convert the <code class="highlighter-rouge">la</code> from <code class="highlighter-rouge">Stan</code> into a <code class="highlighter-rouge">Chains</code> object.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> MCMCChains</span><span class="o">.</span><span class="n">_cat</span><span class="x">(</span><span class="o">::</span><span class="kt">Val</span><span class="x">{</span><span class="mi">3</span><span class="x">},</span> <span class="n">c1</span><span class="o">::</span><span class="n">Chains</span><span class="x">,</span> <span class="n">args</span><span class="o">::</span><span class="n">Chains</span><span class="o">...</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># TODO: remove this and use `resetrange` after we've updated the dependencies</span>
+<span class="k">function</span><span class="nf"> MCMCChains</span><span class="o">.</span><span class="n">_cat</span><span class="x">(</span><span class="o">::</span><span class="kt">Val</span><span class="x">{</span><span class="mi">3</span><span class="x">},</span> <span class="n">c1</span><span class="o">::</span><span class="n">Chains</span><span class="x">,</span> <span class="n">args</span><span class="o">::</span><span class="n">Chains</span><span class="o">...</span><span class="x">)</span>
     <span class="c"># check inputs</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">range</span><span class="x">(</span><span class="n">c1</span><span class="x">)</span>
     <span class="c"># (OR not, he he he)</span>
@@ -1746,9 +1363,7 @@ Quantiles
 
 <h3 id="load">Load</h3>
 
-<p>Unfortunately the resulting chains, each with 3000 steps, take up a fair bit of space and are thus too large to include in the Github repository. As a temporary hack around this, you can find download the chains from <a href="https://drive.google.com/open?id=16PomGVnjPI1Q4KLdA9gRloVolfRmrhPP">this link</a>. Then you simply navigate to the project-directory and unpack.</p>
-
-<p>With that, we can load the chains from disk:</p>
+<p>To download the resulting chains, you need to setup <a href="https://git-lfs.github.com/"><code class="highlighter-rouge">git lfs</code></a> and clone the repository. Then we can load the chains from disk:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">filenames</span> <span class="o">=</span> <span class="x">[</span>
     <span class="n">relpath</span><span class="x">(</span><span class="n">outdir</span><span class="x">(</span><span class="n">s</span><span class="x">))</span> <span class="k">for</span> <span class="n">s</span> <span class="k">in</span> <span class="n">readdir</span><span class="x">(</span><span class="n">outdir</span><span class="x">())</span>
@@ -1927,21 +1542,98 @@ Quantiles
 <span class="n">generated_posterior</span> <span class="o">=</span> <span class="n">vectup2tupvec</span><span class="x">(</span><span class="n">generated_quantities</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">pooled_chains</span><span class="x">));</span>
 
 <span class="n">daily_cases_posterior</span><span class="x">,</span> <span class="n">daily_deaths_posterior</span><span class="x">,</span> <span class="n">Rt_posterior</span><span class="x">,</span> <span class="n">Rt_adj_posterior</span> <span class="o">=</span> <span class="n">generated_posterior</span><span class="x">;</span>
+
+<span class="c"># Convert `Vector{&lt;:Vector{&lt;:Vector}}` into `Array{&lt;:Real, 3}` with shape `(num_countries, num_days, num_samples)`</span>
+<span class="n">daily_cases_posterior_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">daily_cases_posterior</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+<span class="n">daily_deaths_posterior_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">daily_deaths_posterior</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+<span class="n">Rt_posterior_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">Rt_posterior</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+<span class="n">Rt_adj_posterior_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">Rt_adj_posterior</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
 </code></pre></div></div>
 
 <p>The posterior predictive distribution:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_posterior</span><span class="x">,</span> <span class="n">daily_deaths_posterior</span><span class="x">,</span> <span class="n">Rt_posterior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(posterior)"</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_posterior</span><span class="x">,</span> <span class="n">daily_deaths_posterior</span><span class="x">,</span> <span class="n">Rt_posterior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(posterior)"</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/uk-predictive-posterior-Rt.png" alt="nil" /></p>
 
 <p>and with the adjusted \(R_t\):</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_posterior</span><span class="x">,</span> <span class="n">daily_deaths_posterior</span><span class="x">,</span> <span class="n">Rt_adj_posterior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(posterior)"</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_posterior</span><span class="x">,</span> <span class="n">daily_deaths_posterior</span><span class="x">,</span> <span class="n">Rt_adj_posterior</span><span class="x">;</span> <span class="n">main_title</span> <span class="o">=</span> <span class="s">"(posterior)"</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/uk-predictive-posterior-Rt-adjusted.png" alt="nil" /></p>
+
+<p>Plotting all countries in one plot can quite cluttered, we’re going to use the <a href="https://github.com/sglyon/PlotlyJS.jl"><code class="highlighter-rouge">PlotlyJS.jl</code></a> plotting backend (which generates <a href="https://github.com/plotly/plotly.js/">plotly.js</a> plots under the hood) which allows us to interactively select which countries to view by clicking on the labels.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plotlyjs</span><span class="x">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Plots.PlotlyJSBackend()
+</code></pre></div></div>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">Rt_posterior_arr</span><span class="x">;</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
+<span class="n">title!</span><span class="x">(</span><span class="s">"Rt (95% intervals)"</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div id="Rt-posterior" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/Rt_posterior.json", function(err, fig) {
+   Plotly.plot("Rt-posterior", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">daily_cases_posterior_arr</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">);</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
+<span class="n">title!</span><span class="x">(</span><span class="s">"Expected cases (95% intervals)"</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div id="fig-pred-cases" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/pred_cases.json", function(err, fig) {
+   Plotly.plot("fig-pred-cases", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">daily_deaths_posterior_arr</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">);</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
+<span class="n">title!</span><span class="x">(</span><span class="s">"Expected deaths (95% intervals)"</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div id="fig-pred-deaths" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/pred_deaths.json", function(err, fig) {
+   Plotly.plot("fig-pred-deaths", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">daily_cases_posterior_arr</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">);</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">,</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
+<span class="n">title!</span><span class="x">(</span><span class="s">"Expected cases / population (95% intervals)"</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div id="fig-pred-cases-normalized" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/pred_cases_normalized.json", function(err, fig) {
+   Plotly.plot("fig-pred-cases-normalized", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">daily_deaths_posterior_arr</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">);</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">,</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
+<span class="n">title!</span><span class="x">(</span><span class="s">"Expected deaths / population (95% intervals)"</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div id="fig-pred-deaths-normalized" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/pred_deaths_normalized.json", function(err, fig) {
+   Plotly.plot("fig-pred-deaths-normalized", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
+<p>In the following sections we’re going to back to <code class="highlighter-rouge">PyPlot.jl</code> as backend (which uses Python’s matplotlib under the hood) instead of <code class="highlighter-rouge">PlotlyJS.jl</code> since too many <code class="highlighter-rouge">plotly.js</code> plots can slow down even the finest of computers.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyplot</span><span class="x">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Plots.PyPlotBackend()
+</code></pre></div></div>
 
 <h2 id="all-countries-prior-vs-posterior-predictive">All countries: prior vs. posterior predictive</h2>
 
@@ -2010,12 +1702,12 @@ Quantiles
 
 <p>One interesting thing one can do after obtaining estimates for the effect of each of the interventions is to run the model but now <em>without</em> all or a subset of the interventions performed. Thus allowing us to get a sense of what the outcome would have been without those interventions, and also whether or not the interventions have the wanted effect.</p>
 
-<p><code class="highlighter-rouge">data.covariates[m]</code> is a binary matrix for each <code class="highlighter-rouge">m</code> (country index), with <code class="highlighter-rouge">data.covariate[m][:, k]</code> then being a binary vector representing the time-series for the k-th covariate: <code class="highlighter-rouge">0</code> means the intervention has is not implemented, <code class="highlighter-rouge">1</code> means that the intervention is implemented. As an example, if schools and universites were closed after the 45th day for country <code class="highlighter-rouge">m</code>, then <code class="highlighter-rouge">data.covariate[m][1:45, k]</code> are all zeros and <code class="highlighter-rouge">data.covariate[m][45:end, k]</code> are all ones.</p>
+<p><code class="highlighter-rouge">turing_data.covariates[m]</code> is a binary matrix for each <code class="highlighter-rouge">m</code> (country index), with <code class="highlighter-rouge">turing_data.covariate[m][:, k]</code> then being a binary vector representing the time-series for the k-th covariate: <code class="highlighter-rouge">0</code> means the intervention has is not implemented, <code class="highlighter-rouge">1</code> means that the intervention is implemented. As an example, if schools and universites were closed after the 45th day for country <code class="highlighter-rouge">m</code>, then <code class="highlighter-rouge">turing_data.covariate[m][1:45, k]</code> are all zeros and <code class="highlighter-rouge">turing_data.covariate[m][45:end, k]</code> are all ones.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Get the index of schools and univerities closing</span>
-<span class="n">schools_universities_closed_index</span> <span class="o">=</span> <span class="n">findfirst</span><span class="x">(</span><span class="o">==</span><span class="x">(</span><span class="s">"schools_universities"</span><span class="x">),</span> <span class="n">names_covariates</span><span class="x">)</span>
+<span class="n">schools_universities_closed_index</span> <span class="o">=</span> <span class="n">findfirst</span><span class="x">(</span><span class="o">==</span><span class="x">(</span><span class="s">"schools_universities"</span><span class="x">),</span> <span class="n">covariate_names</span><span class="x">)</span>
 <span class="c"># Time-series for UK</span>
-<span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">[</span><span class="n">uk_index</span><span class="x">][</span><span class="o">:</span><span class="x">,</span> <span class="n">schools_universities_closed_index</span><span class="x">]</span>
+<span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">[</span><span class="n">uk_index</span><span class="x">][</span><span class="o">:</span><span class="x">,</span> <span class="n">schools_universities_closed_index</span><span class="x">]</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>100-element Array{Float64,1}:
@@ -2061,17 +1753,17 @@ Note that only `remove` xor `keep` can be non-empty.
 
 Useful when instantiating counter-factual models, as it allows one to remove/keep a subset of the covariates.
 """</span>
-<span class="n">zero_covariates</span><span class="x">(</span><span class="n">xs</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">};</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span> <span class="o">=</span> <span class="n">zero_covariates</span><span class="x">(</span><span class="n">xs</span><span class="x">,</span> <span class="n">names_covariates</span><span class="x">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
-<span class="k">function</span><span class="nf"> zero_covariates</span><span class="x">(</span><span class="n">xs</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">},</span> <span class="n">names_covariates</span><span class="x">;</span> <span class="n">remove</span><span class="o">=</span><span class="x">[],</span> <span class="n">keep</span><span class="o">=</span><span class="x">[])</span>
+<span class="n">zero_covariates</span><span class="x">(</span><span class="n">xs</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">};</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span> <span class="o">=</span> <span class="n">zero_covariates</span><span class="x">(</span><span class="n">xs</span><span class="x">,</span> <span class="n">covariate_names</span><span class="x">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="x">)</span>
+<span class="k">function</span><span class="nf"> zero_covariates</span><span class="x">(</span><span class="n">xs</span><span class="o">::</span><span class="kt">AbstractMatrix</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">},</span> <span class="n">covariate_names</span><span class="x">;</span> <span class="n">remove</span><span class="o">=</span><span class="x">[],</span> <span class="n">keep</span><span class="o">=</span><span class="x">[])</span>
     <span class="nd">@assert</span> <span class="x">(</span><span class="n">isempty</span><span class="x">(</span><span class="n">remove</span><span class="x">)</span> <span class="o">||</span> <span class="n">isempty</span><span class="x">(</span><span class="n">keep</span><span class="x">))</span> <span class="s">"only `remove` or `keep` can be non-empty"</span>
 
     <span class="k">if</span> <span class="n">isempty</span><span class="x">(</span><span class="n">keep</span><span class="x">)</span>
         <span class="k">return</span> <span class="n">mapreduce</span><span class="x">(</span><span class="n">hcat</span><span class="x">,</span> <span class="n">enumerate</span><span class="x">(</span><span class="n">eachcol</span><span class="x">(</span><span class="n">xs</span><span class="x">)))</span> <span class="k">do</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span> <span class="n">c</span><span class="x">)</span>
-            <span class="x">(</span><span class="n">names_covariates</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="n">∈</span> <span class="n">remove</span> <span class="o">?</span> <span class="n">zeros</span><span class="x">(</span><span class="n">eltype</span><span class="x">(</span><span class="n">c</span><span class="x">),</span> <span class="n">length</span><span class="x">(</span><span class="n">c</span><span class="x">))</span> <span class="o">:</span> <span class="n">c</span><span class="x">)</span>
+            <span class="x">(</span><span class="n">covariate_names</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="n">∈</span> <span class="n">remove</span> <span class="o">?</span> <span class="n">zeros</span><span class="x">(</span><span class="n">eltype</span><span class="x">(</span><span class="n">c</span><span class="x">),</span> <span class="n">length</span><span class="x">(</span><span class="n">c</span><span class="x">))</span> <span class="o">:</span> <span class="n">c</span><span class="x">)</span>
         <span class="k">end</span>
     <span class="k">else</span>
         <span class="k">return</span> <span class="n">mapreduce</span><span class="x">(</span><span class="n">hcat</span><span class="x">,</span> <span class="n">enumerate</span><span class="x">(</span><span class="n">eachcol</span><span class="x">(</span><span class="n">xs</span><span class="x">)))</span> <span class="k">do</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span> <span class="n">c</span><span class="x">)</span>
-            <span class="x">(</span><span class="n">names_covariates</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="n">∈</span> <span class="n">keep</span> <span class="o">?</span> <span class="n">c</span> <span class="o">:</span> <span class="n">zeros</span><span class="x">(</span><span class="n">eltype</span><span class="x">(</span><span class="n">c</span><span class="x">),</span> <span class="n">length</span><span class="x">(</span><span class="n">c</span><span class="x">)))</span> 
+            <span class="x">(</span><span class="n">covariate_names</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="n">∈</span> <span class="n">keep</span> <span class="o">?</span> <span class="n">c</span> <span class="o">:</span> <span class="n">zeros</span><span class="x">(</span><span class="n">eltype</span><span class="x">(</span><span class="n">c</span><span class="x">),</span> <span class="n">length</span><span class="x">(</span><span class="n">c</span><span class="x">)))</span> 
         <span class="k">end</span>
     <span class="k">end</span>
 <span class="k">end</span>
@@ -2086,15 +1778,15 @@ Useful when instantiating counter-factual models, as it allows one to remove/kee
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># What happens if we don't do anything?</span>
 <span class="n">m_counterfactual</span> <span class="o">=</span> <span class="n">model_def</span><span class="x">(</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
-    <span class="x">[</span><span class="n">zeros</span><span class="x">(</span><span class="n">size</span><span class="x">(</span><span class="n">c</span><span class="x">))</span> <span class="k">for</span> <span class="n">c</span> <span class="k">in</span> <span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">],</span> <span class="c"># &lt;= remove ALL covariates</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
+    <span class="x">[</span><span class="n">zeros</span><span class="x">(</span><span class="n">size</span><span class="x">(</span><span class="n">c</span><span class="x">))</span> <span class="k">for</span> <span class="n">c</span> <span class="k">in</span> <span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">],</span> <span class="c"># &lt;= remove ALL covariates</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
     <span class="n">lockdown_index</span><span class="x">,</span>
     <span class="nb">true</span> <span class="c"># &lt;= use full model</span>
 <span class="x">);</span>
@@ -2102,24 +1794,59 @@ Useful when instantiating counter-factual models, as it allows one to remove/kee
 <span class="c"># Compute the "generated quantities" for the "counter-factual" model</span>
 <span class="n">generated_counterfactual</span> <span class="o">=</span> <span class="n">vectup2tupvec</span><span class="x">(</span><span class="n">generated_quantities</span><span class="x">(</span><span class="n">m_counterfactual</span><span class="x">,</span> <span class="n">pooled_chains</span><span class="x">));</span>
 <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span> <span class="o">=</span> <span class="n">generated_counterfactual</span><span class="x">;</span>
-<span class="n">country_prediction_plot</span><span class="x">(</span><span class="mi">5</span><span class="x">,</span> <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
+
+<span class="c"># Convert `Vector{&lt;:Vector{&lt;:Vector}}` into `Array{&lt;:Real, 3}` with shape `(num_countries, num_days, num_samples)`</span>
+<span class="n">daily_cases_counterfactual_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">daily_cases_counterfactual</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+<span class="n">daily_deaths_counterfactual_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">daily_deaths_counterfactual</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+<span class="n">Rt_counterfactual_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">Rt_counterfactual</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+<span class="n">Rt_adj_counterfactual_arr</span> <span class="o">=</span> <span class="n">permutedims</span><span class="x">(</span><span class="n">arrarrarr2arr</span><span class="x">(</span><span class="n">Rt_adj_counterfactual</span><span class="x">),</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">,</span> <span class="mi">1</span><span class="x">));</span>
+
+<span class="c"># plot</span>
+<span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="mi">5</span><span class="x">,</span> <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/counterfactual-remove-all.png" alt="nil" /></p>
 
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plotlyjs</span><span class="x">()</span>
+<span class="n">countries_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">cumsum</span><span class="x">(</span><span class="n">daily_cases_counterfactual_arr</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">);</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">,</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">300</span><span class="x">))</span>
+<span class="n">title!</span><span class="x">(</span><span class="s">"Expected cases / population when no intervention (95% intervals)"</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div id="fig-pred-cases-counterfactual-3" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/pred_cases_counterfactual_3.json", function(err, fig) {
+   Plotly.plot("fig-pred-cases-counterfactual-3", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
+<p>Recalling the same figure for the posterior which includes interventions</p>
+
+<div id="pred-cases-normalized-2" class="plotly"></div>
+<script>
+ Plotly.d3.json("../assets/figures/2020-05-04-Imperial-Report13-analysis/pred_cases_normalized.json", function(err, fig) {
+   Plotly.plot("pred-cases-normalized-2", fig.data, fig.layout, {responsive: true});
+ });
+</script>
+
 <p>We can also consider the cases where we only do <em>some</em> of the interventions, e.g. we never do a full lockdown (<code class="highlighter-rouge">lockdown</code>) or close schools and universities (<code class="highlighter-rouge">schools_universities</code>):</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pyplot</span><span class="x">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Plots.PyPlotBackend()
+</code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># What happens if we never close schools nor do a lockdown?</span>
 <span class="n">m_counterfactual</span> <span class="o">=</span> <span class="n">model_def</span><span class="x">(</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
-    <span class="x">[</span><span class="n">zero_covariates</span><span class="x">(</span><span class="n">c</span><span class="x">;</span> <span class="n">remove</span> <span class="o">=</span> <span class="x">[</span><span class="s">"lockdown"</span><span class="x">,</span> <span class="s">"schools_universities"</span><span class="x">])</span> <span class="k">for</span> <span class="n">c</span> <span class="k">in</span> <span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">],</span> <span class="c"># &lt;= remove covariates</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
+    <span class="x">[</span><span class="n">zero_covariates</span><span class="x">(</span><span class="n">c</span><span class="x">;</span> <span class="n">remove</span> <span class="o">=</span> <span class="x">[</span><span class="s">"lockdown"</span><span class="x">,</span> <span class="s">"schools_universities"</span><span class="x">])</span> <span class="k">for</span> <span class="n">c</span> <span class="k">in</span> <span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">],</span> <span class="c"># &lt;= remove covariates</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
     <span class="n">lockdown_index</span><span class="x">,</span>
     <span class="nb">true</span> <span class="c"># &lt;= use full model</span>
 <span class="x">);</span>
@@ -2127,7 +1854,7 @@ Useful when instantiating counter-factual models, as it allows one to remove/kee
 <span class="c"># Compute the "generated quantities" for the "counter-factual" model</span>
 <span class="n">generated_counterfactual</span> <span class="o">=</span> <span class="n">vectup2tupvec</span><span class="x">(</span><span class="n">generated_quantities</span><span class="x">(</span><span class="n">m_counterfactual</span><span class="x">,</span> <span class="n">pooled_chains</span><span class="x">));</span>
 <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span> <span class="o">=</span> <span class="n">generated_counterfactual</span><span class="x">;</span>
-<span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
+<span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/counterfactual-remove-lockdown-and-schools.png" alt="nil" /></p>
@@ -2136,22 +1863,22 @@ Useful when instantiating counter-factual models, as it allows one to remove/kee
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lift_lockdown_time</span> <span class="o">=</span> <span class="mi">75</span>
 
-<span class="n">new_covariates</span> <span class="o">=</span> <span class="x">[</span><span class="n">copy</span><span class="x">(</span><span class="n">c</span><span class="x">)</span> <span class="k">for</span> <span class="n">c</span> <span class="k">in</span> <span class="n">data</span><span class="o">.</span><span class="n">covariates</span><span class="x">]</span> <span class="c"># &lt;= going to do inplace manipulations so we copy</span>
+<span class="n">new_covariates</span> <span class="o">=</span> <span class="x">[</span><span class="n">copy</span><span class="x">(</span><span class="n">c</span><span class="x">)</span> <span class="k">for</span> <span class="n">c</span> <span class="k">in</span> <span class="n">turing_data</span><span class="o">.</span><span class="n">covariates</span><span class="x">]</span> <span class="c"># &lt;= going to do inplace manipulations so we copy</span>
 <span class="k">for</span> <span class="n">covariates_m</span> <span class="n">∈</span> <span class="n">new_covariates</span>
     <span class="n">covariates_m</span><span class="x">[</span><span class="n">lift_lockdown_time</span><span class="o">:</span><span class="k">end</span><span class="x">,</span> <span class="n">lockdown_index</span><span class="x">]</span> <span class="o">.=</span> <span class="mi">0</span>
 <span class="k">end</span>
 
 <span class="c"># What happens if we never close schools nor do a lockdown?</span>
 <span class="n">m_counterfactual</span> <span class="o">=</span> <span class="n">model_def</span><span class="x">(</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_impute</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">num_total_days</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">cases</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">deaths</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="nb">π</span><span class="x">,</span>
     <span class="n">new_covariates</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">epidemic_start</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">population</span><span class="x">,</span>
+    <span class="n">turing_data</span><span class="o">.</span><span class="n">serial_intervals</span><span class="x">,</span>
     <span class="n">lockdown_index</span><span class="x">,</span>
     <span class="nb">true</span> <span class="c"># &lt;= use full model</span>
 <span class="x">);</span>
@@ -2159,7 +1886,7 @@ Useful when instantiating counter-factual models, as it allows one to remove/kee
 <span class="c"># Compute the "generated quantities" for the "counter-factual" model</span>
 <span class="n">generated_counterfactual</span> <span class="o">=</span> <span class="n">vectup2tupvec</span><span class="x">(</span><span class="n">generated_quantities</span><span class="x">(</span><span class="n">m_counterfactual</span><span class="x">,</span> <span class="n">pooled_chains</span><span class="x">));</span>
 <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span> <span class="o">=</span> <span class="n">generated_counterfactual</span><span class="x">;</span>
-<span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
+<span class="n">country_prediction_plot</span><span class="x">(</span><span class="n">data</span><span class="x">,</span> <span class="n">uk_index</span><span class="x">,</span> <span class="n">daily_cases_counterfactual</span><span class="x">,</span> <span class="n">daily_deaths_counterfactual</span><span class="x">,</span> <span class="n">Rt_adj_counterfactual</span><span class="x">;</span> <span class="n">normalize_pop</span> <span class="o">=</span> <span class="nb">true</span><span class="x">)</span>
 </code></pre></div></div>
 
 <p><img src="../assets/figures/2020-05-04-Imperial-Report13-analysis/counterfactual-remove-lockdown-after-a-while.png" alt="nil" /></p>
