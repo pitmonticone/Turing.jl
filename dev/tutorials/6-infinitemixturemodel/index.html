@@ -1003,14 +1003,14 @@ $$</p>
 <span class="n">plot</span><span class="x">(</span><span class="n">k</span><span class="x">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"Iteration"</span><span class="x">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">"Number of clusters"</span><span class="x">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Chain 1"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="6_InfiniteMixtureModel_files/6_InfiniteMixtureModel_31_0.svg" alt="svg" /></p>
+<p><img src="../6_InfiniteMixtureModel_files/6_InfiniteMixtureModel_31_0.svg" alt="svg" /></p>
 
 <p>If we visualize the histogram of the number of clusters sampled from our posterior, we observe that the model seems to prefer 3 clusters, which is the true number of clusters. Note that the number of clusters in a Dirichlet process mixture model is not limited a priori and will grow to infinity with probability one. However, if conditioned on data the posterior will concentrate on a finite number of clusters enforcing the resulting model to have a finite amount of clusters. It is, however, not given that the posterior of a Dirichlet process Gaussian mixture model converges to the true number of clusters, given that data comes from a finite mixture model. See Jeffrey Miller and Matthew Harrison: <a href="https://arxiv.org/pdf/1301.2708.pdf">A simple example of Dirichlet process mixture inconsitency for the number of components</a> for details.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">histogram</span><span class="x">(</span><span class="n">k</span><span class="x">,</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"Number of clusters"</span><span class="x">,</span> <span class="n">legend</span> <span class="o">=</span> <span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="6_InfiniteMixtureModel_files/6_InfiniteMixtureModel_33_0.svg" alt="svg" /></p>
+<p><img src="../6_InfiniteMixtureModel_files/6_InfiniteMixtureModel_33_0.svg" alt="svg" /></p>
 
 <p>One issue with the Chinese restaurant process construction is that the number of latent parameters we need to sample scales with the number of observations. It may be desirable to use alternative constructions in certain cases. Alternative methods of constructing a Dirichlet process can be employed via the following representations:</p>
 

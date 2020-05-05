@@ -841,7 +841,7 @@ false
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">p3</span><span class="x">,</span> <span class="n">p4</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">legend</span> <span class="o">=</span> <span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="7_PoissonRegression_files/7_PoissonRegression_5_0.svg" alt="svg" /></p>
+<p><img src="../7_PoissonRegression_files/7_PoissonRegression_5_0.svg" alt="svg" /></p>
 
 <p>We must convert our <code class="highlighter-rouge">DataFrame</code> data into the <code class="highlighter-rouge">Matrix</code> form as the manipulations that we are about are designed to work with <code class="highlighter-rouge">Matrix</code> data. We also separate the features from the labels which will be later used by the Turing sampler to generate samples from the posterior.</p>
 
@@ -1117,7 +1117,7 @@ The posterior distributions obtained after sampling can be visualised as :
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="7_PoissonRegression_files/7_PoissonRegression_19_0.svg" alt="svg" /></p>
+<p><img src="../7_PoissonRegression_files/7_PoissonRegression_19_0.svg" alt="svg" /></p>
 
 <h1 id="interpreting-the-obtained-mean-values">Interpreting the Obtained Mean Values</h1>
 <p>The exponentiated mean of the coefficient <code class="highlighter-rouge">b1</code> is roughly half of that of <code class="highlighter-rouge">b2</code>. This makes sense because in the data that we generated, the number of sneezes was more sensitive to the medicinal intake as compared to the alcohol consumption. We also get a weaker dependence on the interaction between the alcohol consumption and the medicinal intake as can be seen from the value of <code class="highlighter-rouge">b3</code>.</p>
@@ -1180,7 +1180,7 @@ Quantiles
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chains_new</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="7_PoissonRegression_files/7_PoissonRegression_25_0.svg" alt="svg" /></p>
+<p><img src="../7_PoissonRegression_files/7_PoissonRegression_25_0.svg" alt="svg" /></p>
 
 <p>As can be seen from the numeric values and the plots above, the standard deviation values have decreased and all the plotted values are from the estimated posteriors. The exponentiated mean values, with the warmup samples removed, have not changed by much and they are still in accordance with their intuitive meanings as described earlier.</p>
 

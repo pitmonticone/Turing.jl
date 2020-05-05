@@ -1004,7 +1004,7 @@ Plots.PyPlotBackend()
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">layout</span><span class="o">=</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">1</span><span class="x">),</span> <span class="n">size</span><span class="o">=</span><span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">500</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_34_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_34_0.png" alt="png" /></p>
 
 <p>For this particular <code class="highlighter-rouge">Model</code>, we can in fact obtain the posterior of the latent variables in closed form. This allows us to compare both <code class="highlighter-rouge">NUTS</code> and <code class="highlighter-rouge">ADVI</code> to the true posterior \(p(s, m \mid \{x_i\}_{i = 1}^n )\).</p>
 
@@ -1084,7 +1084,7 @@ Plots.PyPlotBackend()
 └ @ Base loading.jl:1260
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_36_1.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_36_1.png" alt="png" /></p>
 
 <h1 id="bayesian-linear-regression-example-using-advi">Bayesian linear regression example using <code class="highlighter-rouge">ADVI</code></h1>
 
@@ -1344,7 +1344,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_variational_marginals</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="n">sym2range</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_68_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_68_0.png" alt="png" /></p>
 
 <p>And let’s compare this to using the <code class="highlighter-rouge">NUTS</code> sampler:</p>
 
@@ -1360,7 +1360,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_71_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_71_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vi_mean</span> <span class="o">=</span> <span class="n">vec</span><span class="x">(</span><span class="n">mean</span><span class="x">(</span><span class="n">z</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">))[[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">coefficients</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">intercept</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">σ₂</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">]]</span>
 </code></pre></div></div>
@@ -1514,7 +1514,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"Mean-field ADVI (Normal)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_88_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_88_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction_chain</span><span class="x">(</span><span class="n">chain</span><span class="x">[</span><span class="n">i</span><span class="x">],</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">chain</span><span class="x">,</span> <span class="mi">1</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
 
@@ -1525,7 +1525,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"MCMC (NUTS)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_89_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_89_0.png" alt="png" /></p>
 
 <p>Indeed we see that the MCMC approach generally provides better uncertainty estimates than the mean-field ADVI approach! Good. So all the work we’ve done to make MCMC fast isn’t for nothing.</p>
 
@@ -1585,7 +1585,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">2000</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_100_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_100_0.png" alt="png" /></p>
 
 <p>As expected, the fits look pretty much identical.</p>
 
@@ -1655,7 +1655,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">heatmap</span><span class="x">(</span><span class="n">cov</span><span class="x">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">A</span><span class="err">'</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_110_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_110_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zs</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">q_full_normal</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">);</span>
 </code></pre></div></div>
@@ -1666,7 +1666,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">2</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">800</span><span class="x">,</span> <span class="mi">2000</span><span class="x">))</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_112_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_112_0.png" alt="png" /></p>
 
 <p>So it seems like the “full” ADVI approach, i.e. no mean-field assumption, obtain the same modes as the mean-field approach but with greater uncertainty for some of the <code class="highlighter-rouge">coefficients</code>. This</p>
 
@@ -1724,7 +1724,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"Mean-field ADVI (Normal)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_117_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_117_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">q_full_normal</span><span class="x">,</span> <span class="mi">1000</span><span class="x">);</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction</span><span class="x">(</span><span class="n">z</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">i</span><span class="x">],</span> <span class="n">sym2range</span><span class="x">,</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="mi">2</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
@@ -1736,7 +1736,7 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"Full ADVI (Normal)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_118_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_118_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction_chain</span><span class="x">(</span><span class="n">chain</span><span class="x">[</span><span class="n">i</span><span class="x">],</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">chain</span><span class="x">,</span> <span class="mi">1</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
 
@@ -1747,12 +1747,12 @@ Test set:
 <span class="n">title!</span><span class="x">(</span><span class="s">"MCMC (NUTS)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_119_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_119_0.png" alt="png" /></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">,</span> <span class="n">p3</span><span class="x">,</span> <span class="n">layout</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span> <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">250</span><span class="x">),</span> <span class="n">label</span><span class="o">=</span><span class="s">""</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><img src="9_VariationalInference_files/9_VariationalInference_120_0.png" alt="png" /></p>
+<p><img src="../9_VariationalInference_files/9_VariationalInference_120_0.png" alt="png" /></p>
 
 <p>Here we actually see that indeed both the full ADVI and the MCMC approaches does a much better job of quantifying the uncertainty of predictions for never-before-seen samples, with full ADVI seemingly <em>overestimating</em> the variance slightly compared to MCMC.</p>
 
