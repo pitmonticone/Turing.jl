@@ -448,9 +448,9 @@ uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [[SpecialFunctions]]
 deps = ["OpenSpecFun_jll"]
-git-tree-sha1 = "0d440173da9f6d306f0c20664433734e487be8bd"
+git-tree-sha1 = "a69e1eaf3397fbb5a4d718538463e5cc20ef42a4"
 uuid = "276daf66-3868-5448-9aa4-cd146d93841b"
-version = "0.10.1"
+version = "0.10.2"
 
 [[StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
