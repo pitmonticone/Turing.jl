@@ -785,8 +785,7 @@
 
 <p>First, define a type of the distribution, as a subtype of a corresponding distribution type in the Distributions.jl package.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span><span class="nc"> Flat</span> <span class="o">&lt;:</span> <span class="n">ContinuousUnivariateDistribution</span>
-  <span class="n">…</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span><span class="nc"> CustomUniform</span> <span class="o">&lt;:</span> <span class="n">ContinuousUnivariateDistribution</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -796,8 +795,8 @@
 
 <p>Second, define <code class="highlighter-rouge">rand</code> and <code class="highlighter-rouge">logpdf</code>, which will be used to run the model.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="o">::</span><span class="kt">AbstractRNG</span><span class="x">,</span> <span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="x">)</span>
-<span class="n">Distributions</span><span class="o">.</span><span class="n">logpdf</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="o">::</span><span class="kt">AbstractRNG</span><span class="x">,</span> <span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="x">)</span> <span class="c"># sample in [0, 1]</span>
+<span class="n">Distributions</span><span class="o">.</span><span class="n">logpdf</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>          <span class="c"># p(x) = 1 → logp(x) = 0</span>
 </code></pre></div></div>
 
 <p><a id=".-Define-Helper-Functions-1"></a></p>
@@ -810,13 +809,22 @@
 
 <h4 id="31-domain-transformation">3.1 Domain Transformation</h4>
 
-<p>Some helper functions are necessary for domain transformation. For univariate distributions, the necessary ones to implement are <code class="highlighter-rouge">minimum</code> and <code class="highlighter-rouge">maximum</code>.</p>
+<p>Certain samplers, such as <code class="highlighter-rouge">HMC</code>, require the domain of the priors to be unbounded. Therefore, to use our <code class="highlighter-rouge">CustomUniform</code> as a prior in a model we also need to define how to transform samples from <code class="highlighter-rouge">[0, 1]</code> to <code class="highlighter-rouge">ℝ</code>. To do this, we simply need to define the corresponding <code class="highlighter-rouge">Bijector</code> from <code class="highlighter-rouge">Bijectors.jl</code>, which is what <code class="highlighter-rouge">Turing.jl</code> uses internally.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">minimum</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="o">-</span><span class="nb">Inf</span>
-<span class="n">Distributions</span><span class="o">.</span><span class="n">maximum</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">)</span> <span class="o">=</span> <span class="o">+</span><span class="nb">Inf</span>
+<p>To transform from <code class="highlighter-rouge">[0, 1]</code> to <code class="highlighter-rouge">ℝ</code> we can use the <code class="highlighter-rouge">Logit</code> bijector:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Bijectors</span><span class="o">.</span><span class="n">bijector</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">CustomUniform</span><span class="x">)</span> <span class="o">=</span> <span class="n">Logit</span><span class="x">(</span><span class="mf">0.</span><span class="x">,</span> <span class="mf">1.</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>Functions for domain transformation which may be required by multivariate or matrix-variate distributions are <code class="highlighter-rouge">size</code>, <code class="highlighter-rouge">link</code> and <code class="highlighter-rouge">invlink</code>. Please see Turing’s <a href="https://github.com/TuringLang/Turing.jl/blob/master/src/utilities/transform.jl"><code class="highlighter-rouge">transform.jl</code></a> for examples.</p>
+<p>You’d do the exact same thing for <code class="highlighter-rouge">ContinuousMultivariateDistribution</code> and <code class="highlighter-rouge">ContinuousMatrixDistribution</code>. For example, <code class="highlighter-rouge">Wishart</code> defines a distribution over positive-definite matrices and so <code class="highlighter-rouge">bijector</code> returns a <code class="highlighter-rouge">PDBijector</code> when called with a <code class="highlighter-rouge">Wishart</code> distribution as an argument. For discrete distributions, there is no need to define a bijector; the <code class="highlighter-rouge">Identity</code> bijector is used by default.</p>
+
+<p>Alternatively, for <code class="highlighter-rouge">UnivariateDistribution</code> we can define the <code class="highlighter-rouge">minimum</code> and <code class="highlighter-rouge">maximum</code> of the distribution</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">minimum</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">CustomUniform</span><span class="x">)</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">Distributions</span><span class="o">.</span><span class="n">maximum</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">CustomUniform</span><span class="x">)</span> <span class="o">=</span> <span class="mf">1.</span>
+</code></pre></div></div>
+
+<p>and <code class="highlighter-rouge">Bijectors.jl</code> will ensure that everything just works.</p>
 
 <p><a id=".2-Vectorization-Support-1"></a></p>
 
