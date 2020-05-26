@@ -193,9 +193,9 @@ version = "0.2.2"
 
 [[FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays"]
-git-tree-sha1 = "6c89d5b673e59b8173c546c84127e5f623d865f6"
+git-tree-sha1 = "44f561e293987ffc84272cd3d2b14b0b93123d63"
 uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.8.9"
+version = "0.8.10"
 
 [[Formatting]]
 deps = ["Printf"]
@@ -257,9 +257,9 @@ uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [[Libtask]]
 deps = ["BinaryProvider", "Libdl", "Pkg"]
-git-tree-sha1 = "629ebd47ff34ca0ba90316e059ee39260947d546"
+git-tree-sha1 = "68a658db4792dfc468ea2aabcf06f3f74f153f23"
 uuid = "6f1fad26-d15e-5dc8-ae53-837a1d7b8c9f"
-version = "0.4.0"
+version = "0.4.1"
 
 [[LinearAlgebra]]
 deps = ["Libdl"]

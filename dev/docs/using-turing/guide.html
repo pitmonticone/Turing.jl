@@ -798,11 +798,11 @@
 <span class="k">using</span> <span class="n">StatsPlots</span>
 
 <span class="c"># Define a simple Normal model with unknown mean and variance.</span>
-<span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -850,7 +850,7 @@
 
 <p>In the following example, the defined model is conditioned to the date (arg<em>1 = 1, arg</em>2 = 2) by passing (1, 2) to the model function.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">model_name</span><span class="x">(</span><span class="n">arg_1</span><span class="x">,</span> <span class="n">arg_2</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> model_name</span><span class="x">(</span><span class="n">arg_1</span><span class="x">,</span> <span class="n">arg_2</span><span class="x">)</span>
   <span class="o">...</span>
 <span class="k">end</span>
 </code></pre></div></div>
@@ -873,10 +873,10 @@
 <p>Turing does not have a declarative form. More generally, the order in which you place the lines of a <code class="highlighter-rouge">@model</code> macro matters. For example, the following example works:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define a simple Normal model with unknown mean and variance.</span>
-<span class="nd">@model</span> <span class="n">model_function</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">Poisson</span><span class="x">(</span><span class="mi">1</span><span class="x">)</span>
-  <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">s</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
-  <span class="k">return</span> <span class="n">y</span>
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> model_function</span><span class="x">(</span><span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">Poisson</span><span class="x">(</span><span class="mi">1</span><span class="x">)</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">s</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+    <span class="k">return</span> <span class="n">y</span>
 <span class="k">end</span>
 
 <span class="n">sample</span><span class="x">(</span><span class="n">model_function</span><span class="x">(</span><span class="mi">10</span><span class="x">),</span> <span class="n">SMC</span><span class="x">(),</span> <span class="mi">100</span><span class="x">)</span>
@@ -885,10 +885,10 @@
 <p>But if we switch the <code class="highlighter-rouge">s ~ Poisson(1)</code> and <code class="highlighter-rouge">y ~ Normal(s, 1)</code> lines, the model will no longer sample correctly:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define a simple Normal model with unknown mean and variance.</span>
-<span class="nd">@model</span> <span class="n">model_function</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">s</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">Poisson</span><span class="x">(</span><span class="mi">1</span><span class="x">)</span>
-  <span class="k">return</span> <span class="n">y</span>
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> model_function</span><span class="x">(</span><span class="n">y</span><span class="x">)</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">s</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">Poisson</span><span class="x">(</span><span class="mi">1</span><span class="x">)</span>
+    <span class="k">return</span> <span class="n">y</span>
 <span class="k">end</span>
 
 <span class="n">sample</span><span class="x">(</span><span class="n">model_function</span><span class="x">(</span><span class="mi">10</span><span class="x">),</span> <span class="n">SMC</span><span class="x">(),</span> <span class="mi">100</span><span class="x">)</span>
@@ -898,40 +898,100 @@
 
 <h3 id="sampling-multiple-chains">Sampling Multiple Chains</h3>
 
-<p>You can use multiple processes to sample chains in parallel:</p>
+<p>Turing supports distributed and threaded parallel sampling. To do so, call <code class="highlighter-rouge">sample(model, sampler, parallel_type, n, n_chains)</code>, where <code class="highlighter-rouge">parallel_type</code> can be either <code class="highlighter-rouge">MCMCThreads()</code> or <code class="highlighter-rouge">MCMCDistributed()</code> for thread and parallel sampling, respectively.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate 4 chains, each with 1,000 samples.</span>
-<span class="n">chains</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">sampler</span><span class="x">,</span> <span class="n">MCMCDistributed</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">,</span> <span class="mi">4</span><span class="x">)</span>
-</code></pre></div></div>
+<p>Having multiple chains in the same object is valuable for evaluating convergence. Some diagnostic functions like <code class="highlighter-rouge">gelmandiag</code> require multiple chains.</p>
 
-<p>Alternatively, if you have Julia 1.3 or greater, you may sample multiple chains using multiple threads:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate 4 chains, each with 1,000 samples.</span>
-<span class="n">chains</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">sampler</span><span class="x">,</span> <span class="n">MCMCThreads</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">,</span> <span class="mi">4</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>For older versions of Julia, <code class="highlighter-rouge">sample</code> may not function correctly. If you wish to run multiple chains, you can do so with the <code class="highlighter-rouge">mapreduce</code> function:</p>
+<p>If you do not want parallelism or are on an older version Julia, you can sample multiple chains with the <code class="highlighter-rouge">mapreduce</code> function:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Replace num_chains below with however many chains you wish to sample.</span>
 <span class="n">chains</span> <span class="o">=</span> <span class="n">mapreduce</span><span class="x">(</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="n">sample</span><span class="x">(</span><span class="n">model_fun</span><span class="x">,</span> <span class="n">sampler</span><span class="x">,</span> <span class="mi">1000</span><span class="x">),</span> <span class="n">chainscat</span><span class="x">,</span> <span class="mi">1</span><span class="o">:</span><span class="n">num_chains</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>The <code class="highlighter-rouge">chains</code> variable now contains a <code class="highlighter-rouge">Chains</code> object which can be indexed by chain. To pull out the first chain from the <code class="highlighter-rouge">chains</code> object, use <code class="highlighter-rouge">chains[:,:,1]</code>.</p>
+<p>The <code class="highlighter-rouge">chains</code> variable now contains a <code class="highlighter-rouge">Chains</code> object which can be indexed by chain. To pull out the first chain from the <code class="highlighter-rouge">chains</code> object, use <code class="highlighter-rouge">chains[:,:,1]</code>. The method is the same if you use either of the below parallel sampling methods.</p>
 
-<p>Having multiple chains in the same object is valuable for evaluating convergence. Some diagnostic functions like <code class="highlighter-rouge">gelmandiag</code> require multiple chains.</p>
+<p><a id="Multithreaded-sampling-1"></a></p>
+
+<h4 id="multithreaded-sampling">Multithreaded sampling</h4>
+
+<p>If you wish to perform multithreaded sampling and are running Julia 1.3 or greater, you can call <code class="highlighter-rouge">sample</code> with the following signature:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
+
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">eachindex</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+        <span class="n">x</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">])</span>
+
+<span class="c"># Sample four chains using multiple threads, each with 1000 samples.</span>
+<span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(),</span> <span class="n">MCMCThreads</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">,</span> <span class="mi">4</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Be aware that Turing cannot add threads for you – you must have started your Julia instance with multiple threads to experience any kind of parallelism. See the <a href="https://docs.julialang.org/en/v1/manual/parallel-computing/#man-multithreading-1">Julia documentation</a> for details on how to achieve this.</p>
+
+<p><a id="Distributed-sampling-1"></a></p>
+
+<h4 id="distributed-sampling">Distributed sampling</h4>
+
+<p>To perform distributed sampling (using multiple processes), you must first import <code class="highlighter-rouge">Distributed</code>.</p>
+
+<p>Process parallel sampling can be done like so:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Load Distributed to add processes and the @everywhere macro.</span>
+<span class="k">using</span> <span class="n">Distributed</span> 
+
+<span class="c"># Load Turing.</span>
+<span class="k">using</span> <span class="n">Turing</span>
+
+<span class="c"># Add four processes to use for sampling. </span>
+<span class="n">addprocs</span><span class="x">(</span><span class="mi">4</span><span class="x">)</span>
+
+<span class="c"># Initialize everything on all the processes.</span>
+<span class="c"># Note: Make sure to do this after you've already loaded Turing,</span>
+<span class="c">#       so each process does not have to precompile. </span>
+<span class="c">#       Parallel sampling may fail silently if you do not do this.</span>
+<span class="nd">@everywhere</span> <span class="k">using</span> <span class="n">Turing</span>
+
+<span class="c"># Define a model on all processes.</span>
+<span class="nd">@everywhere</span> <span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">eachindex</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+        <span class="n">x</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c"># Declare the model instance everywhere.</span>
+<span class="nd">@everywhere</span> <span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">])</span>
+
+<span class="c"># Sample four chains using multiple processes, each with 1000 samples.</span>
+<span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(),</span> <span class="n">MCMCDistributed</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">,</span> <span class="mi">4</span><span class="x">)</span>
+</code></pre></div></div>
 
 <p><a id="Sampling-from-an-Unconditional-Distribution-(The-Prior)-1"></a></p>
 
 <h3 id="sampling-from-an-unconditional-distribution-the-prior">Sampling from an Unconditional Distribution (The Prior)</h3>
 
-<p>Turing allows you to sample from a declared model’s prior by calling the model without specifying inputs or a sampler. In the below example, we specify a <code class="highlighter-rouge">gdemo</code> model which returns two variables, <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code>. The model includes <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> as arguments, but calling the function without passing in <code class="highlighter-rouge">x</code> or <code class="highlighter-rouge">y</code> means that Turing’s compiler will assume they are missing values to draw from the relevant distribution. The <code class="highlighter-rouge">return</code> statement is necessary to retrieve the sampled <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> values.</p>
+<p>Turing allows you to sample from a declared model’s prior. If you wish to draw a chain from the prior to inspect your prior distributions, you can simply run</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="k">return</span> <span class="n">x</span><span class="x">,</span> <span class="n">y</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">Prior</span><span class="x">(),</span> <span class="n">n_samples</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>You can also run your model (as if it were a function) from the prior distribution, by calling the model without specifying inputs or a sampler. In the below example, we specify a <code class="highlighter-rouge">gdemo</code> model which returns two variables, <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code>. The model includes <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> as arguments, but calling the function without passing in <code class="highlighter-rouge">x</code> or <code class="highlighter-rouge">y</code> means that Turing’s compiler will assume they are missing values to draw from the relevant distribution. The <code class="highlighter-rouge">return</code> statement is necessary to retrieve the sampled <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> values.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="k">return</span> <span class="n">x</span><span class="x">,</span> <span class="n">y</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -957,7 +1017,7 @@
 
 <p>Inputs to the model that have a value <code class="highlighter-rouge">missing</code> are treated as parameters, aka random variables, to be estimated/sampled. This can be useful if you want to simulate draws for that parameter, or if you are sampling from a conditional distribution. Turing supports the following syntax:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="k">begin</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span><span class="x">}</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">===</span> <span class="nb">missing</span>
         <span class="c"># Initialize `x` if missing</span>
         <span class="n">x</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="n">T</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
@@ -978,7 +1038,7 @@
 
 <p>Turing also supports mixed <code class="highlighter-rouge">missing</code> and non-<code class="highlighter-rouge">missing</code> values in <code class="highlighter-rouge">x</code>, where the missing ones will be treated as random variables to be sampled while the others get treated as observations. For example:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
     <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
     <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">eachindex</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
@@ -999,7 +1059,7 @@
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
 
-<span class="nd">@model</span> <span class="n">generative</span><span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">missing</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span> <span class="o">&lt;:</span> <span class="kt">Real</span><span class="x">}</span> <span class="o">=</span> <span class="k">begin</span>
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> generative</span><span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">missing</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span> <span class="o">&lt;:</span> <span class="kt">Real</span><span class="x">}</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">===</span> <span class="nb">missing</span>
         <span class="c"># Initialize x when missing</span>
         <span class="n">x</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="n">T</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="mi">10</span><span class="x">)</span>
@@ -1042,11 +1102,11 @@
 
 <p>Consider the following <code class="highlighter-rouge">gdemo</code> model:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
@@ -1058,19 +1118,117 @@
   <li><code class="highlighter-rouge">prob"s = 1.0, m = 1.0, x = 1.0 | model = gdemo, y = nothing"</code> calculates the joint probability of <code class="highlighter-rouge">s = 1</code>, <code class="highlighter-rouge">m = 1</code> and <code class="highlighter-rouge">x = 1</code> ignoring <code class="highlighter-rouge">y</code>.</li>
   <li><code class="highlighter-rouge">prob"s = 1.0, m = 1.0, x = 1.0, y = 1.0 | model = gdemo"</code> calculates the joint probability of all the variables.</li>
   <li>After the MCMC sampling, given a <code class="highlighter-rouge">chain</code>, <code class="highlighter-rouge">prob"x = 1.0, y = 1.0 | chain = chain, model = gdemo"</code> calculates the element-wise likelihood of <code class="highlighter-rouge">x = 1.0</code> and <code class="highlighter-rouge">y = 1.0</code> for each sample in <code class="highlighter-rouge">chain</code>.</li>
-  <li>
-    <table>
-      <tbody>
-        <tr>
-          <td>If <code class="highlighter-rouge">save_state=true</code> was used during sampling (i.e., <code class="highlighter-rouge">sample(model, sampler, N; save_state=true)</code>), you can simply do ``prob”x = 1.0, y = 1.0</td>
-          <td>chain = chain”`.</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
+  <li>If <code class="highlighter-rouge">save_state=true</code> was used during sampling (i.e., <code class="highlighter-rouge">sample(model, sampler, N; save_state=true)</code>), you can simply do <code class="highlighter-rouge">prob"x = 1.0, y = 1.0 | chain = chain"</code>.</li>
 </ul>
 
 <p>In all the above cases, <code class="highlighter-rouge">logprob</code> can be used instead of <code class="highlighter-rouge">prob</code> to calculate the log probabilities instead.</p>
+
+<p><a id="Maximum-likelihood-and-maximum-a-posterior-estimates-1"></a></p>
+
+<h3 id="maximum-likelihood-and-maximum-a-posterior-estimates">Maximum likelihood and maximum a posterior estimates</h3>
+
+<p>Turing provides support for two mode estimation techniques, <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximum likelihood estimation</a> (MLE) and <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation">maximum a posterior</a> (MAP) estimation. Optimization is performed by the <a href="https://github.com/JuliaNLSolvers/Optim.jl">Optim.jl</a> package. Mode estimation is currently a optional tool, and will not be available to you unless you have manually installed Optim and loaded the package with a <code class="highlighter-rouge">using</code> statement. To install Optim, run <code class="highlighter-rouge">import Pkg; Pkg.add("Optim")</code>.</p>
+
+<p>Mode estimation only works when all model parameters are continuous – discrete parameters cannot be estimated with MLE/MAP as of yet.</p>
+
+<p>To understand how mode estimation works, let us first load Turing and Optim to enable mode estimation, and then declare a model:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Note that loading Optim explicitly is required for mode estimation to function,</span>
+<span class="c"># as Turing does not load the opimization suite unless Optim is loaded as well.</span>
+<span class="k">using</span> <span class="n">Turing</span>
+<span class="k">using</span> <span class="n">Optim</span>
+
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">eachindex</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+        <span class="n">x</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Once the model is defined, we can construct a model instance as we normally would:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create some data to pass to the model.</span>
+<span class="n">data</span> <span class="o">=</span> <span class="x">[</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">]</span>
+
+<span class="c"># Instantiate the gdemo model with our data.</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">data</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Mode estimation is typically quick and easy at this point. Turing extends the function <code class="highlighter-rouge">Optim.optimize</code> and accepts the structs <code class="highlighter-rouge">MLE()</code> or <code class="highlighter-rouge">MAP()</code>, which inform Turing whether to provide an MLE or MAP estimate, respectively. By default, the <a href="https://julianlsolvers.github.io/Optim.jl/stable/#algo/lbfgs/">LBFGS optimizer</a> is used, though this can be changed. Basic usage is:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a MLE estimate.</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">())</span>
+
+<span class="c"># Generate a MAP estimate.</span>
+<span class="n">map_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MAP</span><span class="x">())</span>
+</code></pre></div></div>
+
+<p>If you wish to change to a different optimizer, such as <code class="highlighter-rouge">NelderMead</code>, simply place your optimizer in the third argument slot:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Use NelderMead</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">(),</span> <span class="n">NelderMead</span><span class="x">())</span>
+
+<span class="c"># Use SimulatedAnnealing</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">(),</span> <span class="n">SimulatedAnnealing</span><span class="x">())</span>
+
+<span class="c"># Use ParticleSwarm</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">(),</span> <span class="n">ParticleSwarm</span><span class="x">())</span>
+
+<span class="c"># Use Newton</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">(),</span> <span class="n">Newton</span><span class="x">())</span>
+
+<span class="c"># Use AcceleratedGradientDescent</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">(),</span> <span class="n">AcceleratedGradientDescent</span><span class="x">())</span>
+</code></pre></div></div>
+
+<p>Some methods may have trouble calculating the mode because not enough iterations were allowed, or the target function moved upwards between function calls. Turing will warn you if Optim fails to converge by running <code class="highlighter-rouge">Optim.converge</code>. A typical solution to this might be to add more iterations, or allow the optimizer to increase between function iterations:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Increase the iterations and allow function eval to increase between calls.</span>
+<span class="n">mle_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MLE</span><span class="x">(),</span> <span class="n">Newton</span><span class="x">(),</span> <span class="n">Optim</span><span class="o">.</span><span class="n">Options</span><span class="x">(</span><span class="n">iterations</span><span class="o">=</span><span class="mi">10_000</span><span class="x">,</span> <span class="n">allow_f_increases</span><span class="o">=</span><span class="nb">true</span><span class="x">))</span>
+</code></pre></div></div>
+
+<p>More options for Optim are available <a href="https://julianlsolvers.github.io/Optim.jl/stable/#user/config/">here</a>.</p>
+
+<p><a id="Analyzing-your-mode-estimate-1"></a></p>
+
+<h4 id="analyzing-your-mode-estimate">Analyzing your mode estimate</h4>
+
+<p>Turing extends several methods from <code class="highlighter-rouge">StatsBase</code> that can be used to analyze your mode estimation results. Methods implemented include <code class="highlighter-rouge">vcov</code>, <code class="highlighter-rouge">informationmatrix</code>, <code class="highlighter-rouge">coeftable</code>, <code class="highlighter-rouge">params</code>, and <code class="highlighter-rouge">coef</code>, among others.</p>
+
+<p>For example, let’s examine our ML estimate from above using <code class="highlighter-rouge">coeftable</code>:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import StatsBase to use it's statistical methods.</span>
+<span class="k">using</span> <span class="n">StatsBase</span>
+
+<span class="c"># Print out the coefficient table.</span>
+<span class="n">coeftable</span><span class="x">(</span><span class="n">mle_estimate</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">─────────────────────────────</span>
+   <span class="n">estimate</span>  <span class="n">stderror</span>   <span class="n">tstat</span>
+<span class="n">─────────────────────────────</span>
+<span class="n">s</span>    <span class="mf">0.0625</span>  <span class="mf">0.0625</span>    <span class="mf">1.0</span>
+<span class="n">m</span>    <span class="mf">1.75</span>    <span class="mf">0.176777</span>  <span class="mf">9.8995</span>
+<span class="n">─────────────────────────────</span>
+</code></pre></div></div>
+
+<p>Standard errors are calculated from the Fisher information matrix (inverse Hessian of the log likelihood or log joint). t-statistics will be familiar to frequentist statisticians. Warning – standard errors calculated in this way may not always be appropriate for MAP estimates, so please be cautious in interpereting them.</p>
+
+<p><a id="Sampling-with-the-MAP/MLE-as-initial-states-1"></a></p>
+
+<h4 id="sampling-with-the-mapmle-as-initial-states">Sampling with the MAP/MLE as initial states</h4>
+
+<p>You can begin sampling your chain from an MLE/MAP estimate by extracting the vector of parameter values and providing it to the <code class="highlighter-rouge">sample</code> function with the keyword <code class="highlighter-rouge">init_theta</code>. For example, here is how to sample from the full posterior using the MAP estimate as the starting point:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate an MAP estimate.</span>
+<span class="n">map_estimate</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">MAP</span><span class="x">())</span>
+
+<span class="c"># Sample with the MAP estimate as the starting point.</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(),</span> <span class="mi">1_000</span><span class="x">,</span> <span class="n">init_theta</span> <span class="o">=</span> <span class="n">map_estimate</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">array</span><span class="x">)</span>
+</code></pre></div></div>
 
 <p><a id="Beyond-the-Basics-1"></a></p>
 
@@ -1082,16 +1240,16 @@
 
 <p>Turing.jl provides a Gibbs interface to combine different samplers. For example, one can combine an <code class="highlighter-rouge">HMC</code> sampler with a <code class="highlighter-rouge">PG</code> sampler to run inference for different parameters in a single model as below.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">simple_choice</span><span class="x">(</span><span class="n">xs</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">p</span> <span class="o">~</span> <span class="n">Beta</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
-  <span class="n">z</span> <span class="o">~</span> <span class="n">Bernoulli</span><span class="x">(</span><span class="n">p</span><span class="x">)</span>
-  <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">xs</span><span class="x">)</span>
-    <span class="k">if</span> <span class="n">z</span> <span class="o">==</span> <span class="mi">1</span>
-      <span class="n">xs</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
-    <span class="k">else</span>
-      <span class="n">xs</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> simple_choice</span><span class="x">(</span><span class="n">xs</span><span class="x">)</span>
+    <span class="n">p</span> <span class="o">~</span> <span class="n">Beta</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
+    <span class="n">z</span> <span class="o">~</span> <span class="n">Bernoulli</span><span class="x">(</span><span class="n">p</span><span class="x">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">xs</span><span class="x">)</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="n">xs</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+        <span class="k">else</span>
+            <span class="n">xs</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+        <span class="k">end</span>
     <span class="k">end</span>
-  <span class="k">end</span>
 <span class="k">end</span>
 
 <span class="n">simple_choice_f</span> <span class="o">=</span> <span class="n">simple_choice</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">,</span> <span class="mf">0.3</span><span class="x">])</span>
@@ -1134,7 +1292,7 @@
 <p>Here is an example of how the <code class="highlighter-rouge">TArray</code> (using a <code class="highlighter-rouge">TArray</code> constructor function called <code class="highlighter-rouge">tzeros</code>) can be applied in this way:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Turing model definition.</span>
-<span class="nd">@model</span> <span class="n">BayesHmm</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
+<span class="nd">@model</span> <span class="k">function</span><span class="nf"> BayesHmm</span><span class="x">(</span><span class="n">y</span><span class="x">)</span>
     <span class="c"># Declare a TArray with a length of N.</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">tzeros</span><span class="x">(</span><span class="kt">Int</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span>
     <span class="n">m</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">Real</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="n">K</span><span class="x">)</span>
