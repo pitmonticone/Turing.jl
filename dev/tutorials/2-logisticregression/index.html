@@ -395,6 +395,12 @@
                               title="Variational Inference">Variational Inference</a>
                         </li>
                         
+                        <li class="md-nav__item navbar_bottom-border">
+                          <a class="md-nav__link" href="/dev/tutorials/10-bayesiandiffeq"
+                              id="pancakes-bayesian-differential-equation"
+                              title="Bayesian Differential Equation">Bayesian Differential Equation</a>
+                        </li>
+                        
                       </ul>
                     </nav>
                     
@@ -670,6 +676,13 @@
                            
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/tutorials/10-bayesiandiffeq"
+                           title="Bayesian Differential Equation" 
+                           
+                           class="md-nav__link pancakes-child">Bayesian Differential Equation</a>
+                        </li>
                     </ul>
                 </nav>
                 
@@ -770,7 +783,7 @@
     <h1 id="bayesian-logistic-regression">Bayesian Logistic Regression</h1>
 <p><a href="https://en.wikipedia.org/wiki/Logistic_regression#Bayesian">Bayesian logistic regression</a> is the Bayesian counterpart to a common tool in machine learning, logistic regression. The goal of logistic regression is to predict a one or a zero for a given training item. An example might be predicting whether someone is sick or ill given their symptoms and personal information.</p>
 
-<p>In our example, we’ll be working to predict whether someone is likely to default with a synthetic dataset found in the <code class="highlighter-rouge">RDatasets</code> package. This dataset, <code class="highlighter-rouge">Defaults</code>, comes from R’s <a href="https://cran.r-project.org/web/packages/ISLR/index.html">ISLR</a> package and contains information on borrowers.</p>
+<p>In our example, we’ll be working to predict whether someone is likely to default with a synthetic dataset found in the <code class="language-plaintext highlighter-rouge">RDatasets</code> package. This dataset, <code class="language-plaintext highlighter-rouge">Defaults</code>, comes from R’s <a href="https://cran.r-project.org/web/packages/ISLR/index.html">ISLR</a> package and contains information on borrowers.</p>
 
 <p>To start, let’s import all the libraries we’ll need.</p>
 
@@ -797,7 +810,7 @@
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 
 
@@ -820,7 +833,7 @@ false
 
 <table class="data-frame"><thead><tr><th></th><th>Default</th><th>Student</th><th>Balance</th><th>Income</th></tr><tr><th></th><th>Categorical…</th><th>Categorical…</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>6 rows × 4 columns</p><tr><th>1</th><td>No</td><td>No</td><td>729.526</td><td>44361.6</td></tr><tr><th>2</th><td>No</td><td>Yes</td><td>817.18</td><td>12106.1</td></tr><tr><th>3</th><td>No</td><td>No</td><td>1073.55</td><td>31767.1</td></tr><tr><th>4</th><td>No</td><td>No</td><td>529.251</td><td>35704.5</td></tr><tr><th>5</th><td>No</td><td>No</td><td>785.656</td><td>38463.5</td></tr><tr><th>6</th><td>No</td><td>Yes</td><td>919.589</td><td>7491.56</td></tr></tbody></table>
 
-<p>Most machine learning processes require some effort to tidy up the data, and this is no different. We need to convert the <code class="highlighter-rouge">Default</code> and <code class="highlighter-rouge">Student</code> columns, which say “Yes” or “No” into 1s and 0s. Afterwards, we’ll get rid of the old words-based columns.</p>
+<p>Most machine learning processes require some effort to tidy up the data, and this is no different. We need to convert the <code class="language-plaintext highlighter-rouge">Default</code> and <code class="language-plaintext highlighter-rouge">Student</code> columns, which say “Yes” or “No” into 1s and 0s. Afterwards, we’ll get rid of the old words-based columns.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert "Default" and "Student" to numeric values.</span>
 <span class="n">data</span><span class="x">[</span><span class="o">!</span><span class="x">,</span><span class="o">:</span><span class="n">DefaultNum</span><span class="x">]</span> <span class="o">=</span> <span class="x">[</span><span class="n">r</span><span class="o">.</span><span class="n">Default</span> <span class="o">==</span> <span class="s">"Yes"</span> <span class="o">?</span> <span class="mf">1.0</span> <span class="o">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">r</span> <span class="k">in</span> <span class="n">eachrow</span><span class="x">(</span><span class="n">data</span><span class="x">)]</span>
@@ -835,9 +848,9 @@ false
 
 <table class="data-frame"><thead><tr><th></th><th>Balance</th><th>Income</th><th>DefaultNum</th><th>StudentNum</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>6 rows × 4 columns</p><tr><th>1</th><td>729.526</td><td>44361.6</td><td>0.0</td><td>0.0</td></tr><tr><th>2</th><td>817.18</td><td>12106.1</td><td>0.0</td><td>1.0</td></tr><tr><th>3</th><td>1073.55</td><td>31767.1</td><td>0.0</td><td>0.0</td></tr><tr><th>4</th><td>529.251</td><td>35704.5</td><td>0.0</td><td>0.0</td></tr><tr><th>5</th><td>785.656</td><td>38463.5</td><td>0.0</td><td>0.0</td></tr><tr><th>6</th><td>919.589</td><td>7491.56</td><td>0.0</td><td>1.0</td></tr></tbody></table>
 
-<p>After we’ve done that tidying, it’s time to split our dataset into training and testing sets, and separate the labels from the data. We separate our data into two halves, <code class="highlighter-rouge">train</code> and <code class="highlighter-rouge">test</code>. You can use a higher percentage of splitting (or a lower one) by modifying the <code class="highlighter-rouge">at = 0.05</code> argument. We have highlighted the use of only a 5% sample to show the power of Bayesian inference with small sample sizes.</p>
+<p>After we’ve done that tidying, it’s time to split our dataset into training and testing sets, and separate the labels from the data. We separate our data into two halves, <code class="language-plaintext highlighter-rouge">train</code> and <code class="language-plaintext highlighter-rouge">test</code>. You can use a higher percentage of splitting (or a lower one) by modifying the <code class="language-plaintext highlighter-rouge">at = 0.05</code> argument. We have highlighted the use of only a 5% sample to show the power of Bayesian inference with small sample sizes.</p>
 
-<p>We must rescale our variables so that they are centered around zero by subtracting each column by the mean and dividing it by the standard deviation. Without this step, Turing’s sampler will have a hard time finding a place to start searching for parameter estimates. To do this we will leverage <code class="highlighter-rouge">MLDataUtils</code>, which also lets us effortlessly shuffle our observations and perform a stratified split to get a representative test set.</p>
+<p>We must rescale our variables so that they are centered around zero by subtracting each column by the mean and dividing it by the standard deviation. Without this step, Turing’s sampler will have a hard time finding a place to start searching for parameter estimates. To do this we will leverage <code class="language-plaintext highlighter-rouge">MLDataUtils</code>, which also lets us effortlessly shuffle our observations and perform a stratified split to get a representative test set.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> split_data</span><span class="x">(</span><span class="n">df</span><span class="x">,</span> <span class="n">target</span><span class="x">;</span> <span class="n">at</span> <span class="o">=</span> <span class="mf">0.70</span><span class="x">)</span>
     <span class="n">shuffled</span> <span class="o">=</span> <span class="n">shuffleobs</span><span class="x">(</span><span class="n">df</span><span class="x">)</span>
@@ -865,18 +878,18 @@ false
 <h2 id="model-declaration">Model Declaration</h2>
 <p>Finally, we can define our model.</p>
 
-<p><code class="highlighter-rouge">logistic_regression</code> takes four arguments:</p>
+<p><code class="language-plaintext highlighter-rouge">logistic_regression</code> takes four arguments:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">x</code> is our set of independent variables;</li>
-  <li><code class="highlighter-rouge">y</code> is the element we want to predict;</li>
-  <li><code class="highlighter-rouge">n</code> is the number of observations we have; and</li>
-  <li><code class="highlighter-rouge">σ</code> is the standard deviation we want to assume for our priors.</li>
+  <li><code class="language-plaintext highlighter-rouge">x</code> is our set of independent variables;</li>
+  <li><code class="language-plaintext highlighter-rouge">y</code> is the element we want to predict;</li>
+  <li><code class="language-plaintext highlighter-rouge">n</code> is the number of observations we have; and</li>
+  <li><code class="language-plaintext highlighter-rouge">σ</code> is the standard deviation we want to assume for our priors.</li>
 </ul>
 
-<p>Within the model, we create four coefficients (<code class="highlighter-rouge">intercept</code>, <code class="highlighter-rouge">student</code>, <code class="highlighter-rouge">balance</code>, and <code class="highlighter-rouge">income</code>) and assign a prior of normally distributed with means of zero and standard deviations of <code class="highlighter-rouge">σ</code>. We want to find values of these four coefficients to predict any given <code class="highlighter-rouge">y</code>.</p>
+<p>Within the model, we create four coefficients (<code class="language-plaintext highlighter-rouge">intercept</code>, <code class="language-plaintext highlighter-rouge">student</code>, <code class="language-plaintext highlighter-rouge">balance</code>, and <code class="language-plaintext highlighter-rouge">income</code>) and assign a prior of normally distributed with means of zero and standard deviations of <code class="language-plaintext highlighter-rouge">σ</code>. We want to find values of these four coefficients to predict any given <code class="language-plaintext highlighter-rouge">y</code>.</p>
 
-<p>The <code class="highlighter-rouge">for</code> block creates a variable <code class="highlighter-rouge">v</code> which is the logistic function. We then observe the liklihood of calculating <code class="highlighter-rouge">v</code> given the actual label, <code class="highlighter-rouge">y[i]</code>.</p>
+<p>The <code class="language-plaintext highlighter-rouge">for</code> block creates a variable <code class="language-plaintext highlighter-rouge">v</code> which is the logistic function. We then observe the liklihood of calculating <code class="language-plaintext highlighter-rouge">v</code> given the actual label, <code class="language-plaintext highlighter-rouge">y[i]</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Bayesian logistic regression (LR)</span>
 <span class="nd">@model</span> <span class="n">logistic_regression</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">,</span> <span class="n">n</span><span class="x">,</span> <span class="n">σ</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
@@ -895,7 +908,7 @@ false
 
 <h2 id="sampling">Sampling</h2>
 
-<p>Now we can run our sampler. This time we’ll use <a href="http://turing.ml/docs/library/#Turing.HMC"><code class="highlighter-rouge">HMC</code></a> to sample from our posterior.</p>
+<p>Now we can run our sampler. This time we’ll use <a href="http://turing.ml/docs/library/#Turing.HMC"><code class="language-plaintext highlighter-rouge">HMC</code></a> to sample from our posterior.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Retrieve the number of observations.</span>
 <span class="n">n</span><span class="x">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">size</span><span class="x">(</span><span class="n">train</span><span class="x">)</span>
@@ -909,7 +922,7 @@ false
 <span class="n">describe</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{ChainDataFrame,1}
 
 Summary Statistics
   parameters     mean     std  naive_se    mcse        ess   r_hat
@@ -937,7 +950,7 @@ Quantiles
 
 <p>Looks good!</p>
 
-<p>We can also use the <code class="highlighter-rouge">corner</code> function from MCMCChains to show the distributions of the various parameters of our logistic regression.</p>
+<p>We can also use the <code class="language-plaintext highlighter-rouge">corner</code> function from MCMCChains to show the distributions of the various parameters of our logistic regression.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The labels to use.</span>
 <span class="n">l</span> <span class="o">=</span> <span class="x">[</span><span class="o">:</span><span class="n">student</span><span class="x">,</span> <span class="o">:</span><span class="n">balance</span><span class="x">,</span> <span class="o">:</span><span class="n">income</span><span class="x">]</span>
@@ -951,9 +964,9 @@ Quantiles
 <p>Fortunately the corner plot appears to demonstrate unimodal distributions for each of our parameters, so it should be straightforward to take the means of each parameter’s sampled values to estimate our model to make predictions.</p>
 
 <h2 id="making-predictions">Making Predictions</h2>
-<p>How do we test how well the model actually predicts whether someone is likely to default? We need to build a prediction function that takes the <code class="highlighter-rouge">test</code> object we made earlier and runs it through the average parameter calculated during sampling.</p>
+<p>How do we test how well the model actually predicts whether someone is likely to default? We need to build a prediction function that takes the <code class="language-plaintext highlighter-rouge">test</code> object we made earlier and runs it through the average parameter calculated during sampling.</p>
 
-<p>The <code class="highlighter-rouge">prediction</code> function below takes a <code class="highlighter-rouge">Matrix</code> and a <code class="highlighter-rouge">Chain</code> object. It takes the mean of each parameter’s sampled values and re-runs the logistic function using those mean values for every element in the test set.</p>
+<p>The <code class="language-plaintext highlighter-rouge">prediction</code> function below takes a <code class="language-plaintext highlighter-rouge">Matrix</code> and a <code class="language-plaintext highlighter-rouge">Chain</code> object. It takes the mean of each parameter’s sampled values and re-runs the logistic function using those mean values for every element in the test set.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> prediction</span><span class="x">(</span><span class="n">x</span><span class="o">::</span><span class="kt">Matrix</span><span class="x">,</span> <span class="n">chain</span><span class="x">,</span> <span class="n">threshold</span><span class="x">)</span>
     <span class="c"># Pull the means from each parameter's sampled values in the chain.</span>
@@ -981,7 +994,7 @@ Quantiles
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
-<p>Let’s see how we did! We run the test matrix through the prediction function, and compute the <a href="https://en.wikipedia.org/wiki/Mean_squared_error">mean squared error</a> (MSE) for our prediction. The <code class="highlighter-rouge">threshold</code> variable sets the sensitivity of the predictions. For example, a threshold of 0.07 will predict a defualt value of 1 for any predicted value greater than 0.07 and no default if it is less than 0.07.</p>
+<p>Let’s see how we did! We run the test matrix through the prediction function, and compute the <a href="https://en.wikipedia.org/wiki/Mean_squared_error">mean squared error</a> (MSE) for our prediction. The <code class="language-plaintext highlighter-rouge">threshold</code> variable sets the sensitivity of the predictions. For example, a threshold of 0.07 will predict a defualt value of 1 for any predicted value greater than 0.07 and no default if it is less than 0.07.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set the prediction threshold.</span>
 <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.07</span>
@@ -993,7 +1006,7 @@ Quantiles
 <span class="n">loss</span> <span class="o">=</span> <span class="n">sum</span><span class="x">((</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">test_label</span><span class="x">)</span><span class="o">.^</span><span class="mi">2</span><span class="x">)</span> <span class="o">/</span> <span class="n">length</span><span class="x">(</span><span class="n">test_label</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.1163157894736842
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.1163157894736842
 </code></pre></div></div>
 
 <p>Perhaps more important is to see what percentage of defaults we correctly predicted. The code below simply counts defaults and predictions and presents the results.</p>
@@ -1013,7 +1026,7 @@ Quantiles
     Percentage non-defaults correct </span><span class="si">$$</span><span class="s">(predicted_not_defaults/not_defaults)"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults: 316.0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults: 316.0
     Predictions: 265
     Percentage defaults correct 0.8386075949367089
 Not defaults: 9184.0

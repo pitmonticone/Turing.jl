@@ -395,6 +395,12 @@
                               title="Variational Inference">Variational Inference</a>
                         </li>
                         
+                        <li class="md-nav__item navbar_bottom-border">
+                          <a class="md-nav__link" href="/dev/tutorials/10-bayesiandiffeq"
+                              id="pancakes-bayesian-differential-equation"
+                              title="Bayesian Differential Equation">Bayesian Differential Equation</a>
+                        </li>
+                        
                       </ul>
                     </nav>
                     
@@ -670,6 +676,13 @@
                             style="color: red;"
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/tutorials/10-bayesiandiffeq"
+                           title="Bayesian Differential Equation" 
+                           
+                           class="md-nav__link pancakes-child">Bayesian Differential Equation</a>
+                        </li>
                     </ul>
                 </nav>
                 
@@ -773,13 +786,13 @@
 
 <p>Here we will focus on how to use VI in Turing and not much on the theory underlying VI. If you’re interested in understanding the mathematics you can checkout <a href="../../docs/for-developers/variational_inference">our write-up</a> or any other resource online (there a lot of great ones).</p>
 
-<p>Using VI in Turing.jl is very straight forward. If <code class="highlighter-rouge">model</code> denotes a definition of a <code class="highlighter-rouge">Turing.Model</code>, performing VI is as simple as</p>
+<p>Using VI in Turing.jl is very straight forward. If <code class="language-plaintext highlighter-rouge">model</code> denotes a definition of a <code class="language-plaintext highlighter-rouge">Turing.Model</code>, performing VI is as simple as</p>
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">model</span><span class="x">(</span><span class="n">data</span><span class="o">...</span><span class="x">)</span> <span class="c"># instantiate model on the data</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">vi_alg</span><span class="x">)</span>  <span class="c"># perform VI on `m` using the VI method `vi_alg`, which returns a `VariationalPosterior`</span>
 </code></pre></div></div>
 <p>Thus it’s no more work than standard MCMC sampling in Turing.</p>
 
-<p>To get a bit more into what we can do with <code class="highlighter-rouge">vi</code>, we’ll first have a look at a simple example and then we’ll reproduce the <a href="../../tutorials/5-linearregression">tutorial on Bayesian linear regression</a> using VI instead of MCMC. Finally we’ll look at some of the different parameters of <code class="highlighter-rouge">vi</code> and how you for example can use your own custom variational family.</p>
+<p>To get a bit more into what we can do with <code class="language-plaintext highlighter-rouge">vi</code>, we’ll first have a look at a simple example and then we’ll reproduce the <a href="../../tutorials/5-linearregression">tutorial on Bayesian linear regression</a> using VI instead of MCMC. Finally we’ll look at some of the different parameters of <code class="language-plaintext highlighter-rouge">vi</code> and how you for example can use your own custom variational family.</p>
 
 <h2 id="setup">Setup</h2>
 
@@ -802,7 +815,7 @@
 
 <p>Recall that <em>conjugate</em> refers to the fact that we can obtain a closed-form expression for the posterior. Of course one wouldn’t use something like variational inference for a conjugate model, but it’s useful as a simple demonstration as we can compare the result to the true posterior.</p>
 
-<p>First we generate some synthetic data, define the <code class="highlighter-rouge">Turing.Model</code> and instantiate the model on the data:</p>
+<p>First we generate some synthetic data, define the <code class="language-plaintext highlighter-rouge">Turing.Model</code> and instantiate the model on the data:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># generate data, n = 2000</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">randn</span><span class="x">(</span><span class="mi">2000</span><span class="x">);</span>
@@ -817,7 +830,7 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##model#344 (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##model#344 (generic function with 2 methods)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># construct model</span>
@@ -828,23 +841,23 @@
 
 <p>We’ll produce 10 000 samples with 200 steps used for adaptation and a target acceptance rate of 0.65</p>
 
-<p>If you don’t understand what “adaptation” or “target acceptance rate” refers to, all you really need to know is that <code class="highlighter-rouge">NUTS</code> is known to be one of the most accurate and efficient samplers (when applicable) while requiring little to no hand-tuning to work well.</p>
+<p>If you don’t understand what “adaptation” or “target acceptance rate” refers to, all you really need to know is that <code class="language-plaintext highlighter-rouge">NUTS</code> is known to be one of the most accurate and efficient samplers (when applicable) while requiring little to no hand-tuning to work well.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">samples_nuts</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(</span><span class="mi">200</span><span class="x">,</span> <span class="mf">0.65</span><span class="x">),</span> <span class="mi">10000</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
 │   ϵ = 0.025
 └ @ Turing.Inference /home/cameron/.julia/packages/Turing/cReBm/src/inference/hmc.jl:556
 [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:02[39m
 </code></pre></div></div>
 
-<p>Now let’s try VI. The most important function you need to now about to do VI in Turing is <code class="highlighter-rouge">vi</code>:</p>
+<p>Now let’s try VI. The most important function you need to now about to do VI in Turing is <code class="language-plaintext highlighter-rouge">vi</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">print</span><span class="x">(</span><span class="nd">@doc</span><span class="x">(</span><span class="n">Variational</span><span class="o">.</span><span class="n">vi</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
 vi(model, alg::VariationalInference)
 vi(model, alg::VariationalInference, q::VariationalPosterior)
 vi(model, alg::VariationalInference, getq::Function, θ::AbstractArray)
@@ -861,20 +874,20 @@ Constructs the variational posterior from the `model` and performs the optimizat
   * `θ`: only required if `getq` is used, in which case it is the initial parameters for the variational posterior
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">vi</code> takes the <code class="highlighter-rouge">Model</code> you want to approximate, a <code class="highlighter-rouge">VariationalInference</code> whose type specifies the method to use and then its fields specify the configuration of the method.</p>
+<p><code class="language-plaintext highlighter-rouge">vi</code> takes the <code class="language-plaintext highlighter-rouge">Model</code> you want to approximate, a <code class="language-plaintext highlighter-rouge">VariationalInference</code> whose type specifies the method to use and then its fields specify the configuration of the method.</p>
 
 <p>Additionally, you can pass</p>
 <ul>
-  <li>an initial variational posterior <code class="highlighter-rouge">q</code>, for which we assume there exists a implementation of <code class="highlighter-rouge">update(::typeof(q), θ::AbstractVector)</code> returning an updated posterior <code class="highlighter-rouge">q</code> with parameters <code class="highlighter-rouge">θ</code>.</li>
-  <li>a function mapping \(\theta \mapsto q_{\theta}\) (denoted above <code class="highlighter-rouge">getq</code>) together with initial parameters <code class="highlighter-rouge">θ</code>. This provides more flexibility in the types of variational families that we can use, and can sometimes be slightly more convenient for quick and rough work.</li>
+  <li>an initial variational posterior <code class="language-plaintext highlighter-rouge">q</code>, for which we assume there exists a implementation of <code class="language-plaintext highlighter-rouge">update(::typeof(q), θ::AbstractVector)</code> returning an updated posterior <code class="language-plaintext highlighter-rouge">q</code> with parameters <code class="language-plaintext highlighter-rouge">θ</code>.</li>
+  <li>a function mapping \(\theta \mapsto q_{\theta}\) (denoted above <code class="language-plaintext highlighter-rouge">getq</code>) together with initial parameters <code class="language-plaintext highlighter-rouge">θ</code>. This provides more flexibility in the types of variational families that we can use, and can sometimes be slightly more convenient for quick and rough work.</li>
 </ul>
 
-<p>By default, i.e. when calling <code class="highlighter-rouge">vi(m, advi)</code>, Turing use a <em>mean-field</em> approximation with a multivariate normal as the base-distribution. Mean-field refers to the fact that we assume all the latent variables to be <em>independent</em>. This the “standard” ADVI approach; see <a href="https://arxiv.org/abs/1603.00788">Automatic Differentiation Variational Inference (2016)</a> for more. In Turing, one can obtain such a mean-field approximation by calling <code class="highlighter-rouge">Variational.meanfield(model)</code> for which there exists an internal implementation for <code class="highlighter-rouge">update</code>:</p>
+<p>By default, i.e. when calling <code class="language-plaintext highlighter-rouge">vi(m, advi)</code>, Turing use a <em>mean-field</em> approximation with a multivariate normal as the base-distribution. Mean-field refers to the fact that we assume all the latent variables to be <em>independent</em>. This the “standard” ADVI approach; see <a href="https://arxiv.org/abs/1603.00788">Automatic Differentiation Variational Inference (2016)</a> for more. In Turing, one can obtain such a mean-field approximation by calling <code class="language-plaintext highlighter-rouge">Variational.meanfield(model)</code> for which there exists an internal implementation for <code class="language-plaintext highlighter-rouge">update</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">print</span><span class="x">(</span><span class="nd">@doc</span><span class="x">(</span><span class="n">Variational</span><span class="o">.</span><span class="n">meanfield</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
 meanfield(model::Model)
 meanfield(rng::AbstractRNG, model::Model)
 ```
@@ -882,12 +895,12 @@ meanfield(rng::AbstractRNG, model::Model)
 Creates a mean-field approximation with multivariate normal as underlying distribution.
 </code></pre></div></div>
 
-<p>Currently the only implementation of <code class="highlighter-rouge">VariationalInference</code> available is <code class="highlighter-rouge">ADVI</code>, which is very convenient and applicable as long as your <code class="highlighter-rouge">Model</code> is differentiable with respect to the <em>variational parameters</em>, that is, the parameters of your variational distribution, e.g. mean and variance in the mean-field approximation.</p>
+<p>Currently the only implementation of <code class="language-plaintext highlighter-rouge">VariationalInference</code> available is <code class="language-plaintext highlighter-rouge">ADVI</code>, which is very convenient and applicable as long as your <code class="language-plaintext highlighter-rouge">Model</code> is differentiable with respect to the <em>variational parameters</em>, that is, the parameters of your variational distribution, e.g. mean and variance in the mean-field approximation.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">print</span><span class="x">(</span><span class="nd">@doc</span><span class="x">(</span><span class="n">Variational</span><span class="o">.</span><span class="n">ADVI</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```julia
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```julia
 struct ADVI{AD} &lt;: Turing.Variational.VariationalInference{AD}
 ```
 
@@ -909,47 +922,47 @@ ADVI([samples_per_step=1, max_iters=1000])
 Create an [`ADVI`](@ref) with the currently enabled automatic differentiation backend `ADBackend()`.
 </code></pre></div></div>
 
-<p>To perform VI on the model <code class="highlighter-rouge">m</code> using 10 samples for gradient estimation and taking 1000 gradient steps is then as simple as:</p>
+<p>To perform VI on the model <code class="language-plaintext highlighter-rouge">m</code> using 10 samples for gradient estimation and taking 1000 gradient steps is then as simple as:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ADVI</span>
 <span class="n">advi</span> <span class="o">=</span> <span class="n">ADVI</span><span class="x">(</span><span class="mi">10</span><span class="x">,</span> <span class="mi">1000</span><span class="x">)</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
 │   objectid(θ) = 12334556482979097499
 └ @ Turing.Variational /home/cameron/.julia/packages/Turing/cReBm/src/variational/VariationalInference.jl:204
 [32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:03[39m
 </code></pre></div></div>
 
-<p>Unfortunately, for such a small problem Turing’s new <code class="highlighter-rouge">NUTS</code> sampler is <em>so</em> efficient now that it’s not that much more efficient to use ADVI. So, so very unfortunate…</p>
+<p>Unfortunately, for such a small problem Turing’s new <code class="language-plaintext highlighter-rouge">NUTS</code> sampler is <em>so</em> efficient now that it’s not that much more efficient to use ADVI. So, so very unfortunate…</p>
 
-<p>With that being said, this is not the case in general. For very complex models we’ll later find that <code class="highlighter-rouge">ADVI</code> produces very reasonable results in a much shorter time than <code class="highlighter-rouge">NUTS</code>.</p>
+<p>With that being said, this is not the case in general. For very complex models we’ll later find that <code class="language-plaintext highlighter-rouge">ADVI</code> produces very reasonable results in a much shorter time than <code class="language-plaintext highlighter-rouge">NUTS</code>.</p>
 
-<p>And one significant advantage of using <code class="highlighter-rouge">vi</code> is that we can sample from the resulting <code class="highlighter-rouge">q</code> with ease. In fact, the result of the <code class="highlighter-rouge">vi</code> call is a <code class="highlighter-rouge">TransformedDistribution</code> from Bijectors.jl, and it implements the Distributions.jl interface for a <code class="highlighter-rouge">Distribution</code>:</p>
+<p>And one significant advantage of using <code class="language-plaintext highlighter-rouge">vi</code> is that we can sample from the resulting <code class="language-plaintext highlighter-rouge">q</code> with ease. In fact, the result of the <code class="language-plaintext highlighter-rouge">vi</code> call is a <code class="language-plaintext highlighter-rouge">TransformedDistribution</code> from Bijectors.jl, and it implements the Distributions.jl interface for a <code class="language-plaintext highlighter-rouge">Distribution</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q</span> <span class="k">isa</span> <span class="n">MultivariateDistribution</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>true
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>true
 </code></pre></div></div>
 
-<p>This means that we can call <code class="highlighter-rouge">rand</code> to sample from the variational posterior <code class="highlighter-rouge">q</code></p>
+<p>This means that we can call <code class="language-plaintext highlighter-rouge">rand</code> to sample from the variational posterior <code class="language-plaintext highlighter-rouge">q</code></p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand</span><span class="x">(</span><span class="n">q</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2-element Array{Float64,1}:
   1.0134702063474585
  -0.07429020521027016
 </code></pre></div></div>
 
-<p>and <code class="highlighter-rouge">logpdf</code> to compute the log-probability</p>
+<p>and <code class="language-plaintext highlighter-rouge">logpdf</code> to compute the log-probability</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logpdf</span><span class="x">(</span><span class="n">q</span><span class="x">,</span> <span class="n">rand</span><span class="x">(</span><span class="n">q</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4.277478745320889
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4.277478745320889
 </code></pre></div></div>
 
 <p>Let’s check the first and second moments of the data to see how our approximation compares to the point-estimates form the data:</p>
@@ -957,17 +970,17 @@ Create an [`ADVI`](@ref) with the currently enabled automatic differentiation ba
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var</span><span class="x">(</span><span class="n">x</span><span class="x">),</span> <span class="n">mean</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1.021109459575047, -0.028838703049547422)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1.021109459575047, -0.028838703049547422)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="x">(</span><span class="n">mean</span><span class="x">(</span><span class="n">rand</span><span class="x">(</span><span class="n">q</span><span class="x">,</span> <span class="mi">1000</span><span class="x">);</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1.02716749432684, -0.02510701319723139)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1.02716749432684, -0.02510701319723139)
 </code></pre></div></div>
 
 <p>That’s pretty close! But we’re Bayesian so we’re not interested in <em>just</em> matching the mean.
-Let’s instead look the actual density <code class="highlighter-rouge">q</code>.</p>
+Let’s instead look the actual density <code class="language-plaintext highlighter-rouge">q</code>.</p>
 
 <p>For that we need samples:</p>
 
@@ -979,7 +992,7 @@ Let’s instead look the actual density <code class="highlighter-rouge">q</code>
 <span class="n">pyplot</span><span class="x">()</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling PyPlot [d330b81b-6aea-500a-939a-2ce795aea3ee]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling PyPlot [d330b81b-6aea-500a-939a-2ce795aea3ee]
 └ @ Base loading.jl:1260
 
 
@@ -1006,7 +1019,7 @@ Plots.PyPlotBackend()
 
 <p><img src="../9_VariationalInference_files/9_VariationalInference_34_0.png" alt="png" /></p>
 
-<p>For this particular <code class="highlighter-rouge">Model</code>, we can in fact obtain the posterior of the latent variables in closed form. This allows us to compare both <code class="highlighter-rouge">NUTS</code> and <code class="highlighter-rouge">ADVI</code> to the true posterior \(p(s, m \mid \{x_i\}_{i = 1}^n )\).</p>
+<p>For this particular <code class="language-plaintext highlighter-rouge">Model</code>, we can in fact obtain the posterior of the latent variables in closed form. This allows us to compare both <code class="language-plaintext highlighter-rouge">NUTS</code> and <code class="language-plaintext highlighter-rouge">ADVI</code> to the true posterior \(p(s, m \mid \{x_i\}_{i = 1}^n )\).</p>
 
 <p><em>The code below is just work to get the marginals \(p(s \mid \{x_i\}_{i = 1}^n)\) and \(p(m \mid \{x_i\}_{i = 1}^n\) from the posterior obtained using ConjugatePriors.jl. Feel free to skip it.</em></p>
 
@@ -1080,17 +1093,17 @@ Plots.PyPlotBackend()
 <span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(</span><span class="n">p1</span><span class="x">,</span> <span class="n">p2</span><span class="x">;</span> <span class="n">layout</span><span class="o">=</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">1</span><span class="x">),</span> <span class="n">size</span><span class="o">=</span><span class="x">(</span><span class="mi">900</span><span class="x">,</span> <span class="mi">500</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling ConjugatePriors [1624bea9-42b1-5fc1-afd3-e96f729c8d6c]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Precompiling ConjugatePriors [1624bea9-42b1-5fc1-afd3-e96f729c8d6c]
 └ @ Base loading.jl:1260
 </code></pre></div></div>
 
 <p><img src="../9_VariationalInference_files/9_VariationalInference_36_1.png" alt="png" /></p>
 
-<h1 id="bayesian-linear-regression-example-using-advi">Bayesian linear regression example using <code class="highlighter-rouge">ADVI</code></h1>
+<h1 id="bayesian-linear-regression-example-using-advi">Bayesian linear regression example using <code class="language-plaintext highlighter-rouge">ADVI</code></h1>
 
-<p>This is simply a duplication of the tutorial <a href="../../tutorials/5-linearregression">5. Linear regression</a> but now with the addition of an approximate posterior obtained using <code class="highlighter-rouge">ADVI</code>.</p>
+<p>This is simply a duplication of the tutorial <a href="../../tutorials/5-linearregression">5. Linear regression</a> but now with the addition of an approximate posterior obtained using <code class="language-plaintext highlighter-rouge">ADVI</code>.</p>
 
-<p>As we’ll see, there is really no additional work required to apply variational inference to a more complex <code class="highlighter-rouge">Model</code>.</p>
+<p>As we’ll see, there is really no additional work required to apply variational inference to a more complex <code class="language-plaintext highlighter-rouge">Model</code>.</p>
 
 <h2 id="copy-paste-from-5-linear-regression">Copy-paste from <a href="../../tutorials/5-linearregression">5. Linear regression</a></h2>
 
@@ -1106,7 +1119,7 @@ Plots.PyPlotBackend()
 <span class="n">Turing</span><span class="o">.</span><span class="n">turnprogress</span><span class="x">(</span><span class="nb">true</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is enabled globally
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is enabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 </code></pre></div></div>
 
@@ -1139,7 +1152,7 @@ Plots.PyPlotBackend()
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unstandardize (generic function with 1 method)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unstandardize (generic function with 1 method)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Remove the model column.</span>
@@ -1190,29 +1203,29 @@ Plots.PyPlotBackend()
 
 <h2 id="performing-vi">Performing VI</h2>
 
-<p>First we define the initial variational distribution, or, equivalently, the family of distributions to consider. We’re going to use the same mean-field approximation as Turing will use by default when we call <code class="highlighter-rouge">vi(m, advi)</code>, which we obtain by calling <code class="highlighter-rouge">Variational.meanfield</code>. This returns a <code class="highlighter-rouge">TransformedDistribution</code> with a <code class="highlighter-rouge">TuringDiagMvNormal</code> as the underlying distribution and the transformation mapping from the reals to the domain of the latent variables.</p>
+<p>First we define the initial variational distribution, or, equivalently, the family of distributions to consider. We’re going to use the same mean-field approximation as Turing will use by default when we call <code class="language-plaintext highlighter-rouge">vi(m, advi)</code>, which we obtain by calling <code class="language-plaintext highlighter-rouge">Variational.meanfield</code>. This returns a <code class="language-plaintext highlighter-rouge">TransformedDistribution</code> with a <code class="language-plaintext highlighter-rouge">TuringDiagMvNormal</code> as the underlying distribution and the transformation mapping from the reals to the domain of the latent variables.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q0</span> <span class="o">=</span> <span class="n">Variational</span><span class="o">.</span><span class="n">meanfield</span><span class="x">(</span><span class="n">m</span><span class="x">)</span>
 <span class="n">typeof</span><span class="x">(</span><span class="n">q0</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}},Bijectors.Stacked{Tuple{Bijectors.Inverse{Bijectors.TruncatedBijector{Float64},0},Bijectors.Identity{0},Bijectors.Identity{1}},3},Multivariate}
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}},Bijectors.Stacked{Tuple{Bijectors.Inverse{Bijectors.TruncatedBijector{Float64},0},Bijectors.Identity{0},Bijectors.Identity{1}},3},Multivariate}
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">advi</span> <span class="o">=</span> <span class="n">ADVI</span><span class="x">(</span><span class="mi">10</span><span class="x">,</span> <span class="mi">10_000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ADVI{Turing.Core.ForwardDiffAD{40}}(10, 10000)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ADVI{Turing.Core.ForwardDiffAD{40}}(10, 10000)
 </code></pre></div></div>
 
 <p>Turing also provides a couple of different optimizers:</p>
 <ul>
-  <li><code class="highlighter-rouge">TruncatedADAGrad</code> (default)</li>
-  <li><code class="highlighter-rouge">DecayedADAGrad</code>
+  <li><code class="language-plaintext highlighter-rouge">TruncatedADAGrad</code> (default)</li>
+  <li><code class="language-plaintext highlighter-rouge">DecayedADAGrad</code>
 as these are well-suited for problems with high-variance stochastic objectives, which is usually what the ELBO ends up being at different times in our optimization process.</li>
 </ul>
 
-<p>With that being said, thanks to Requires.jl, if we add a <code class="highlighter-rouge">using Flux</code> prior to <code class="highlighter-rouge">using Turing</code> we can also make use of all the optimizers in <code class="highlighter-rouge">Flux</code>, e.g. <code class="highlighter-rouge">ADAM</code>, without any additional changes to your code! For example:</p>
+<p>With that being said, thanks to Requires.jl, if we add a <code class="language-plaintext highlighter-rouge">using Flux</code> prior to <code class="language-plaintext highlighter-rouge">using Turing</code> we can also make use of all the optimizers in <code class="language-plaintext highlighter-rouge">Flux</code>, e.g. <code class="language-plaintext highlighter-rouge">ADAM</code>, without any additional changes to your code! For example:</p>
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Flux</span><span class="x">,</span> <span class="n">Turing</span>
 <span class="k">using</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Variational</span>
 
@@ -1220,19 +1233,19 @@ as these are well-suited for problems with high-variance stochastic objectives, 
 </code></pre></div></div>
 <p>just works.</p>
 
-<p>For this problem we’ll use the <code class="highlighter-rouge">DecayedADAGrad</code> from Turing:</p>
+<p>For this problem we’ll use the <code class="language-plaintext highlighter-rouge">DecayedADAGrad</code> from Turing:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">opt</span> <span class="o">=</span> <span class="n">Variational</span><span class="o">.</span><span class="n">DecayedADAGrad</span><span class="x">(</span><span class="mf">1e-2</span><span class="x">,</span> <span class="mf">1.1</span><span class="x">,</span> <span class="mf">0.9</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Turing.Variational.DecayedADAGrad(0.01, 1.1, 0.9, IdDict{Any,Any}())
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Turing.Variational.DecayedADAGrad(0.01, 1.1, 0.9, IdDict{Any,Any}())
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">,</span> <span class="n">q0</span><span class="x">;</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="n">opt</span><span class="x">)</span>
 <span class="n">typeof</span><span class="x">(</span><span class="n">q</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:05[39m
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:05[39m
 
 
 
@@ -1241,9 +1254,9 @@ as these are well-suited for problems with high-variance stochastic objectives, 
 Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}},Bijectors.Stacked{Tuple{Bijectors.Inverse{Bijectors.TruncatedBijector{Float64},0},Bijectors.Identity{0},Bijectors.Identity{1}},3},Multivariate}
 </code></pre></div></div>
 
-<p><em>Note: as mentioned before, we internally define a <code class="highlighter-rouge">update(q::TransformedDistribution{&lt;:TuringDiagMvNormal}, θ::AbstractVector)</code> method which takes in the current variational approximation <code class="highlighter-rouge">q</code> together with new parameters <code class="highlighter-rouge">z</code> and returns the new variational approximation. This is required so that we can actually update the <code class="highlighter-rouge">Distribution</code> object after each optimization step.</em></p>
+<p><em>Note: as mentioned before, we internally define a <code class="language-plaintext highlighter-rouge">update(q::TransformedDistribution{&lt;:TuringDiagMvNormal}, θ::AbstractVector)</code> method which takes in the current variational approximation <code class="language-plaintext highlighter-rouge">q</code> together with new parameters <code class="language-plaintext highlighter-rouge">z</code> and returns the new variational approximation. This is required so that we can actually update the <code class="language-plaintext highlighter-rouge">Distribution</code> object after each optimization step.</em></p>
 
-<p><em>Alternatively, we can instead provide the mapping \(\theta \mapsto q_{\theta}\) directly together with initial parameters using the signature <code class="highlighter-rouge">vi(m, advi, getq, θ_init)</code> as mentioned earlier. We’ll see an explicit example of this later on!</em></p>
+<p><em>Alternatively, we can instead provide the mapping \(\theta \mapsto q_{\theta}\) directly together with initial parameters using the signature <code class="language-plaintext highlighter-rouge">vi(m, advi, getq, θ_init)</code> as mentioned earlier. We’ll see an explicit example of this later on!</em></p>
 
 <p>To compute statistics for our approximation we need samples:</p>
 
@@ -1255,7 +1268,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg</span> <span class="o">=</span> <span class="n">vec</span><span class="x">(</span><span class="n">mean</span><span class="x">(</span><span class="n">z</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
   0.4606389176400052
   0.05202909837745655
   0.4064267006145497
@@ -1270,33 +1283,33 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
  -0.829825963610117
 </code></pre></div></div>
 
-<p>The vector has the same ordering as the model, e.g. in this case <code class="highlighter-rouge">σ₂</code> has index <code class="highlighter-rouge">1</code>, <code class="highlighter-rouge">intercept</code> has index <code class="highlighter-rouge">2</code> and <code class="highlighter-rouge">coefficients</code> has indices <code class="highlighter-rouge">3:12</code>. If  you forget or you might want to do something programmatically with the result, you can obtain the <code class="highlighter-rouge">sym → indices</code> mapping as follows:</p>
+<p>The vector has the same ordering as the model, e.g. in this case <code class="language-plaintext highlighter-rouge">σ₂</code> has index <code class="language-plaintext highlighter-rouge">1</code>, <code class="language-plaintext highlighter-rouge">intercept</code> has index <code class="language-plaintext highlighter-rouge">2</code> and <code class="language-plaintext highlighter-rouge">coefficients</code> has indices <code class="language-plaintext highlighter-rouge">3:12</code>. If  you forget or you might want to do something programmatically with the result, you can obtain the <code class="language-plaintext highlighter-rouge">sym → indices</code> mapping as follows:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_</span><span class="x">,</span> <span class="n">sym2range</span> <span class="o">=</span> <span class="n">Variational</span><span class="o">.</span><span class="n">bijector</span><span class="x">(</span><span class="n">m</span><span class="x">;</span> <span class="n">sym_to_ranges</span> <span class="o">=</span> <span class="kt">Val</span><span class="x">(</span><span class="nb">true</span><span class="x">));</span>
 <span class="n">sym2range</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(intercept = UnitRange{Int64}[2:2], σ₂ = UnitRange{Int64}[1:1], coefficients = UnitRange{Int64}[3:12])
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(intercept = UnitRange{Int64}[2:2], σ₂ = UnitRange{Int64}[1:1], coefficients = UnitRange{Int64}[3:12])
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg</span><span class="x">[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">σ₂</span><span class="x">]</span><span class="o">...</span><span class="x">)]</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-element Array{Float64,1}:
  0.4606389176400052
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg</span><span class="x">[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">intercept</span><span class="x">]</span><span class="o">...</span><span class="x">)]</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-element Array{Float64,1}:
  0.05202909837745655
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg</span><span class="x">[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">coefficients</span><span class="x">]</span><span class="o">...</span><span class="x">)]</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10-element Array{Float64,1}:
   0.4064267006145497
  -0.11468688188714653
  -0.09745310785481277
@@ -1311,7 +1324,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 
 <p><em>Note: as you can see, this is slightly awkward to work with at the moment. We’ll soon add a better way of dealing with this.</em></p>
 
-<p>With a bit of work (this will be much easier in the future), we can also visualize the approximate marginals of the different variables, similar to <code class="highlighter-rouge">plot(chain)</code>:</p>
+<p>With a bit of work (this will be much easier in the future), we can also visualize the approximate marginals of the different variables, similar to <code class="language-plaintext highlighter-rouge">plot(chain)</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> plot_variational_marginals</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="n">sym2range</span><span class="x">)</span>
     <span class="n">ps</span> <span class="o">=</span> <span class="x">[]</span>
@@ -1338,7 +1351,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot_variational_marginals (generic function with 1 method)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plot_variational_marginals (generic function with 1 method)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_variational_marginals</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="n">sym2range</span><span class="x">)</span>
@@ -1346,12 +1359,12 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 
 <p><img src="../9_VariationalInference_files/9_VariationalInference_68_0.png" alt="png" /></p>
 
-<p>And let’s compare this to using the <code class="highlighter-rouge">NUTS</code> sampler:</p>
+<p>And let’s compare this to using the <code class="language-plaintext highlighter-rouge">NUTS</code> sampler:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">NUTS</span><span class="x">(</span><span class="mf">0.65</span><span class="x">),</span> <span class="mi">10_000</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Found initial step size
 │   ϵ = 0.4
 └ @ Turing.Inference /home/cameron/.julia/packages/Turing/cReBm/src/inference/hmc.jl:556
 [32mSampling: 100%|█████████████████████████████████████████| Time: 0:00:04[39m
@@ -1365,7 +1378,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vi_mean</span> <span class="o">=</span> <span class="n">vec</span><span class="x">(</span><span class="n">mean</span><span class="x">(</span><span class="n">z</span><span class="x">;</span> <span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span><span class="x">))[[</span><span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">coefficients</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">intercept</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">,</span> <span class="n">union</span><span class="x">(</span><span class="n">sym2range</span><span class="x">[</span><span class="o">:</span><span class="n">σ₂</span><span class="x">]</span><span class="o">...</span><span class="x">)</span><span class="o">...</span><span class="x">]]</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
   0.4064267006145497
  -0.11468688188714653
  -0.09745310785481277
@@ -1383,7 +1396,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span><span class="o">.</span><span class="n">nt</span><span class="o">.</span><span class="n">mean</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12-element Array{Float64,1}:
   0.40737234076000634
  -0.12119407949255825
  -0.09258229213058687
@@ -1403,14 +1416,14 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum</span><span class="x">(</span><span class="n">abs2</span><span class="x">,</span> <span class="n">mean</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span><span class="o">.</span><span class="n">nt</span><span class="o">.</span><span class="n">mean</span> <span class="o">.-</span> <span class="n">vi_mean</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.00038407031406971286
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.00038407031406971286
 </code></pre></div></div>
 
 <p>That looks pretty good! But let’s see how the predictive distributions looks for the two.</p>
 
 <h2 id="prediction">Prediction</h2>
 
-<p>Similarily to the linear regression tutorial, we’re going to compare to multivariate ordinary linear regression using the <code class="highlighter-rouge">GLM</code> package:</p>
+<p>Similarily to the linear regression tutorial, we’re going to compare to multivariate ordinary linear regression using the <code class="language-plaintext highlighter-rouge">GLM</code> package:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import the GLM package.</span>
 <span class="k">using</span> <span class="n">GLM</span>
@@ -1432,7 +1445,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prediction_chain (generic function with 1 method)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prediction_chain (generic function with 1 method)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Make a prediction using samples from the variational posterior given an input vector.</span>
@@ -1449,7 +1462,7 @@ Bijectors.TransformedDistribution{DistributionsAD.TuringDiagMvNormal{Array{Float
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prediction (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>prediction (generic function with 2 methods)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Unstandardize the dependent variable.</span>
@@ -1492,7 +1505,7 @@ Test set:
     OLS loss: </span><span class="si">$$</span><span class="s">ols_loss2"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
     VI loss: 3.0784608943296643
     Bayes loss: 3.0716118391411906
     OLS loss: 3.070926124893019
@@ -1502,7 +1515,7 @@ Test set:
     OLS loss: 27.094813070760107
 </code></pre></div></div>
 
-<p>Interestingly the squared difference between true- and mean-prediction on the test-set is actually <em>better</em> for the mean-field variational posterior than for the “true” posterior obtained by MCMC sampling using <code class="highlighter-rouge">NUTS</code>. But, as Bayesians, we know that the mean doesn’t tell the entire story. One quick check is to look at the mean predictions ± standard deviation of the two different approaches:</p>
+<p>Interestingly the squared difference between true- and mean-prediction on the test-set is actually <em>better</em> for the mean-field variational posterior than for the “true” posterior obtained by MCMC sampling using <code class="language-plaintext highlighter-rouge">NUTS</code>. But, as Bayesians, we know that the mean doesn’t tell the entire story. One quick check is to look at the mean predictions ± standard deviation of the two different approaches:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">q</span><span class="x">,</span> <span class="mi">1000</span><span class="x">);</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">hcat</span><span class="x">([</span><span class="n">unstandardize</span><span class="x">(</span><span class="n">prediction</span><span class="x">(</span><span class="n">z</span><span class="x">[</span><span class="o">:</span><span class="x">,</span> <span class="n">i</span><span class="x">],</span> <span class="n">sym2range</span><span class="x">,</span> <span class="n">test</span><span class="x">),</span> <span class="n">data</span><span class="o">.</span><span class="n">MPG</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">:</span><span class="n">size</span><span class="x">(</span><span class="n">z</span><span class="x">,</span> <span class="mi">2</span><span class="x">)]</span><span class="o">...</span><span class="x">);</span>
@@ -1529,11 +1542,11 @@ Test set:
 
 <p>Indeed we see that the MCMC approach generally provides better uncertainty estimates than the mean-field ADVI approach! Good. So all the work we’ve done to make MCMC fast isn’t for nothing.</p>
 
-<h2 id="alternative-provide-parameter-to-distribution-instead-of-q-withupdate-implemented">Alternative: provide parameter-to-distribution instead of <code class="highlighter-rouge">q</code> with<code class="highlighter-rouge">update</code> implemented</h2>
+<h2 id="alternative-provide-parameter-to-distribution-instead-of-q-withupdate-implemented">Alternative: provide parameter-to-distribution instead of <code class="language-plaintext highlighter-rouge">q</code> with<code class="language-plaintext highlighter-rouge">update</code> implemented</h2>
 
-<p>As mentioned earlier, it’s also possible to just provide the mapping \(\theta \mapsto q_{\theta}\) rather than the variational family / initial variational posterior <code class="highlighter-rouge">q</code>, i.e. use the interface <code class="highlighter-rouge">vi(m, advi, getq, θ_init)</code> where <code class="highlighter-rouge">getq</code> is the mapping \(\theta \mapsto q_{\theta}\)</p>
+<p>As mentioned earlier, it’s also possible to just provide the mapping \(\theta \mapsto q_{\theta}\) rather than the variational family / initial variational posterior <code class="language-plaintext highlighter-rouge">q</code>, i.e. use the interface <code class="language-plaintext highlighter-rouge">vi(m, advi, getq, θ_init)</code> where <code class="language-plaintext highlighter-rouge">getq</code> is the mapping \(\theta \mapsto q_{\theta}\)</p>
 
-<p>In this section we’re going to construct a mean-field approximation to the model by hand using a composition of<code class="highlighter-rouge">Shift</code> and <code class="highlighter-rouge">Scale</code> from Bijectors.jl togheter with a standard multivariate Gaussian as the base distribution.</p>
+<p>In this section we’re going to construct a mean-field approximation to the model by hand using a composition of<code class="language-plaintext highlighter-rouge">Shift</code> and <code class="language-plaintext highlighter-rouge">Scale</code> from Bijectors.jl togheter with a standard multivariate Gaussian as the base distribution.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Bijectors</span>
 </code></pre></div></div>
@@ -1545,13 +1558,13 @@ Test set:
 <span class="n">base_dist</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">DistributionsAD</span><span class="o">.</span><span class="n">TuringDiagMvNormal</span><span class="x">(</span><span class="n">zeros</span><span class="x">(</span><span class="n">d</span><span class="x">),</span> <span class="n">ones</span><span class="x">(</span><span class="n">d</span><span class="x">))</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}}(
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DistributionsAD.TuringDiagMvNormal{Array{Float64,1},Array{Float64,1}}(
 m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 σ: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 )
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">bijector(model::Turing.Model)</code> is defined by Turing, and will return a <code class="highlighter-rouge">bijector</code> which takes you from the space of the latent variables to the real space. In this particular case, this is a mapping <code class="highlighter-rouge">((0, ∞) × ℝ × ℝ¹⁰) → ℝ¹²</code>. We’re interested in using a normal distribution as a base-distribution and transform samples to the latent space, thus we need the inverse mapping from the reals to the latent space:</p>
+<p><code class="language-plaintext highlighter-rouge">bijector(model::Turing.Model)</code> is defined by Turing, and will return a <code class="language-plaintext highlighter-rouge">bijector</code> which takes you from the space of the latent variables to the real space. In this particular case, this is a mapping <code class="language-plaintext highlighter-rouge">((0, ∞) × ℝ × ℝ¹⁰) → ℝ¹²</code>. We’re interested in using a normal distribution as a base-distribution and transform samples to the latent space, thus we need the inverse mapping from the reals to the latent space:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">to_constrained</span> <span class="o">=</span> <span class="n">inv</span><span class="x">(</span><span class="n">bijector</span><span class="x">(</span><span class="n">m</span><span class="x">));</span>
 </code></pre></div></div>
@@ -1567,13 +1580,13 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getq (generic function with 1 method)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getq (generic function with 1 method)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q_mf_normal</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">,</span> <span class="n">getq</span><span class="x">,</span> <span class="n">randn</span><span class="x">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="x">));</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
 │   objectid(θ) = 8127634262038331167
 └ @ Turing.Variational /home/cameron/.julia/packages/Turing/cReBm/src/variational/VariationalInference.jl:204
 [32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:00:06[39m
@@ -1593,7 +1606,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 <h3 id="relaxing-the-mean-field-assumption">Relaxing the mean-field assumption</h3>
 
-<p>Here we’ll instead consider the variational family to be a full non-diagonal multivariate Gaussian. As in the previous section we’ll implement this by transforming a standard multivariate Gaussian using <code class="highlighter-rouge">Scale</code> and <code class="highlighter-rouge">Shift</code>, but now <code class="highlighter-rouge">Scale</code> will instead be using a lower-triangular matrix (representing the Cholesky of the covariance matrix of a multivariate normal) in constrast to the diagonal matrix we used in for the mean-field approximate posterior.</p>
+<p>Here we’ll instead consider the variational family to be a full non-diagonal multivariate Gaussian. As in the previous section we’ll implement this by transforming a standard multivariate Gaussian using <code class="language-plaintext highlighter-rouge">Scale</code> and <code class="language-plaintext highlighter-rouge">Shift</code>, but now <code class="language-plaintext highlighter-rouge">Scale</code> will instead be using a lower-triangular matrix (representing the Cholesky of the covariance matrix of a multivariate normal) in constrast to the diagonal matrix we used in for the mean-field approximate posterior.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">LinearAlgebra</span>
 </code></pre></div></div>
@@ -1617,19 +1630,19 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getq (generic function with 1 method)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getq (generic function with 1 method)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">advi</span> <span class="o">=</span> <span class="n">ADVI</span><span class="x">(</span><span class="mi">10</span><span class="x">,</span> <span class="mi">20_000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ADVI{Turing.Core.ForwardDiffAD{40}}(10, 20000)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ADVI{Turing.Core.ForwardDiffAD{40}}(10, 20000)
 </code></pre></div></div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q_full_normal</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">,</span> <span class="n">getq</span><span class="x">,</span> <span class="n">randn</span><span class="x">(</span><span class="n">d</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d</span><span class="x">);</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="n">Variational</span><span class="o">.</span><span class="n">DecayedADAGrad</span><span class="x">(</span><span class="mf">1e-2</span><span class="x">));</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:01:05[39m
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[32m[ADVI] Optimizing...: 100%|█████████████████████████████████████████| Time: 0:01:05[39m
 </code></pre></div></div>
 
 <p>Let’s have a look at the learned covariance matrix:</p>
@@ -1637,7 +1650,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="n">q_full_normal</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">ts</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span><span class="o">.</span><span class="n">a</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12×12 LowerTriangular{Float64,Array{Float64,2}}:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12×12 LowerTriangular{Float64,Array{Float64,2}}:
   0.154572       ⋅           ⋅          …    ⋅           ⋅           ⋅ 
   0.00674249    0.169072     ⋅               ⋅           ⋅           ⋅ 
  -0.00288782   -0.0283984   0.413288         ⋅           ⋅           ⋅ 
@@ -1668,7 +1681,7 @@ m: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 <p><img src="../9_VariationalInference_files/9_VariationalInference_112_0.png" alt="png" /></p>
 
-<p>So it seems like the “full” ADVI approach, i.e. no mean-field assumption, obtain the same modes as the mean-field approach but with greater uncertainty for some of the <code class="highlighter-rouge">coefficients</code>. This</p>
+<p>So it seems like the “full” ADVI approach, i.e. no mean-field assumption, obtain the same modes as the mean-field approach but with greater uncertainty for some of the <code class="language-plaintext highlighter-rouge">coefficients</code>. This</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Unfortunately, it seems like this has quite a high variance which is likely to be due to numerical instability, </span>
 <span class="c"># so we consider a larger number of samples. If we get a couple of outliers due to numerical issues, </span>
@@ -1702,7 +1715,7 @@ Test set:
     OLS loss:       </span><span class="si">$$</span><span class="s">ols_loss2"</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Training set:
     VI loss:        3.0784608943296643
     VI (full) loss: 3.0926834377972288
     Bayes loss:     3.0716118391411906

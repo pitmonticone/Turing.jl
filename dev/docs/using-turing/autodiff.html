@@ -395,6 +395,12 @@
                               title="Variational Inference">Variational Inference</a>
                         </li>
                         
+                        <li class="md-nav__item navbar_bottom-border">
+                          <a class="md-nav__link" href="/dev/tutorials/10-bayesiandiffeq"
+                              id="pancakes-bayesian-differential-equation"
+                              title="Bayesian Differential Equation">Bayesian Differential Equation</a>
+                        </li>
+                        
                       </ul>
                     </nav>
                     
@@ -670,6 +676,13 @@
                            
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/tutorials/10-bayesiandiffeq"
+                           title="Bayesian Differential Equation" style="display:none;"
+                           
+                           class="md-nav__link pancakes-child">Bayesian Differential Equation</a>
+                        </li>
                     </ul>
                 </nav>
                 
@@ -775,15 +788,15 @@
 
 <h2 id="switching-ad-modes">Switching AD Modes</h2>
 
-<p>Turing supports four packages of automatic differentiation (AD) in the back end during sampling. The default AD backend is <a href="https://github.com/JuliaDiff/ForwardDiff.jl">ForwardDiff</a> for forward-mode AD. Three reverse-mode AD backends are also supported, namely <a href="https://github.com/FluxML/Tracker.jl">Tracker</a>, <a href="https://github.com/FluxML/Zygote.jl">Zygote</a> and <a href="https://github.com/JuliaDiff/ReverseDiff.jl">ReverseDiff</a>. <code class="highlighter-rouge">Zygote</code> and <code class="highlighter-rouge">ReverseDiff</code> are supported optionally if explicitly loaded by the user with <code class="highlighter-rouge">using Zygote</code> or <code class="highlighter-rouge">using ReverseDiff</code> next to <code class="highlighter-rouge">using Turing</code>.</p>
+<p>Turing supports four packages of automatic differentiation (AD) in the back end during sampling. The default AD backend is <a href="https://github.com/JuliaDiff/ForwardDiff.jl">ForwardDiff</a> for forward-mode AD. Three reverse-mode AD backends are also supported, namely <a href="https://github.com/FluxML/Tracker.jl">Tracker</a>, <a href="https://github.com/FluxML/Zygote.jl">Zygote</a> and <a href="https://github.com/JuliaDiff/ReverseDiff.jl">ReverseDiff</a>. <code class="language-plaintext highlighter-rouge">Zygote</code> and <code class="language-plaintext highlighter-rouge">ReverseDiff</code> are supported optionally if explicitly loaded by the user with <code class="language-plaintext highlighter-rouge">using Zygote</code> or <code class="language-plaintext highlighter-rouge">using ReverseDiff</code> next to <code class="language-plaintext highlighter-rouge">using Turing</code>.</p>
 
-<p>To switch between the different AD backends, one can call function <code class="highlighter-rouge">Turing.setadbackend(backend_sym)</code>, where <code class="highlighter-rouge">backend_sym</code> can be <code class="highlighter-rouge">:forwarddiff</code> (<code class="highlighter-rouge">ForwardDiff</code>), <code class="highlighter-rouge">:tracker</code> (<code class="highlighter-rouge">Tracker</code>), <code class="highlighter-rouge">:zygote</code> (<code class="highlighter-rouge">Zygote</code>) or <code class="highlighter-rouge">:reversediff</code> (<code class="highlighter-rouge">ReverseDiff.jl</code>). When using <code class="highlighter-rouge">ReverseDiff</code>, to compile the tape only once and cache it for later use, the user needs to load <a href="https://github.com/marius311/Memoization.jl">Memoization.jl</a> first with <code class="highlighter-rouge">using Memoization</code> then call <code class="highlighter-rouge">Turing.setrdcache(true)</code>. However, note that the use of caching in certain types of models can lead to incorrect results and/or errors. Models for which the compiled tape can be safely cached are models with fixed size loops and no run-time if statements. Compile-time if statements are fine. To empty the cache, you can call <code class="highlighter-rouge">Turing.emptyrdcache()</code>.</p>
+<p>To switch between the different AD backends, one can call function <code class="language-plaintext highlighter-rouge">Turing.setadbackend(backend_sym)</code>, where <code class="language-plaintext highlighter-rouge">backend_sym</code> can be <code class="language-plaintext highlighter-rouge">:forwarddiff</code> (<code class="language-plaintext highlighter-rouge">ForwardDiff</code>), <code class="language-plaintext highlighter-rouge">:tracker</code> (<code class="language-plaintext highlighter-rouge">Tracker</code>), <code class="language-plaintext highlighter-rouge">:zygote</code> (<code class="language-plaintext highlighter-rouge">Zygote</code>) or <code class="language-plaintext highlighter-rouge">:reversediff</code> (<code class="language-plaintext highlighter-rouge">ReverseDiff.jl</code>). When using <code class="language-plaintext highlighter-rouge">ReverseDiff</code>, to compile the tape only once and cache it for later use, the user needs to load <a href="https://github.com/marius311/Memoization.jl">Memoization.jl</a> first with <code class="language-plaintext highlighter-rouge">using Memoization</code> then call <code class="language-plaintext highlighter-rouge">Turing.setrdcache(true)</code>. However, note that the use of caching in certain types of models can lead to incorrect results and/or errors. Models for which the compiled tape can be safely cached are models with fixed size loops and no run-time if statements. Compile-time if statements are fine. To empty the cache, you can call <code class="language-plaintext highlighter-rouge">Turing.emptyrdcache()</code>.</p>
 
 <p><a id="Compositional-Sampling-with-Differing-AD-Modes-1"></a></p>
 
 <h2 id="compositional-sampling-with-differing-ad-modes">Compositional Sampling with Differing AD Modes</h2>
 
-<p>Turing supports intermixed automatic differentiation methods for different variable spaces. The snippet below shows using <code class="highlighter-rouge">ForwardDiff</code> to sample the mean (<code class="highlighter-rouge">m</code>) parameter, and using the Tracker-based <code class="highlighter-rouge">TrackerAD</code> autodiff for the variance (<code class="highlighter-rouge">s</code>) parameter:</p>
+<p>Turing supports intermixed automatic differentiation methods for different variable spaces. The snippet below shows using <code class="language-plaintext highlighter-rouge">ForwardDiff</code> to sample the mean (<code class="language-plaintext highlighter-rouge">m</code>) parameter, and using the Tracker-based <code class="language-plaintext highlighter-rouge">TrackerAD</code> autodiff for the variance (<code class="language-plaintext highlighter-rouge">s</code>) parameter:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
 
@@ -806,9 +819,9 @@
 <span class="x">)</span>
 </code></pre></div></div>
 
-<p>Generally, <code class="highlighter-rouge">TrackerAD</code> is faster when sampling from variables of high dimensionality (greater than 20) and <code class="highlighter-rouge">ForwardDiffAD</code> is more efficient for lower-dimension variables. This functionality allows those who are performance sensistive to fine tune their automatic differentiation for their specific models.</p>
+<p>Generally, <code class="language-plaintext highlighter-rouge">TrackerAD</code> is faster when sampling from variables of high dimensionality (greater than 20) and <code class="language-plaintext highlighter-rouge">ForwardDiffAD</code> is more efficient for lower-dimension variables. This functionality allows those who are performance sensistive to fine tune their automatic differentiation for their specific models.</p>
 
-<p>If the differentation method is not specified in this way, Turing will default to using whatever the global AD backend is. Currently, this defaults to <code class="highlighter-rouge">ForwardDiff</code>.</p>
+<p>If the differentation method is not specified in this way, Turing will default to using whatever the global AD backend is. Currently, this defaults to <code class="language-plaintext highlighter-rouge">ForwardDiff</code>.</p>
 
 
     

@@ -395,6 +395,12 @@
                               title="Variational Inference">Variational Inference</a>
                         </li>
                         
+                        <li class="md-nav__item navbar_bottom-border">
+                          <a class="md-nav__link" href="/dev/tutorials/10-bayesiandiffeq"
+                              id="pancakes-bayesian-differential-equation"
+                              title="Bayesian Differential Equation">Bayesian Differential Equation</a>
+                        </li>
+                        
                       </ul>
                     </nav>
                     
@@ -670,6 +676,13 @@
                            
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/tutorials/10-bayesiandiffeq"
+                           title="Bayesian Differential Equation" 
+                           
+                           class="md-nav__link pancakes-child">Bayesian Differential Equation</a>
+                        </li>
                     </ul>
                 </nav>
                 
@@ -783,7 +796,7 @@
 <span class="n">Turing</span><span class="o">.</span><span class="n">setadbackend</span><span class="x">(</span><span class="o">:</span><span class="n">reversediff</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [Turing]: progress logging is disabled globally
 └ @ Turing /home/cameron/.julia/packages/Turing/cReBm/src/Turing.jl:22
 
 
@@ -833,11 +846,11 @@
 
 <h2 id="building-a-neural-network">Building a Neural Network</h2>
 
-<p>The next step is to define a <a href="https://en.wikipedia.org/wiki/Feedforward_neural_network">feedforward neural network</a> where we express our parameters as distribtuions, and not single points as with traditional neural networks. The two functions below, <code class="highlighter-rouge">unpack</code> and <code class="highlighter-rouge">nn_forward</code> are helper functions we need when we specify our model in Turing.</p>
+<p>The next step is to define a <a href="https://en.wikipedia.org/wiki/Feedforward_neural_network">feedforward neural network</a> where we express our parameters as distribtuions, and not single points as with traditional neural networks. The two functions below, <code class="language-plaintext highlighter-rouge">unpack</code> and <code class="language-plaintext highlighter-rouge">nn_forward</code> are helper functions we need when we specify our model in Turing.</p>
 
-<p><code class="highlighter-rouge">unpack</code> takes a vector of parameters and partitions them between weights and biases. <code class="highlighter-rouge">nn_forward</code> constructs a neural network with the variables generated in <code class="highlighter-rouge">unpack</code> and returns a prediction based on the weights provided.</p>
+<p><code class="language-plaintext highlighter-rouge">unpack</code> takes a vector of parameters and partitions them between weights and biases. <code class="language-plaintext highlighter-rouge">nn_forward</code> constructs a neural network with the variables generated in <code class="language-plaintext highlighter-rouge">unpack</code> and returns a prediction based on the weights provided.</p>
 
-<p>The <code class="highlighter-rouge">unpack</code> and <code class="highlighter-rouge">nn_forward</code> functions are explicity designed to create a neural network with two hidden layers and one output layer, as shown below.</p>
+<p>The <code class="language-plaintext highlighter-rouge">unpack</code> and <code class="language-plaintext highlighter-rouge">nn_forward</code> functions are explicity designed to create a neural network with two hidden layers and one output layer, as shown below.</p>
 
 <p><img width="320" alt="nn-diagram" src="https://user-images.githubusercontent.com/422990/47970321-bd172080-e038-11e8-9c6d-6c2bd790bd8a.png" /></p>
 
@@ -866,7 +879,7 @@
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
-<p>The probabalistic model specification below creates a <code class="highlighter-rouge">params</code> variable, which has 20 normally distributed variables. Each entry in the <code class="highlighter-rouge">params</code> vector represents weights and biases of our neural net.</p>
+<p>The probabalistic model specification below creates a <code class="language-plaintext highlighter-rouge">params</code> variable, which has 20 normally distributed variables. Each entry in the <code class="language-plaintext highlighter-rouge">params</code> vector represents weights and biases of our neural net.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a regularization term and a Gaussain prior variance term.</span>
 <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.09</span>
@@ -888,7 +901,7 @@
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
-<p>Inference can now be performed by calling <code class="highlighter-rouge">sample</code>. We use the <code class="highlighter-rouge">HMC</code> sampler here.</p>
+<p>Inference can now be performed by calling <code class="language-plaintext highlighter-rouge">sample</code>. We use the <code class="language-plaintext highlighter-rouge">HMC</code> sampler here.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Perform inference.</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">5000</span>
@@ -931,7 +944,7 @@
 p(\tilde{x} | X, \alpha) = \int_{\theta} p(\tilde{x} | \theta) p(\theta | X, \alpha) \approx \sum_{\theta \sim p(\theta | X, \alpha)}f_{\theta}(\tilde{x}) 
 $$</p>
 
-<p>The <code class="highlighter-rouge">nn_predict</code> function takes the average predicted value from a network parameterized by weights drawn from the MCMC chain.</p>
+<p>The <code class="language-plaintext highlighter-rouge">nn_predict</code> function takes the average predicted value from a network parameterized by weights drawn from the MCMC chain.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Return the average predicted value across</span>
 <span class="c"># multiple weights.</span>
@@ -940,7 +953,7 @@ $$</p>
 <span class="k">end</span><span class="x">;</span>
 </code></pre></div></div>
 
-<p>Next, we use the <code class="highlighter-rouge">nn_predict</code> function to predict the value at a sample of points where the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> coordinates range between -6 and 6. As we can see below, we still have a satisfactory fit to our data.</p>
+<p>Next, we use the <code class="language-plaintext highlighter-rouge">nn_predict</code> function to predict the value at a sample of points where the <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> coordinates range between -6 and 6. As we can see below, we still have a satisfactory fit to our data.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Plot the average prediction.</span>
 <span class="n">plot_data</span><span class="x">()</span>
@@ -968,7 +981,7 @@ $$</p>
 
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
 │   fn = /home/cameron/code/TuringTutorials/tmp.gif
 └ @ Plots /home/cameron/.julia/packages/Plots/cc8wh/src/animation.jl:98
 </code></pre></div></div>
@@ -995,7 +1008,7 @@ $$</p>
 <span class="n">q_hat</span> <span class="o">=</span> <span class="n">vi</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">advi</span><span class="x">,</span> <span class="n">q</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: [ADVI] Should only be seen once: optimizer created for θ
 │   objectid(θ) = 3812708583762184342
 └ @ Turing.Variational /home/cameron/.julia/packages/Turing/cReBm/src/variational/VariationalInference.jl:204
 </code></pre></div></div>
@@ -1021,9 +1034,9 @@ $$</p>
 
 <h2 id="generic-bayesian-neural-networks">Generic Bayesian Neural Networks</h2>
 
-<p>The below code is intended for use in more general applications, where you need to be able to change the basic network shape fluidly. The code above is highly rigid, and adapting it for other architectures would be time consuming. Currently the code below only supports networks of <code class="highlighter-rouge">Dense</code> layers.</p>
+<p>The below code is intended for use in more general applications, where you need to be able to change the basic network shape fluidly. The code above is highly rigid, and adapting it for other architectures would be time consuming. Currently the code below only supports networks of <code class="language-plaintext highlighter-rouge">Dense</code> layers.</p>
 
-<p>Here, we solve the same problem as above, but with three additional 2x2 <code class="highlighter-rouge">tanh</code> hidden layers. You can modify the <code class="highlighter-rouge">network_shape</code> variable to specify differing architectures. A tuple <code class="highlighter-rouge">(3,2, :tanh)</code> means you want to construct a <code class="highlighter-rouge">Dense</code> layer with 3 outputs, 2 inputs, and a <code class="highlighter-rouge">tanh</code> activation function. You can provide any activation function found in Flux by entering it as a <code class="highlighter-rouge">Symbol</code> (e.g., the <code class="highlighter-rouge">tanh</code> function is entered in the third part of the tuple as <code class="highlighter-rouge">:tanh</code>).</p>
+<p>Here, we solve the same problem as above, but with three additional 2x2 <code class="language-plaintext highlighter-rouge">tanh</code> hidden layers. You can modify the <code class="language-plaintext highlighter-rouge">network_shape</code> variable to specify differing architectures. A tuple <code class="language-plaintext highlighter-rouge">(3,2, :tanh)</code> means you want to construct a <code class="language-plaintext highlighter-rouge">Dense</code> layer with 3 outputs, 2 inputs, and a <code class="language-plaintext highlighter-rouge">tanh</code> activation function. You can provide any activation function found in Flux by entering it as a <code class="language-plaintext highlighter-rouge">Symbol</code> (e.g., the <code class="language-plaintext highlighter-rouge">tanh</code> function is entered in the third part of the tuple as <code class="language-plaintext highlighter-rouge">:tanh</code>).</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Specify the network architecture.</span>
 <span class="n">network_shape</span> <span class="o">=</span> <span class="x">[</span>
@@ -1086,7 +1099,7 @@ $$</p>
 <span class="n">ch2</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">bayes_nn_general</span><span class="x">(</span><span class="n">hcat</span><span class="x">(</span><span class="n">xs</span><span class="o">...</span><span class="x">),</span> <span class="n">ts</span><span class="x">,</span> <span class="n">network_shape</span><span class="x">,</span> <span class="n">num_params</span><span class="x">),</span> <span class="n">NUTS</span><span class="x">(</span><span class="mf">0.65</span><span class="x">),</span> <span class="n">num_samples</span><span class="x">);</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Warning: `Turing.setadbackend(:reverse_diff)` is deprecated. Please use `Turing.setadbackend(:tracker)` to use `Tracker` or `Turing.setadbackend(:reversediff)` to use `ReverseDiff`. To use `ReverseDiff`, please make sure it is loaded separately with `using ReverseDiff`.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Warning: `Turing.setadbackend(:reverse_diff)` is deprecated. Please use `Turing.setadbackend(:tracker)` to use `Tracker` or `Turing.setadbackend(:reversediff)` to use `ReverseDiff`. To use `ReverseDiff`, please make sure it is loaded separately with `using ReverseDiff`.
 │   caller = setadbackend(::Symbol) at ad.jl:5
 └ @ Turing.Core /home/cameron/.julia/packages/Turing/cReBm/src/core/ad.jl:5
 ┌ Info: Found initial step size
