@@ -76,9 +76,9 @@ version = "0.5.0"
 
 [[Bijectors]]
 deps = ["ArgCheck", "Compat", "Distributions", "LinearAlgebra", "MappedArrays", "NNlib", "Random", "Reexport", "Requires", "Roots", "SparseArrays", "Statistics", "StatsFuns"]
-git-tree-sha1 = "1db975dd3ac386dd91b434e50a1eddb82e1ddaa3"
+git-tree-sha1 = "84836b7f35952ec814869174f0e55a385b7d00cd"
 uuid = "76274a88-744f-5084-9051-94815aaf08c4"
-version = "0.7.2"
+version = "0.8.0"
 
 [[BinaryProvider]]
 deps = ["Libdl", "Logging", "SHA"]
@@ -162,15 +162,15 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[Distributions]]
 deps = ["FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "c4ed10355637fcb0725dc6a27060f74df24f13cd"
+git-tree-sha1 = "78c4c32a2357a00a0a7d614880f02c2c6e1ec73c"
 uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.23.2"
+version = "0.23.4"
 
 [[DistributionsAD]]
 deps = ["Combinatorics", "Compat", "DiffRules", "Distributions", "FillArrays", "ForwardDiff", "LinearAlgebra", "MacroTools", "NaNMath", "PDMats", "Random", "Requires", "SpecialFunctions", "StaticArrays", "StatsBase", "StatsFuns", "Tracker", "ZygoteRules"]
-git-tree-sha1 = "dfd9c992785bbd7e97dc99d7c110e1f9ab07e753"
+git-tree-sha1 = "f026b8183f486dba5783e5077cfbadb18a267b2a"
 uuid = "ced4e74d-a319-5a8a-b0ac-84af2272839c"
-version = "0.5.3"
+version = "0.6.1"
 
 [[DocStringExtensions]]
 deps = ["LibGit2", "Markdown", "Pkg", "Test"]
@@ -192,9 +192,9 @@ version = "0.2.0"
 
 [[DynamicPPL]]
 deps = ["AbstractMCMC", "Bijectors", "Distributions", "MacroTools", "Random", "ZygoteRules"]
-git-tree-sha1 = "a14c2bd19168682db11be7e3d106bef157813b5f"
+git-tree-sha1 = "b46046c78801149cc9f2b80e806fbd5a2891b652"
 uuid = "366bfd00-2699-11ea-058f-f148b4cae6d8"
-version = "0.8.1"
+version = "0.8.2"
 
 [[EllipsisNotation]]
 git-tree-sha1 = "65dad386e877850e6fce4fc77f60fe75a468ce9d"
