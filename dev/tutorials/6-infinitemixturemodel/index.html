@@ -837,7 +837,7 @@ x_i &amp;\sim Normal(\mu_{z_i}, \Sigma)
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##two_model#362 (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DynamicPPL.ModelGen{var"###generator#282",(:x,),(),Tuple{}}(##generator#282, NamedTuple())
 </code></pre></div></div>
 
 <h4 id="finite-mixture-model">Finite Mixture Model</h4>
@@ -924,18 +924,18 @@ $$</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
 │   fn = /home/cameron/code/TuringTutorials/tmp.gif
-└ @ Plots /home/cameron/.julia/packages/Plots/cc8wh/src/animation.jl:98
+└ @ Plots /home/cameron/.julia/packages/Plots/Xnzc7/src/animation.jl:104
 </code></pre></div></div>
 
 <p><img src="https://user-images.githubusercontent.com/422990/55284032-90cfa980-5323-11e9-8a99-f9315db170cb.gif" alt="tmp" /></p>
 
-<p>Further, we can see that the number of clusters is logarithmic in the number of observations and data points. This is a side-effect of the “rich get richer” phenomenon, i.e. we expect large clusters and thus the number of clusters has to be smaller than the number of observations.</p>
+<p>Further, we can see that the number of clusters is logarithmic in the number of observations and data points. This is a side-effect of the “rich-get-richer” phenomenon, i.e. we expect large clusters and thus the number of clusters has to be smaller than the number of observations.</p>
 
-<p>$$ 
-E[K \mid N] \approx \alpha * log \big(1 - \frac{N}{\alpha}\big)
+<p>$$
+E[K \mid N] \approx \alpha \cdot log \big(1 + \frac{N}{\alpha}\big)
 $$</p>
 
-<p>We can see from the equation that the concetration parameter \(\alpha\) allows use to control the number of cluster formed a priori.</p>
+<p>We can see from the equation that the concentration parameter \(\alpha\) allows us to control the number of clusters formed <em>a priori</em>.</p>
 
 <p>In Turing we can implement an infinite Gaussian mixture model using the Chinese restaurant process construction of a Dirichlet process as follows:</p>
 
@@ -981,7 +981,7 @@ $$</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##infiniteGMM#903 (generic function with 2 methods)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DynamicPPL.ModelGen{var"###generator#800",(:x,),(),Tuple{}}(##generator#800, NamedTuple())
 </code></pre></div></div>
 
 <p>We can now use Turing to infer the assignments of some data points. First, we will create some random data that comes from three clusters, with means of 0, -5, and 10.</p>

@@ -783,21 +783,24 @@
     <h1 id="introduction-to-turing">Introduction to Turing</h1>
 
 <h2 id="introduction">Introduction</h2>
+
 <p>This is the first of a series of tutorials on the universal probabilistic programming language <strong>Turing</strong>.</p>
 
-<p>Turing is probabilistic programming system written entirely in Julia. It has an intuitive modelling syntax and supports a wide range of sampling-based inference algorithms. Most importantly, Turing inference is composable: it combines Markov chain sampling operations on subsets of model variables, e.g. using a combination of a Hamiltonian Monte Carlo (HMC) engine and a particle Gibbs (PG) engine. This composable inference engine allows the user to easily switch between black-box style inference methods such as HMC and customized inference methods.</p>
+<p>Turing is a probabilistic programming system written entirely in Julia. It has an intuitive modelling syntax and supports a wide range of sampling-based inference algorithms. Most importantly, Turing inference is composable: it combines Markov chain sampling operations on subsets of model variables, e.g. using a combination of a Hamiltonian Monte Carlo (HMC) engine and a particle Gibbs (PG) engine. This composable inference engine allows the user to easily switch between black-box style inference methods such as HMC and customized inference methods.</p>
 
 <p>Familiarity with Julia is assumed through out this tutorial. If you are new to Julia, <a href="https://julialang.org/learning/">Learning Julia</a> is a good starting point.</p>
 
 <p>For users new to Bayesian machine learning, please consider more thorough introductions to the field, such as <a href="https://www.springer.com/us/book/9780387310732">Pattern Recognition and Machine Learning</a>. This tutorial tries to provide an intuition for Bayesian inference and gives a simple example on how to use Turing. Note that this is not a comprehensive introduction to Bayesian machine learning.</p>
 
-<h3 id="coin-flipping-without-turing">Coin-Flipping Without Turing</h3>
+<h3 id="coin-flipping-without-turing">Coin Flipping Without Turing</h3>
 <p>The following example illustrates the effect of updating our beliefs with every piece of new evidence we observe. In particular, assume that we are unsure about the probability of heads in a coin flip. To get an intuitive understanding of what “updating our beliefs” is, we will visualize the probability of heads in a coin flip after each observed evidence.</p>
 
 <p>First, let’s load some of the packages we need to flip a coin (<code class="language-plaintext highlighter-rouge">Random</code>, <code class="language-plaintext highlighter-rouge">Distributions</code>) and show our results (<code class="language-plaintext highlighter-rouge">Plots</code>). You will note that Turing is not an import here — we do not need it for this example. If you are already familiar with posterior updates, you can proceed to the next step.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Random</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using Base modules.</span>
+<span class="k">using</span> <span class="n">Random</span>
 
+<span class="c"># Load a plotting library.</span>
 <span class="k">using</span> <span class="n">Plots</span>
 
 <span class="c"># Load the distributions library.</span>
@@ -881,7 +884,7 @@
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
 │   fn = /home/cameron/code/TuringTutorials/tmp.gif
-└ @ Plots /home/cameron/.julia/packages/Plots/cc8wh/src/animation.jl:98
+└ @ Plots /home/cameron/.julia/packages/Plots/Xnzc7/src/animation.jl:104
 </code></pre></div></div>
 
 <p><img src="https://user-images.githubusercontent.com/7974003/44995702-37c1b200-af9c-11e8-8b26-c88a528956af.gif" alt="animation" /></p>
