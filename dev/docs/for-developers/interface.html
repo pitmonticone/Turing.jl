@@ -780,13 +780,17 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <p><a id="The-sampling-interface-1"></a></p>
+    <p><a id="The-sampling-interface"></a></p>
+
+<p><a id="The-sampling-interface-1"></a></p>
 
 <h1 id="the-sampling-interface">The sampling interface</h1>
 
 <p>Turing implements a sampling interface (hosted at <a href="https://github.com/TuringLang/AbstractMCMC.jl">AbstractMCMC</a>) that is intended to provide a common framework for Markov chain Monte Carlo samplers. The interface presents several structures and functions that one needs to overload in order to implement an interface-compatible sampler.</p>
 
 <p>This guide will demonstrate how to implement the interface without Turing.</p>
+
+<p><a id="Interface-overview"></a></p>
 
 <p><a id="Interface-overview-1"></a></p>
 
@@ -812,11 +816,15 @@
   <li><code class="language-plaintext highlighter-rouge">sample_end!</code> contains any wrap-up you might need to do. If you were sampling in a transformed space, this might be where you convert everything back to a constrained space.</li>
 </ul>
 
+<p><a id="Why-do-you-have-an-interface?"></a></p>
+
 <p><a id="Why-do-you-have-an-interface?-1"></a></p>
 
 <h2 id="why-do-you-have-an-interface">Why do you have an interface?</h2>
 
 <p>The motivation for the interface is to allow Julia’s fantastic probabilistic programming language community to have a set of standards and common implementations so we can all thrive together. Markov chain Monte Carlo methods tend to have a very similar framework to one another, and so a common interface should help more great inference methods built in single-purpose packages to experience more use among the community.</p>
+
+<p><a id="Implementing-Metropolis-Hastings-without-Turing"></a></p>
 
 <p><a id="Implementing-Metropolis-Hastings-without-Turing-1"></a></p>
 
@@ -825,6 +833,8 @@
 <p><a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">Metropolis-Hastings</a> is often the first sampling method that people are exposed to. It is a very straightforward algorithm and is accordingly the easiest to implement, so it makes for a good example. In this section, you will learn how to use the types and functions listed above to implement the Metropolis-Hastings sampler using the MCMC interface.</p>
 
 <p>The full code for this implementation is housed in <a href="https://github.com/TuringLang/AdvancedMH.jl">AdvancedMH.jl</a>.</p>
+
+<p><a id="Imports"></a></p>
 
 <p><a id="Imports-1"></a></p>
 
@@ -841,6 +851,8 @@
 <p>An interface extension (like the one we’re writing right now) typically requires that you overload or implement several functions. Specifically, you should <code class="language-plaintext highlighter-rouge">import</code> the functions you intend to overload. This next code block accomplishes that.</p>
 
 <p>From <code class="language-plaintext highlighter-rouge">Distributions</code>, we need <code class="language-plaintext highlighter-rouge">Sampleable</code>, <code class="language-plaintext highlighter-rouge">VariateForm</code>, and <code class="language-plaintext highlighter-rouge">ValueSupport</code>, three abstract types that define a distribution. Models in the interface are assumed to be subtypes of <code class="language-plaintext highlighter-rouge">Sampleable{VariateForm, ValueSupport}</code>. In this section our model is going be be extremely simple, so we will not end up using these except to make sure that the inference functions are dispatching correctly.</p>
+
+<p><a id="Sampler"></a></p>
 
 <p><a id="Sampler-1"></a></p>
 
@@ -863,6 +875,8 @@
 
 <p>The general intuition for what to store in your sampler struct is that anything you may need to perform inference between samples but you don’t want to store in a transition should go into the sampler struct. It’s the only way you can carry non-sample related state information between <code class="language-plaintext highlighter-rouge">step!</code> calls.</p>
 
+<p><a id="Model"></a></p>
+
 <p><a id="Model-1"></a></p>
 
 <h3 id="model">Model</h3>
@@ -876,6 +890,8 @@
     <span class="n">ℓπ</span><span class="o">::</span><span class="n">F</span>
 <span class="k">end</span>
 </code></pre></div></div>
+
+<p><a id="Transition"></a></p>
 
 <p><a id="Transition-1"></a></p>
 
@@ -895,6 +911,8 @@
 </code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">Transition</code> can now store any type of parameter, whether it’s a vector of draws from multiple parameters or a single univariate draw.</p>
+
+<p><a id="Metropolis-Hastings"></a></p>
 
 <p><a id="Metropolis-Hastings-1"></a></p>
 
@@ -928,6 +946,8 @@
   <li>Calculate the acceptance probability.</li>
   <li>If we accept, return the new transition, otherwise, return the old one.</li>
 </ol>
+
+<p><a id="Steps"></a></p>
 
 <p><a id="Steps-1"></a></p>
 
@@ -1005,6 +1025,8 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
+<p><a id="Chains"></a></p>
+
 <p><a id="Chains-1"></a></p>
 
 <h3 id="chains">Chains</h3>
@@ -1041,6 +1063,8 @@
 <p>All done!</p>
 
 <p>You can even implement different output formats by implementing <code class="language-plaintext highlighter-rouge">bundle_samples</code> for different <code class="language-plaintext highlighter-rouge">chain_type</code>s, which can be provided as keyword argument to <code class="language-plaintext highlighter-rouge">sample</code>. As default <code class="language-plaintext highlighter-rouge">sample</code> uses <code class="language-plaintext highlighter-rouge">chain_type = Any</code>.</p>
+
+<p><a id="Testing-the-implementation"></a></p>
 
 <p><a id="Testing-the-implementation-1"></a></p>
 
@@ -1097,6 +1121,8 @@ Quantiles
 </code></pre></div></div>
 
 <p>It looks like we’re extremely close to our true parameters of <code class="language-plaintext highlighter-rouge">Normal(5,3)</code>, though with a fairly high variance due to the low sample size.</p>
+
+<p><a id="Conclusion"></a></p>
 
 <p><a id="Conclusion-1"></a></p>
 

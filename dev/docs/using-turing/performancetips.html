@@ -780,11 +780,15 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <p><a id="Performance-Tips-1"></a></p>
+    <p><a id="Performance-Tips"></a></p>
+
+<p><a id="Performance-Tips-1"></a></p>
 
 <h1 id="performance-tips">Performance Tips</h1>
 
 <p>This section briefly summarises a few common techniques to ensure good performance when using Turing. We refer to <a href="https://docs.julialang.org/en/v1/manual/performance-tips/index.html">julialang.org</a> for general techniques to ensure good performance of Julia programs.</p>
+
+<p><a id="Use-multivariate-distributions"></a></p>
 
 <p><a id="Use-multivariate-distributions-1"></a></p>
 
@@ -810,11 +814,15 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
+<p><a id="Choose-your-AD-backend"></a></p>
+
 <p><a id="Choose-your-AD-backend-1"></a></p>
 
 <h2 id="choose-your-ad-backend">Choose your AD backend</h2>
 
 <p>Turing currently provides support for two different automatic differentiation (AD) backends.  Generally, try to use <code class="language-plaintext highlighter-rouge">:forwarddiff</code> for models with few parameters and <code class="language-plaintext highlighter-rouge">:reversediff</code>, <code class="language-plaintext highlighter-rouge">:tracker</code> or <code class="language-plaintext highlighter-rouge">:zygote</code> for models with large parameter vectors or linear algebra operations. See <a href="autodiff">Automatic Differentiation</a> for details.</p>
+
+<p><a id="Special-care-for-:tracker-and-:zygote"></a></p>
 
 <p><a id="Special-care-for-:tracker-and-:zygote-1"></a></p>
 
@@ -823,6 +831,8 @@
 <p>In case of <code class="language-plaintext highlighter-rouge">:tracker</code> and <code class="language-plaintext highlighter-rouge">:zygote</code>, it is necessary to avoid loops for now. This is mainly due to the reverse-mode AD backends <code class="language-plaintext highlighter-rouge">Tracker</code> and <code class="language-plaintext highlighter-rouge">Zygote</code> which are inefficient for such cases. <code class="language-plaintext highlighter-rouge">ReverseDiff</code> does better but vectorized operations will still perform better.</p>
 
 <p>Avoiding loops can be done using <code class="language-plaintext highlighter-rouge">filldist(dist, N)</code> and <code class="language-plaintext highlighter-rouge">arraydist(dists)</code>. <code class="language-plaintext highlighter-rouge">filldist(dist, N)</code> creates a multivariate distribution that is composed of <code class="language-plaintext highlighter-rouge">N</code> identical and independent copies of the univariate distribution <code class="language-plaintext highlighter-rouge">dist</code> if <code class="language-plaintext highlighter-rouge">dist</code> is univariate, or it creates a matrix-variate distribution composed of <code class="language-plaintext highlighter-rouge">N</code> identical and idependent copies of the multivariate distribution <code class="language-plaintext highlighter-rouge">dist</code> if <code class="language-plaintext highlighter-rouge">dist</code> is multivariate. <code class="language-plaintext highlighter-rouge">filldist(dist, N, M)</code> can also be used to create a matrix-variate distribution from a univariate distribution <code class="language-plaintext highlighter-rouge">dist</code>.  <code class="language-plaintext highlighter-rouge">arraydist(dists)</code> is similar to <code class="language-plaintext highlighter-rouge">filldist</code> but it takes an array of distributions <code class="language-plaintext highlighter-rouge">dists</code> as input. Writing a <a href="advanced">custom distribution</a> with a custom adjoint is another option to avoid loops.</p>
+
+<p><a id="Make-your-model-type-stable"></a></p>
 
 <p><a id="Make-your-model-type-stable-1"></a></p>
 
@@ -880,6 +890,8 @@
 </code></pre></div></div>
 
 <p>to inspect the type instabilities in the model.</p>
+
+<p><a id="Reuse-Computations-in-Gibbs-Sampling"></a></p>
 
 <p><a id="Reuse-Computations-in-Gibbs-Sampling-1"></a></p>
 

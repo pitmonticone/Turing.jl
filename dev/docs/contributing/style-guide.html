@@ -780,7 +780,9 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <p><a id="Style-Guide-1"></a></p>
+    <p><a id="Style-Guide"></a></p>
+
+<p><a id="Style-Guide-1"></a></p>
 
 <h1 id="style-guide">Style Guide</h1>
 
@@ -789,6 +791,8 @@
 <p>These conventions were originally written at Invenia, taking inspiration from a variety of sources including Python’s <a href="http://legacy.python.org/dev/peps/pep-0008">PEP8</a>, Julia’s <a href="https://github.com/JuliaLang/julia/blob/master/CONTRIBUTING.md">Notes for Contributors</a>, and Julia’s <a href="https://docs.julialang.org/en/latest/manual/style-guide/">Style Guide</a>.</p>
 
 <p>What follows is a mixture of a verbatim copy of Invenia’s original guide and some of our own modifications.</p>
+
+<p><a id="A-Word-on-Consistency"></a></p>
 
 <p><a id="A-Word-on-Consistency-1"></a></p>
 
@@ -803,6 +807,8 @@
 <blockquote>
   <p>But most importantly: know when to be inconsistent – sometimes the style guide just doesn’t apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don’t hesitate to ask!</p>
 </blockquote>
+
+<p><a id="Synopsis"></a></p>
 
 <p><a id="Synopsis-1"></a></p>
 
@@ -821,9 +827,13 @@
   <li>Avoid padding brackets with spaces. ex. <code class="language-plaintext highlighter-rouge">Int64(value)</code> preferred over <code class="language-plaintext highlighter-rouge">Int64( value )</code>.</li>
 </ul>
 
+<p><a id="Editor-Configuration"></a></p>
+
 <p><a id="Editor-Configuration-1"></a></p>
 
 <h2 id="editor-configuration">Editor Configuration</h2>
+
+<p><a id="Sublime-Text-Settings"></a></p>
 
 <p><a id="Sublime-Text-Settings-1"></a></p>
 
@@ -839,6 +849,8 @@
     </span><span class="nl">"rulers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">92</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
+
+<p><a id="Vim-Settings"></a></p>
 
 <p><a id="Vim-Settings-1"></a></p>
 
@@ -856,6 +868,8 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 
 <p>By default, Vim seems to guess that <code class="language-plaintext highlighter-rouge">.jl</code> files are written in Lisp. To ensure that Vim recognizes Julia files you can manually have it check for the <code class="language-plaintext highlighter-rouge">.jl</code> extension, but a better solution is to install <a href="https://github.com/JuliaLang/julia-vim">Julia-Vim</a>, which also includes proper syntax highlighting and a few cool other features.</p>
 
+<p><a id="Atom-Settings"></a></p>
+
 <p><a id="Atom-Settings-1"></a></p>
 
 <h3 id="atom-settings">Atom Settings</h3>
@@ -868,9 +882,13 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
   <li>Find preferred line length (under “Julia Grammar”) and change it to 92.</li>
 </ol>
 
+<p><a id="Code-Formatting"></a></p>
+
 <p><a id="Code-Formatting-1"></a></p>
 
 <h2 id="code-formatting">Code Formatting</h2>
+
+<p><a id="Function-Naming"></a></p>
 
 <p><a id="Function-Naming-1"></a></p>
 
@@ -879,6 +897,8 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 <p>Names of functions should describe an action or property irrespective of the type of the argument; the argument’s type provides this information instead. For example, <code class="language-plaintext highlighter-rouge">buyfood(food)</code> should be <code class="language-plaintext highlighter-rouge">buy(food::Food)</code>.</p>
 
 <p>Names of functions should usually be limited to one or two lowercase words. Ideally write <code class="language-plaintext highlighter-rouge">buyfood</code> not <code class="language-plaintext highlighter-rouge">buy_food</code>, but if you are writing a function whose name is hard to read without underscores then please do use them.</p>
+
+<p><a id="Method-Definitions"></a></p>
 
 <p><a id="Method-Definitions-1"></a></p>
 
@@ -963,6 +983,8 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 <span class="k">end</span>
 </code></pre></div></div>
 
+<p><a id="Keyword-Arguments"></a></p>
+
 <p><a id="Keyword-Arguments-1"></a></p>
 
 <h3 id="keyword-arguments">Keyword Arguments</h3>
@@ -974,6 +996,8 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 <span class="c"># No:</span>
 <span class="n">xy</span> <span class="o">=</span> <span class="n">foo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="x">)</span>
 </code></pre></div></div>
+
+<p><a id="Whitespace"></a></p>
 
 <p><a id="Whitespace-1"></a></p>
 
@@ -1179,6 +1203,8 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 """</span>
 </code></pre></div></div>
 
+<p><a id="Comments"></a></p>
+
 <p><a id="Comments-1"></a></p>
 
 <h3 id="comments">Comments</h3>
@@ -1211,6 +1237,8 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 
 <span class="n">TODO</span>
 </code></pre></div></div>
+
+<p><a id="Documentation"></a></p>
 
 <p><a id="Documentation-1"></a></p>
 
@@ -1336,9 +1364,13 @@ A cluster manager which spawns workers.
 
 <p>For additional details on documenting in Julia see the <a href="http://docs.julialang.org/en/latest/manual/documentation/">official documentation</a>.</p>
 
+<p><a id="Test-Formatting"></a></p>
+
 <p><a id="Test-Formatting-1"></a></p>
 
 <h2 id="test-formatting">Test Formatting</h2>
+
+<p><a id="Testsets"></a></p>
 
 <p><a id="Testsets-1"></a></p>
 
@@ -1353,6 +1385,8 @@ A cluster manager which spawns workers.
 </code></pre></div></div>
 
 <p>The file structure of the <code class="language-plaintext highlighter-rouge">test</code> folder should mirror that of the <code class="language-plaintext highlighter-rouge">src</code> folder. Every file in <code class="language-plaintext highlighter-rouge">src</code> should have a complementary file in the <code class="language-plaintext highlighter-rouge">test</code> folder, containing tests relevant to that file’s contents.</p>
+
+<p><a id="Comparisons"></a></p>
 
 <p><a id="Comparisons-1"></a></p>
 

@@ -780,9 +780,13 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <p><a id="Advanced-Usage-1"></a></p>
+    <p><a id="Advanced-Usage"></a></p>
+
+<p><a id="Advanced-Usage-1"></a></p>
 
 <h1 id="advanced-usage">Advanced Usage</h1>
+
+<p><a id="How-to-Define-a-Customized-Distribution"></a></p>
 
 <p><a id="How-to-Define-a-Customized-Distribution-1"></a></p>
 
@@ -791,6 +795,8 @@
 <p>Turing.jl supports the use of distributions from the Distributions.jl package. By extension it also supports the use of customized distributions, by defining them as subtypes of <code class="language-plaintext highlighter-rouge">Distribution</code> type of the Distributions.jl package, as well as corresponding functions.</p>
 
 <p>Below shows a workflow of how to define a customized distribution, using our own implementation of a simple <code class="language-plaintext highlighter-rouge">Uniform</code> distribution as a simple example.</p>
+
+<p><a id=".-Define-the-Distribution-Type"></a></p>
 
 <p><a id=".-Define-the-Distribution-Type-1"></a></p>
 
@@ -802,6 +808,8 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
+<p><a id=".-Implement-Sampling-and-Evaluation-of-the-log-pdf"></a></p>
+
 <p><a id=".-Implement-Sampling-and-Evaluation-of-the-log-pdf-1"></a></p>
 
 <h3 id="2-implement-sampling-and-evaluation-of-the-log-pdf">2. Implement Sampling and Evaluation of the log-pdf</h3>
@@ -812,11 +820,15 @@
 <span class="n">Distributions</span><span class="o">.</span><span class="n">logpdf</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">CustomUniform</span><span class="x">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Real</span><span class="x">)</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>          <span class="c"># p(x) = 1 → logp(x) = 0</span>
 </code></pre></div></div>
 
+<p><a id=".-Define-Helper-Functions"></a></p>
+
 <p><a id=".-Define-Helper-Functions-1"></a></p>
 
 <h3 id="3-define-helper-functions">3. Define Helper Functions</h3>
 
 <p>In most cases, it may be required to define some helper functions.</p>
+
+<p><a id=".1-Domain-Transformation"></a></p>
 
 <p><a id=".1-Domain-Transformation-1"></a></p>
 
@@ -854,6 +866,8 @@
 
 <p>To read more about Bijectors.jl, check out <a href="https://github.com/TuringLang/Bijectors.jl">the project README</a>.</p>
 
+<p><a id=".2-Vectorization-Support"></a></p>
+
 <p><a id=".2-Vectorization-Support-1"></a></p>
 
 <h4 id="32-vectorization-support">3.2 Vectorization Support</h4>
@@ -862,6 +876,8 @@
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Distributions</span><span class="o">.</span><span class="n">logpdf</span><span class="x">(</span><span class="n">d</span><span class="o">::</span><span class="n">Flat</span><span class="x">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">})</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
 </code></pre></div></div>
+
+<p><a id="Model-Internals"></a></p>
 
 <p><a id="Model-Internals-1"></a></p>
 
@@ -932,6 +948,8 @@
 <span class="c"># Sample the model.</span>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.1</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
+
+<p><a id="Task-Copying"></a></p>
 
 <p><a id="Task-Copying-1"></a></p>
 

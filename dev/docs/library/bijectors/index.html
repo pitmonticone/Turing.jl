@@ -780,7 +780,9 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <p><a id="Index-1"></a></p>
+    <p><a id="Index"></a></p>
+
+<p><a id="Index-1"></a></p>
 
 <h2 id="index">Index</h2>
 
@@ -795,16 +797,18 @@
   <li><a href="/dev/docs/library/bijectors/#Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}"><code class="language-plaintext highlighter-rouge">Bijectors.bijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N"><code class="language-plaintext highlighter-rouge">Bijectors.composel</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N"><code class="language-plaintext highlighter-rouge">Bijectors.composer</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.isclosedform-Tuple{Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.isclosedform</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{ADBijector,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{Inverse{#s23,N} where N where #s23&lt;:Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logpdf_with_jac-Tuple{Bijectors.TransformedDistribution{#s88,#s87,Univariate} where #s87&lt;:Bijector where #s88&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logpdf_with_jac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.transformed-Tuple{Distribution,Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.transformed</code></a></li>
 </ul>
+
+<p><a id="Functions"></a></p>
 
 <p><a id="Functions-1"></a></p>
 
@@ -817,6 +821,22 @@
 </code></pre></div></div>
 
 <p>Returns the constrained-to-unconstrained bijector for distribution <code class="language-plaintext highlighter-rouge">d</code>.</p>
+
+<p><a id="Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N" href="#Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.composel</code></strong> — <em>Method</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">composel</span><span class="x">(</span><span class="n">ts</span><span class="o">::</span><span class="n">Bijector</span><span class="o">...</span><span class="x">)</span><span class="o">::</span><span class="n">Composed</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Tuple</span><span class="x">}</span>
+</code></pre></div></div>
+
+<p>Constructs <code class="language-plaintext highlighter-rouge">Composed</code> such that <code class="language-plaintext highlighter-rouge">ts</code> are applied left-to-right.</p>
+
+<p><a id="Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N" href="#Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.composer</code></strong> — <em>Method</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">composer</span><span class="x">(</span><span class="n">ts</span><span class="o">::</span><span class="n">Bijector</span><span class="o">...</span><span class="x">)</span><span class="o">::</span><span class="n">Composed</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Tuple</span><span class="x">}</span>
+</code></pre></div></div>
+
+<p>Constructs <code class="language-plaintext highlighter-rouge">Composed</code> such that <code class="language-plaintext highlighter-rouge">ts</code> are applied right-to-left.</p>
 
 <p><a id="Bijectors.forward-Tuple{Bijector,Any}" href="#Bijectors.forward-Tuple{Bijector,Any}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></strong> — <em>Method</em>.</p>
@@ -920,21 +940,7 @@
 
 <p>If no bijector is provided, i.e. <code class="language-plaintext highlighter-rouge">transformed(d)</code> is called, then  <code class="language-plaintext highlighter-rouge">transformed(d, bijector(d))</code> is returned.</p>
 
-<p><a id="Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N" href="#Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N">#</a>
-<strong><code class="language-plaintext highlighter-rouge">Bijectors.composel</code></strong> — <em>Method</em>.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">composel</span><span class="x">(</span><span class="n">ts</span><span class="o">::</span><span class="n">Bijector</span><span class="o">...</span><span class="x">)</span><span class="o">::</span><span class="n">Composed</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Tuple</span><span class="x">}</span>
-</code></pre></div></div>
-
-<p>Constructs <code class="language-plaintext highlighter-rouge">Composed</code> such that <code class="language-plaintext highlighter-rouge">ts</code> are applied left-to-right.</p>
-
-<p><a id="Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N" href="#Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N">#</a>
-<strong><code class="language-plaintext highlighter-rouge">Bijectors.composer</code></strong> — <em>Method</em>.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">composer</span><span class="x">(</span><span class="n">ts</span><span class="o">::</span><span class="n">Bijector</span><span class="o">...</span><span class="x">)</span><span class="o">::</span><span class="n">Composed</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Tuple</span><span class="x">}</span>
-</code></pre></div></div>
-
-<p>Constructs <code class="language-plaintext highlighter-rouge">Composed</code> such that <code class="language-plaintext highlighter-rouge">ts</code> are applied right-to-left.</p>
+<p><a id="Types"></a></p>
 
 <p><a id="Types-1"></a></p>
 
@@ -944,6 +950,11 @@
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.ADBijector</code></strong> — <em>Type</em>.</p>
 
 <p>Abstract type for a <code class="language-plaintext highlighter-rouge">Bijector{N}</code> making use of auto-differentation (AD) to implement <code class="language-plaintext highlighter-rouge">jacobian</code> and, by impliciation, <code class="language-plaintext highlighter-rouge">logabsdetjac</code>.</p>
+
+<p><a id="Bijectors.AbstractBijector" href="#Bijectors.AbstractBijector">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.AbstractBijector</code></strong> — <em>Type</em>.</p>
+
+<p>Abstract type for a bijector.</p>
 
 <p><a id="Bijectors.Bijector" href="#Bijectors.Bijector">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.Bijector</code></strong> — <em>Type</em>.</p>
@@ -1049,49 +1060,6 @@ true
 
 <p>A <code class="language-plaintext highlighter-rouge">Bijector</code> representing the inverse transform of <code class="language-plaintext highlighter-rouge">b</code>.</p>
 
-<p><a id="Bijectors.Stacked" href="#Bijectors.Stacked">#</a>
-<strong><code class="language-plaintext highlighter-rouge">Bijectors.Stacked</code></strong> — <em>Type</em>.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Stacked</span><span class="x">(</span><span class="n">bs</span><span class="x">)</span>
-<span class="n">Stacked</span><span class="x">(</span><span class="n">bs</span><span class="x">,</span> <span class="n">ranges</span><span class="x">)</span>
-<span class="n">stack</span><span class="x">(</span><span class="n">bs</span><span class="o">::</span><span class="n">Bijector</span><span class="x">{</span><span class="mi">0</span><span class="x">}</span><span class="o">...</span><span class="x">)</span> <span class="c"># where `0` means 0-dim `Bijector`</span>
-</code></pre></div></div>
-
-<p>A <code class="language-plaintext highlighter-rouge">Bijector</code> which stacks bijectors together which can then be applied to a vector where <code class="language-plaintext highlighter-rouge">bs[i]::Bijector</code> is applied to <code class="language-plaintext highlighter-rouge">x[ranges[i]]::UnitRange{Int}</code>.</p>
-
-<p><strong>Arguments</strong></p>
-
-<ul>
-  <li>
-    <p><code class="language-plaintext highlighter-rouge">bs</code> can be either a <code class="language-plaintext highlighter-rouge">Tuple</code> or an <code class="language-plaintext highlighter-rouge">AbstractArray</code> of 0- and/or 1-dimensional bijectors</p>
-
-    <ul>
-      <li>If <code class="language-plaintext highlighter-rouge">bs</code> is a <code class="language-plaintext highlighter-rouge">Tuple</code>, implementations are type-stable using generated functions</li>
-      <li>If <code class="language-plaintext highlighter-rouge">bs</code> is an <code class="language-plaintext highlighter-rouge">AbstractArray</code>, implementations are <em>not</em> type-stable and use iterative methods</li>
-    </ul>
-  </li>
-  <li>
-    <p><code class="language-plaintext highlighter-rouge">ranges</code> needs to be an iterable consisting of <code class="language-plaintext highlighter-rouge">UnitRange{Int}</code></p>
-
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">length(bs) == length(ranges)</code> needs to be true.</li>
-    </ul>
-  </li>
-</ul>
-
-<p><strong>Examples</strong></p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>b1 = Logit(0.0, 1.0)
-b2 = Identity{0}()
-b = stack(b1, b2)
-b([0.0, 1.0]) == [b1(0.0), 1.0]  # =&gt; true
-</code></pre></div></div>
-
-<p><a id="Bijectors.AbstractBijector" href="#Bijectors.AbstractBijector">#</a>
-<strong><code class="language-plaintext highlighter-rouge">Bijectors.AbstractBijector</code></strong> — <em>Type</em>.</p>
-
-<p>Abstract type for a bijector.</p>
-
 <p><a id="Bijectors.Permute" href="#Bijectors.Permute">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.Permute</code></strong> — <em>Type</em>.</p>
 
@@ -1174,6 +1142,44 @@ julia&gt; inv(b1)(b1([1., 2., 3.]))
  2.0
  3.0
 </code></pre>
+
+<p><a id="Bijectors.Stacked" href="#Bijectors.Stacked">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.Stacked</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Stacked</span><span class="x">(</span><span class="n">bs</span><span class="x">)</span>
+<span class="n">Stacked</span><span class="x">(</span><span class="n">bs</span><span class="x">,</span> <span class="n">ranges</span><span class="x">)</span>
+<span class="n">stack</span><span class="x">(</span><span class="n">bs</span><span class="o">::</span><span class="n">Bijector</span><span class="x">{</span><span class="mi">0</span><span class="x">}</span><span class="o">...</span><span class="x">)</span> <span class="c"># where `0` means 0-dim `Bijector`</span>
+</code></pre></div></div>
+
+<p>A <code class="language-plaintext highlighter-rouge">Bijector</code> which stacks bijectors together which can then be applied to a vector where <code class="language-plaintext highlighter-rouge">bs[i]::Bijector</code> is applied to <code class="language-plaintext highlighter-rouge">x[ranges[i]]::UnitRange{Int}</code>.</p>
+
+<p><strong>Arguments</strong></p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">bs</code> can be either a <code class="language-plaintext highlighter-rouge">Tuple</code> or an <code class="language-plaintext highlighter-rouge">AbstractArray</code> of 0- and/or 1-dimensional bijectors</p>
+
+    <ul>
+      <li>If <code class="language-plaintext highlighter-rouge">bs</code> is a <code class="language-plaintext highlighter-rouge">Tuple</code>, implementations are type-stable using generated functions</li>
+      <li>If <code class="language-plaintext highlighter-rouge">bs</code> is an <code class="language-plaintext highlighter-rouge">AbstractArray</code>, implementations are <em>not</em> type-stable and use iterative methods</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ranges</code> needs to be an iterable consisting of <code class="language-plaintext highlighter-rouge">UnitRange{Int}</code></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">length(bs) == length(ranges)</code> needs to be true.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Examples</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>b1 = Logit(0.0, 1.0)
+b2 = Identity{0}()
+b = stack(b1, b2)
+b([0.0, 1.0]) == [b1(0.0), 1.0]  # =&gt; true
+</code></pre></div></div>
 
 
     

@@ -782,6 +782,8 @@
     <article class="md-content__inner md-typeset  full-width">
     <p>In this section, I will describe the current design of Turing’s model compiler which enables Turing to perform various types of Bayesian inference without changing the model definition. What we call “compiler” is essentially just a macro that transforms the user’s code to something that Julia’s dispatch can operate on and that Julia’s compiler can successfully do type inference on for efficient machine code generation.</p>
 
+<p><a id="Overview"></a></p>
+
 <p><a id="Overview-1"></a></p>
 
 <h1 id="overview">Overview</h1>
@@ -796,6 +798,8 @@
 </ul>
 
 <p><code class="language-plaintext highlighter-rouge">Turing</code>’s <code class="language-plaintext highlighter-rouge">@model</code> macro defines a <code class="language-plaintext highlighter-rouge">ModelGen</code> that can be used to instantiate a <code class="language-plaintext highlighter-rouge">Model</code> by passing in the observed data <code class="language-plaintext highlighter-rouge">D</code>.</p>
+
+<p><a id="@model-macro-and-ModelGen"></a></p>
 
 <p><a id="@model-macro-and-ModelGen-1"></a></p>
 
@@ -857,6 +861,8 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
+<p><a id="build_model_info"></a></p>
+
 <p><a id="build_model_info-1"></a></p>
 
 <h2 id="build_model_info"><code class="language-plaintext highlighter-rouge">build_model_info</code></h2>
@@ -873,6 +879,8 @@
 </ul>
 
 <p>and returns it as a dictionary called <code class="language-plaintext highlighter-rouge">model_info</code>.</p>
+
+<p><a id="replace_tilde!"></a></p>
 
 <p><a id="replace_tilde!-1"></a></p>
 
@@ -931,11 +939,15 @@
 
 <p>The main difference in the expanded code between <code class="language-plaintext highlighter-rouge">L ~ R</code> and <code class="language-plaintext highlighter-rouge">@. L ~ R</code> is that the former doesn’t assume <code class="language-plaintext highlighter-rouge">L</code> to be defined, it can be a new Julia variable in the scope, while the latter assumes <code class="language-plaintext highlighter-rouge">L</code> already exists. <code class="language-plaintext highlighter-rouge">L</code> is also always input to the <code class="language-plaintext highlighter-rouge">dot_tilde</code> function but not the <code class="language-plaintext highlighter-rouge">tilde</code> function.</p>
 
+<p><a id="replace_vi!,-replace_logpdf!-and-replace_sampler!"></a></p>
+
 <p><a id="replace_vi!,-replace_logpdf!-and-replace_sampler!-1"></a></p>
 
 <h2 id="replace_vi-replace_logpdf-and-replace_sampler"><code class="language-plaintext highlighter-rouge">replace_vi!</code>, <code class="language-plaintext highlighter-rouge">replace_logpdf!</code> and <code class="language-plaintext highlighter-rouge">replace_sampler!</code></h2>
 
 <p>Using <code class="language-plaintext highlighter-rouge">@varinfo()</code> inside the model body will give the user access to the <code class="language-plaintext highlighter-rouge">vi::VarInfo</code> object used inside the model. The function <code class="language-plaintext highlighter-rouge">replace_vi!</code> therefore finds and replaces every use of <code class="language-plaintext highlighter-rouge">@varinfo()</code> with the handle to the <code class="language-plaintext highlighter-rouge">VarInfo</code> instance used inside the model. The <code class="language-plaintext highlighter-rouge">@logpdf()</code> macro will return <code class="language-plaintext highlighter-rouge">vi.logp[]</code> which is the accumumlated <code class="language-plaintext highlighter-rouge">log</code> probability that the model is computing. What this means can change depending on the context, <code class="language-plaintext highlighter-rouge">ctx</code>, used when running the model. Finally, <code class="language-plaintext highlighter-rouge">replace_sampler!</code> will replace <code class="language-plaintext highlighter-rouge">@sampler()</code> with the <code class="language-plaintext highlighter-rouge">sampler</code> input to the model.</p>
+
+<p><a id="Turing.Model"></a></p>
 
 <p><a id="Turing.Model-1"></a></p>
 
@@ -968,6 +980,8 @@
 <p><code class="language-plaintext highlighter-rouge">model.f</code> is an internal function that is called when <code class="language-plaintext highlighter-rouge">model</code> is called, where <code class="language-plaintext highlighter-rouge">model::Model</code>. When <code class="language-plaintext highlighter-rouge">model</code> is called, <code class="language-plaintext highlighter-rouge">model</code> itself is passed as an argument to <code class="language-plaintext highlighter-rouge">model.f</code> because we need to access <code class="language-plaintext highlighter-rouge">model.args</code> among other things inside <code class="language-plaintext highlighter-rouge">f</code>. <code class="language-plaintext highlighter-rouge">model.args</code> is a <code class="language-plaintext highlighter-rouge">NamedTuple</code> of all the arguments that were passed to the model generating function when constructing an instance of <code class="language-plaintext highlighter-rouge">Model</code>. <code class="language-plaintext highlighter-rouge">modelgen</code> is the instance of <code class="language-plaintext highlighter-rouge">ModelGen</code> that was used to construct <code class="language-plaintext highlighter-rouge">model</code>. <code class="language-plaintext highlighter-rouge">missings</code> is an instance of <code class="language-plaintext highlighter-rouge">Val</code>, e.g. <code class="language-plaintext highlighter-rouge">Val{(:a, :b)}()</code>. <code class="language-plaintext highlighter-rouge">getmissings</code> returns a <code class="language-plaintext highlighter-rouge">Val</code> instance of all the symbols in <code class="language-plaintext highlighter-rouge">args</code> with a value <code class="language-plaintext highlighter-rouge">missing</code>. This is the default definition of <code class="language-plaintext highlighter-rouge">missings</code>. All variables in <code class="language-plaintext highlighter-rouge">missings</code> are treated as random variables rather than observations.</p>
 
 <p>In some non-traditional use-cases, <code class="language-plaintext highlighter-rouge">missings</code> is defined differently, e.g. when computing the log joint probability of the random variables and only some observations simultaneously, possibly conditioned on the remaining observations. An example using the model above is <code class="language-plaintext highlighter-rouge">logprob"x = rand(3), p = rand(2) | model = gauss, y = nothing"</code>. To evaluate this, the model argument <code class="language-plaintext highlighter-rouge">x</code> on the LHS of <code class="language-plaintext highlighter-rouge">|</code> is treated as a random variable leading to a call to the <code class="language-plaintext highlighter-rouge">assume</code> or <code class="language-plaintext highlighter-rouge">dot_assume</code> function in place of the <code class="language-plaintext highlighter-rouge">~</code> or <code class="language-plaintext highlighter-rouge">.~</code> expressions, respectively. The model is then run in the <code class="language-plaintext highlighter-rouge">PriorContext</code> which ignores the <code class="language-plaintext highlighter-rouge">observe</code> and <code class="language-plaintext highlighter-rouge">dot_observe</code> functions and only runs the <code class="language-plaintext highlighter-rouge">assume</code> and <code class="language-plaintext highlighter-rouge">dot_assume</code> ones. This returns the correct log probability. The reason why a model input argument, such as <code class="language-plaintext highlighter-rouge">x</code>, cannot be initialized to <code class="language-plaintext highlighter-rouge">missing</code> when on the LHS of <code class="language-plaintext highlighter-rouge">|</code> is somewhat subtle. In the model body before calling <code class="language-plaintext highlighter-rouge">~</code>, sometimes there would be a call to <code class="language-plaintext highlighter-rouge">length(x)</code> iterating over the elements of <code class="language-plaintext highlighter-rouge">x</code> in a loop calling <code class="language-plaintext highlighter-rouge">~</code> on each element of <code class="language-plaintext highlighter-rouge">x</code>. If <code class="language-plaintext highlighter-rouge">x</code> is initialized to <code class="language-plaintext highlighter-rouge">missing</code>, this will error because <code class="language-plaintext highlighter-rouge">length(missing)</code> is not defined. Moreover, it is not intuitive to require the user to handle the <code class="language-plaintext highlighter-rouge">x === missing</code> case because the user never assigned <code class="language-plaintext highlighter-rouge">x</code> to be <code class="language-plaintext highlighter-rouge">missing</code> in the first place, <code class="language-plaintext highlighter-rouge">missing</code> is merely an implementation detail in this case that the users need not concern themselves with. Therefore in this case, it makes sense to de-couple the <code class="language-plaintext highlighter-rouge">missings</code> field from the values of the arguments.</p>
+
+<p><a id="build_output"></a></p>
 
 <p><a id="build_output-1"></a></p>
 
@@ -1007,6 +1021,8 @@
 
 <p>The above 2 methods enable constructing the model using positional or keyword arguments. The second argument to the <code class="language-plaintext highlighter-rouge">Turing.Model</code> constructor is the expression called <code class="language-plaintext highlighter-rouge">args_nt</code> stored in <code class="language-plaintext highlighter-rouge">model_info</code>. The second argument to the <code class="language-plaintext highlighter-rouge">ModelGen</code> constructor inside <code class="language-plaintext highlighter-rouge">outer_function</code> and outside is the expression called <code class="language-plaintext highlighter-rouge">defaults_nt</code> stored in <code class="language-plaintext highlighter-rouge">model_info</code>. The body of the <code class="language-plaintext highlighter-rouge">inner_function</code> is explained below.</p>
 
+<p><a id="inner_function"></a></p>
+
 <p><a id="inner_function-1"></a></p>
 
 <h2 id="inner_function"><code class="language-plaintext highlighter-rouge">inner_function</code></h2>
@@ -1037,6 +1053,8 @@
 
 <p>The second branch of the <code class="language-plaintext highlighter-rouge">if</code>-block is to handle partially missing data converting the type of the input vector to another type befitting of the sampler used, whether it is for automatic differentiation or for particle samplers. Finally, the third branch is the one that will be run for <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> above simply assigning these names to <code class="language-plaintext highlighter-rouge">model.args.x</code> and <code class="language-plaintext highlighter-rouge">model.args.y</code> respectively. The main model body is then the same model body passed in by the user after replacing <code class="language-plaintext highlighter-rouge">L ~ R</code>, <code class="language-plaintext highlighter-rouge">@. L ~ R</code>, <code class="language-plaintext highlighter-rouge">@varinfo()</code> and <code class="language-plaintext highlighter-rouge">@logpdf()</code> as explained eariler.</p>
 
+<p><a id="VarName"></a></p>
+
 <p><a id="VarName-1"></a></p>
 
 <h1 id="varname"><code class="language-plaintext highlighter-rouge">VarName</code></h1>
@@ -1048,6 +1066,8 @@
   <li><code class="language-plaintext highlighter-rouge">x[:,1] ~ MvNormal(zeros(2))</code> will generate a <code class="language-plaintext highlighter-rouge">VarName{:x}</code> with <code class="language-plaintext highlighter-rouge">indexing == "[Colon(),1]"</code>.</li>
   <li><code class="language-plaintext highlighter-rouge">x[:,1][2] ~ Normal()</code> will generate a <code class="language-plaintext highlighter-rouge">VarName{:x}</code> with <code class="language-plaintext highlighter-rouge">indexing == "[Colon(),1][2]"</code>.</li>
 </ul>
+
+<p><a id="VarInfo"></a></p>
 
 <p><a id="VarInfo-1"></a></p>
 
@@ -1069,6 +1089,8 @@ end
 </code></pre></div></div>
 
 <p>Based on the type of <code class="language-plaintext highlighter-rouge">metadata</code>, the <code class="language-plaintext highlighter-rouge">VarInfo</code> is either aliased <code class="language-plaintext highlighter-rouge">UntypedVarInfo</code> or <code class="language-plaintext highlighter-rouge">TypedVarInfo</code>. <code class="language-plaintext highlighter-rouge">metadata</code> can be either a subtype of the union type <code class="language-plaintext highlighter-rouge">Metadata</code> or a <code class="language-plaintext highlighter-rouge">NamedTuple</code> of multiple such subtypes. Let <code class="language-plaintext highlighter-rouge">vi</code> be an instance of <code class="language-plaintext highlighter-rouge">VarInfo</code>. If <code class="language-plaintext highlighter-rouge">vi isa VarInfo{&lt;:Metadata}</code>, then it is called an <code class="language-plaintext highlighter-rouge">UntypedVarInfo</code>. If <code class="language-plaintext highlighter-rouge">vi isa VarInfo{&lt;:NamedTuple}</code>, then <code class="language-plaintext highlighter-rouge">vi.metadata</code> would be a <code class="language-plaintext highlighter-rouge">NamedTuple</code> mapping each symbol in <code class="language-plaintext highlighter-rouge">P</code> to an instance of <code class="language-plaintext highlighter-rouge">Metadata</code>. <code class="language-plaintext highlighter-rouge">vi</code> would then be called a <code class="language-plaintext highlighter-rouge">TypedVarInfo</code>. The other fields of <code class="language-plaintext highlighter-rouge">VarInfo</code> include <code class="language-plaintext highlighter-rouge">logp</code> which is used to accumulate the log probability or log probability density of the variables in <code class="language-plaintext highlighter-rouge">P</code> and <code class="language-plaintext highlighter-rouge">D</code>. <code class="language-plaintext highlighter-rouge">num_produce</code> keeps track of how many observations have been made in the model so far. This is incremented when running a <code class="language-plaintext highlighter-rouge">~</code> statement when the symbol on the LHS is in <code class="language-plaintext highlighter-rouge">D</code>.</p>
+
+<p><a id="Metadata"></a></p>
 
 <p><a id="Metadata-1"></a></p>
 
