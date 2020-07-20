@@ -958,7 +958,7 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define the first step! function, which is called at the </span>
 <span class="c"># beginning of sampling. Return the initial parameter used</span>
 <span class="c"># to define the sampler.</span>
-<span class="k">function</span><span class="nf"> AbstractMCMC</span><span class="o">.</span><span class="n">step!</span><span class="x">(</span>
+<span class="k">function</span><span class="nf"> AbstractMCMC.step!</span><span class="x">(</span>
     <span class="n">rng</span><span class="o">::</span><span class="kt">AbstractRNG</span><span class="x">,</span>
     <span class="n">model</span><span class="o">::</span><span class="n">DensityModel</span><span class="x">,</span>
     <span class="n">spl</span><span class="o">::</span><span class="n">MetropolisHastings</span><span class="x">,</span>
@@ -1002,7 +1002,7 @@
 <span class="c"># Define the other step function. Returns a Transition containing</span>
 <span class="c"># either a new proposal (if accepted) or the previous proposal </span>
 <span class="c"># (if not accepted).</span>
-<span class="k">function</span><span class="nf"> AbstractMCMC</span><span class="o">.</span><span class="n">step!</span><span class="x">(</span>
+<span class="k">function</span><span class="nf"> AbstractMCMC.step!</span><span class="x">(</span>
     <span class="n">rng</span><span class="o">::</span><span class="kt">AbstractRNG</span><span class="x">,</span>
     <span class="n">model</span><span class="o">::</span><span class="n">DensityModel</span><span class="x">,</span>
     <span class="n">spl</span><span class="o">::</span><span class="n">MetropolisHastings</span><span class="x">,</span>
@@ -1034,7 +1034,7 @@
 <p>In the default implementation, <code class="language-plaintext highlighter-rouge">sample</code> just returns a vector of all transitions. If instead you would like to obtain a <code class="language-plaintext highlighter-rouge">Chains</code> object (e.g., to simplify downstream analysis), you have to implement the <code class="language-plaintext highlighter-rouge">bundle_samples</code> function as well. It accepts the vector of transitions and returns a collection of samples. Fortunately, our <code class="language-plaintext highlighter-rouge">Transition</code> is incredibly simple, and we only need to build a little bit of functionality to accept custom parameter names passed in by the user.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># A basic chains constructor that works with the Transition struct we defined.</span>
-<span class="k">function</span><span class="nf"> AbstractMCMC</span><span class="o">.</span><span class="n">bundle_samples</span><span class="x">(</span>
+<span class="k">function</span><span class="nf"> AbstractMCMC.bundle_samples</span><span class="x">(</span>
     <span class="n">rng</span><span class="o">::</span><span class="kt">AbstractRNG</span><span class="x">,</span> 
     <span class="n">ℓ</span><span class="o">::</span><span class="n">DensityModel</span><span class="x">,</span> 
     <span class="n">s</span><span class="o">::</span><span class="n">MetropolisHastings</span><span class="x">,</span> 
