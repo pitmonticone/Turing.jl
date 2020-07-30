@@ -943,7 +943,7 @@
 <span class="k">end</span>
 
 <span class="c"># Instantiate a Model object.</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">DynamicPPL</span><span class="o">.</span><span class="n">Model</span><span class="x">(</span><span class="n">mf</span><span class="x">,</span> <span class="n">data</span><span class="x">,</span> <span class="n">DyanamicPPL</span><span class="o">.</span><span class="n">ModelGen</span><span class="x">{()}(</span><span class="nb">nothing</span><span class="x">,</span> <span class="nb">nothing</span><span class="x">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DynamicPPL</span><span class="o">.</span><span class="n">Model</span><span class="x">(</span><span class="n">mf</span><span class="x">,</span> <span class="n">data</span><span class="x">,</span> <span class="n">DynamicPPL</span><span class="o">.</span><span class="n">ModelGen</span><span class="x">{()}(</span><span class="nb">nothing</span><span class="x">,</span> <span class="nb">nothing</span><span class="x">))</span>
 
 <span class="c"># Sample the model.</span>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.1</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
@@ -955,7 +955,7 @@
 
 <h2 id="task-copying">Task Copying</h2>
 
-<p>Turing <a href="https://github.com/JuliaLang/julia/issues/4085">copies</a> Julia tasks to deliver efficient inference algorithms, but it also provides alternative slower implementation as a fallback. Task copying is enabled by default. Task copying requires we use the <code class="language-plaintext highlighter-rouge">CTask</code> facility which is provided by <a href="https://github.com/TuringLang/Libtask.jl">Libtask</a> to create tasks.</p>
+<p>Turing <a href="https://github.com/JuliaLang/julia/issues/4085">copies</a> Julia tasks to deliver efficient inference algorithms, but it also provides alternative slower implementation as a fallback. Task copying is enabled by default. Task copying requires us to use the <code class="language-plaintext highlighter-rouge">CTask</code> facility which is provided by <a href="https://github.com/TuringLang/Libtask.jl">Libtask</a> to create tasks.</p>
 
 
     
