@@ -795,6 +795,7 @@
   <li><a href="/dev/docs/library/#Turing.Inference.HMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.HMCDA"><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.IS"><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></a></li>
+  <li><a href="/dev/docs/library/#Turing.Inference.MH"><code class="language-plaintext highlighter-rouge">Turing.Inference.MH</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.NUTS"><code class="language-plaintext highlighter-rouge">Turing.Inference.NUTS</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.PG"><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.SMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></a></li>
@@ -879,7 +880,7 @@
 
 <p>methods like Particle Gibbs. You can increase the effectiveness of particle sampling by including more particles in the particle sampler.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/gibbs.jl#L14-L39" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/gibbs.jl#L14-L39" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmc--type"><a id="Turing.Inference.HMC" href="#Turing.Inference.HMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></strong> — <em>Type</em>.</h3>
 
@@ -913,7 +914,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/hmc.jl#L46-L73" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/hmc.jl#L46-L73" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmcda--type"><a id="Turing.Inference.HMCDA" href="#Turing.Inference.HMCDA">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></strong> — <em>Type</em>.</h3>
 
@@ -942,7 +943,7 @@
   <li>Hoffman, Matthew D., and Andrew Gelman. “The No-U-turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo.” Journal of Machine Learning Research 15, no. 1 (2014): 1593-1623.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/hmc.jl#L218-L241" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/hmc.jl#L218-L241" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferenceis--type"><a id="Turing.Inference.IS" href="#Turing.Inference.IS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></strong> — <em>Type</em>.</h3>
 
@@ -972,10 +973,124 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">IS</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
 
-<p>!!! warning “Missing docstring.”
-    Missing docstring for <code class="language-plaintext highlighter-rouge">MH</code>. Check Documenter’s build log for details.</p>
+<h3 id="-turinginferencemh--type"><a id="Turing.Inference.MH" href="#Turing.Inference.MH">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.MH</code></strong> — <em>Type</em>.</h3>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MH</span><span class="x">(</span><span class="n">space</span><span class="o">...</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Construct a Metropolis-Hastings algorithm.</p>
+
+<p>The arguments <code class="language-plaintext highlighter-rouge">space</code> can be</p>
+
+<ul>
+  <li>Blank (i.e. <code class="language-plaintext highlighter-rouge">MH()</code>), in which case <code class="language-plaintext highlighter-rouge">MH</code> defaults to using the prior for each parameter as the proposal distribution.</li>
+  <li>A set of one or more symbols to sample with <code class="language-plaintext highlighter-rouge">MH</code> in conjunction with <code class="language-plaintext highlighter-rouge">Gibbs</code>, i.e. <code class="language-plaintext highlighter-rouge">Gibbs(MH(:m), PG(10, :s))</code></li>
+  <li>An iterable of pairs or tuples mapping a <code class="language-plaintext highlighter-rouge">Symbol</code> to a <code class="language-plaintext highlighter-rouge">AdvancedMH.Proposal</code>, <code class="language-plaintext highlighter-rouge">Distribution</code>, or <code class="language-plaintext highlighter-rouge">Function</code>  that generates returns a conditional proposal distribution.</li>
+  <li>A covariance matrix to use as for mean-zero multivariate normal proposals.</li>
+</ul>
+
+<p><strong>Examples</strong></p>
+
+<p>The default <code class="language-plaintext highlighter-rouge">MH</code> will use propose samples from the prior distribution using <code class="language-plaintext highlighter-rouge">AdvancedMH.StaticProposal</code>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span><span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+<span class="k">end</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">),</span> <span class="n">MH</span><span class="x">(),</span> <span class="mi">1_000</span><span class="x">)</span>
+<span class="n">mean</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Alternatively, you can specify particular parameters to sample if you want to combine sampling from multiple samplers:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span><span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+<span class="k">end</span>
+
+<span class="c"># Samples s with MH and m with PG</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">),</span> <span class="n">Gibbs</span><span class="x">(</span><span class="n">MH</span><span class="x">(</span><span class="o">:</span><span class="n">s</span><span class="x">),</span> <span class="n">PG</span><span class="x">(</span><span class="mi">10</span><span class="x">,</span> <span class="o">:</span><span class="n">m</span><span class="x">)),</span> <span class="mi">1_000</span><span class="x">)</span>
+<span class="n">mean</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
+<span class="sb">````</span>
+
+<span class="n">Using</span> <span class="n">custom</span> <span class="n">distributions</span> <span class="n">defaults</span> <span class="n">to</span> <span class="k">using</span> <span class="n">static</span> <span class="n">MH</span><span class="o">:</span>
+
+</code></pre></div></div>
+
+<p>julia @model function gdemo(x, y)     s ~ InverseGamma(2,3)     m ~ Normal(0, sqrt(s))     x ~ Normal(m, sqrt(s))     y ~ Normal(m, sqrt(s)) end</p>
+
+<p><strong>Use a static proposal for s and random walk with proposal</strong></p>
+
+<p><strong>standard deviation of 0.25 for m.</strong></p>
+
+<p>chain = sample(     gdemo(1.5, 2.0),      MH(         :s =&gt; InverseGamma(2, 3),         :m =&gt; Normal(0, 1)     ),      1_000 ) mean(chain)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Specifying explicit proposals using the `AdvancedMH` interface:
+
+```julia
+@model function gdemo(x, y)
+    s ~ InverseGamma(2,3)
+    m ~ Normal(0, sqrt(s))
+    x ~ Normal(m, sqrt(s))
+    y ~ Normal(m, sqrt(s))
+end
+
+# Use a static proposal for s and random walk with proposal 
+# standard deviation of 0.25 for m.
+chain = sample(
+    gdemo(1.5, 2.0), 
+    MH(
+        :s =&gt; AdvancedMH.StaticProposal(InverseGamma(2,3)),
+        :m =&gt; AdvancedMH.RandomWalkProposal(Normal(0, 0.25))
+    ), 
+    1_000
+)
+mean(chain)
+</code></pre></div></div>
+
+<p>Using a custom function to specify a conditional distribution:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span><span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+<span class="k">end</span>
+
+<span class="c"># Use a static proposal for s and and a conditional proposal for m,</span>
+<span class="c"># where the proposal is centered around the current sample.</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span>
+    <span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mf">2.0</span><span class="x">),</span> 
+    <span class="n">MH</span><span class="x">(</span>
+        <span class="o">:</span><span class="n">s</span> <span class="o">=&gt;</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span>
+        <span class="o">:</span><span class="n">m</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">Normal</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
+    <span class="x">),</span> 
+    <span class="mi">1_000</span>
+<span class="x">)</span>
+<span class="n">mean</span><span class="x">(</span><span class="n">chain</span><span class="x">)</span>
+<span class="sb">````</span>
+
+<span class="n">Providing</span> <span class="n">a</span> <span class="n">covariance</span> <span class="n">matrix</span> <span class="n">will</span> <span class="n">cause</span> <span class="sb">`MH`</span> <span class="n">to</span> <span class="n">perform</span> <span class="n">random</span><span class="o">-</span><span class="n">walk</span>
+<span class="n">sampling</span> <span class="k">in</span> <span class="n">the</span> <span class="n">transformed</span> <span class="n">space</span> <span class="n">with</span> <span class="n">proposals</span> <span class="n">drawn</span> <span class="n">from</span> <span class="n">a</span> <span class="n">multivariate</span>
+<span class="n">normal</span> <span class="n">distribution</span><span class="o">.</span> <span class="n">The</span> <span class="n">provided</span> <span class="n">matrix</span> <span class="n">must</span> <span class="n">be</span> <span class="n">positive</span> <span class="n">semi</span><span class="o">-</span><span class="n">definite</span> <span class="n">and</span> <span class="n">square</span><span class="o">.</span> <span class="n">Usage</span><span class="o">:</span>
+
+</code></pre></div></div>
+
+<p>julia @model function gdemo(x, y)     s ~ InverseGamma(2,3)     m ~ Normal(0, sqrt(s))     x ~ Normal(m, sqrt(s))     y ~ Normal(m, sqrt(s)) end</p>
+
+<p><strong>Providing a custom variance-covariance matrix</strong></p>
+
+<p>chain = sample(     gdemo(1.5, 2.0),      MH(         [0.25 0.05;           0.05 0.50]     ),      1_000 ) mean(chain) ````</p>
+
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/mh.jl#L12-L150" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencenuts--type"><a id="Turing.Inference.NUTS" href="#Turing.Inference.NUTS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.NUTS</code></strong> — <em>Type</em>.</h3>
 
@@ -1000,7 +1115,7 @@
   <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically searching using a heuristic procedure.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/hmc.jl#L284-L304" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/hmc.jl#L284-L304" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencepg--type"><a id="Turing.Inference.PG" href="#Turing.Inference.PG">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></strong> — <em>Type</em>.</h3>
 
@@ -1026,7 +1141,7 @@
   </li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/AdvancedSMC.jl#L154" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/AdvancedSMC.jl#L154" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencesmc--type"><a id="Turing.Inference.SMC" href="#Turing.Inference.SMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></strong> — <em>Type</em>.</h3>
 
@@ -1041,7 +1156,7 @@
   <li><code class="language-plaintext highlighter-rouge">resampler::Any</code></li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/inference/AdvancedSMC.jl#L35" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/inference/AdvancedSMC.jl#L35" class="documenter-source">source</a><br /></p>
 
 <p><a id="Distributions"></a></p>
 
@@ -1056,7 +1171,7 @@
 
 <p>A distribution with support and density of one everywhere.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingflatpos--type"><a id="Turing.FlatPos" href="#Turing.FlatPos">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></strong> — <em>Type</em>.</h3>
 
@@ -1065,7 +1180,7 @@
 
 <p>A distribution with a lower bound of <code class="language-plaintext highlighter-rouge">l</code> and a density of one at every <code class="language-plaintext highlighter-rouge">x</code> above <code class="language-plaintext highlighter-rouge">l</code>.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingbinomiallogit--type"><a id="Turing.BinomialLogit" href="#Turing.BinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.BinomialLogit</code></strong> — <em>Type</em>.</h3>
 
@@ -1074,7 +1189,7 @@
 
 <p>A univariate binomial logit distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
 
 <p>!!! warning “Missing docstring.”
     Missing docstring for <code class="language-plaintext highlighter-rouge">VecBinomialLogit</code>. Check Documenter’s build log for details.</p>
@@ -1086,7 +1201,7 @@
 
 <p>An ordered logistic distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/09b095cc9f08157d6e897d09e4f9c0669a78845a/src/stdlib/distributions.jl#L72-L76" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/614f593424f54f458f992ebe81454c29215f28fc/src/stdlib/distributions.jl#L72-L76" class="documenter-source">source</a><br /></p>
 
 <p><a id="Data-Structures"></a></p>
 
