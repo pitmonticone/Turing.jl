@@ -7,8 +7,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Introduction to Turing</title>
-    <meta name="description" content="Introduction to Turing">
+    <title>How Turing implements AbstractMCMC</title>
+    <meta name="description" content="">
     <meta name="author" content="The Turing Team">
     <meta name="theme-color" content="red">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -17,7 +17,7 @@
     <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="canonical" href="/dev/tutorials/0-introduction/">
+    <link rel="canonical" href="/dev/docs/for-developers/how_turing_implements_abstractmcmc">
     <link rel="alternate" type="application/rss+xml" title="Turing.jl" href="/dev/feed.xml">
     <meta name="lang:clipboard.copy" content="Copy to clipboard">
     <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -54,7 +54,7 @@
 
     <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off>
     <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off>
-    <label class=md-overlay data-md-component=overlay for=__drawer></label> <a href="#introduction-to-turing" tabindex=1 class=md-skip> Skip to content </a>
+    <label class=md-overlay data-md-component=overlay for=__drawer></label> <a href="#how-turing-implements-abstractmcmc" tabindex=1 class=md-skip> Skip to content </a>
     <header class=md-header data-md-component=header data-md-state=none>
         <nav class="md-header-nav md-grid">
             <div class=md-flex>
@@ -563,7 +563,7 @@
          
          
          <li class="md-nav__item md-nav__item--nested not-mobile-nav invisible">
-             <a class="md-nav__link pancakes-parent "
+             <a class="md-nav__link pancakes-parent open-parent"
                 id="pancakes-for-developers"
                 title="FOR DEVELOPERS">FOR DEVELOPERS</a>
                 
@@ -573,28 +573,28 @@
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/compiler"
-                           title="Turing Compiler Design" style="display:none;"
+                           title="Turing Compiler Design" 
                            
                            class="md-nav__link pancakes-child">Turing Compiler Design</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/interface"
-                           title="Interface Guide" style="display:none;"
+                           title="Interface Guide" 
                            
                            class="md-nav__link pancakes-child">Interface Guide</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/how_turing_implements_abstractmcmc"
-                           title="How Turing implements AbstractMCMC" style="display:none;"
-                           
+                           title="How Turing implements AbstractMCMC" 
+                            style="color: red;"
                            class="md-nav__link pancakes-child">How Turing implements AbstractMCMC</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/for-developers/variational_inference"
-                           title="Variational Inference" style="display:none;"
+                           title="Variational Inference" 
                            
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
@@ -605,7 +605,7 @@
          
          
          <li class="md-nav__item md-nav__item--nested not-mobile-nav invisible">
-             <a class="md-nav__link pancakes-parent open-parent"
+             <a class="md-nav__link pancakes-parent "
                 id="pancakes-tutorials"
                 title="TUTORIALS">TUTORIALS</a>
                 
@@ -615,84 +615,84 @@
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials"
-                           title="Home" 
+                           title="Home" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Home</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/0-introduction"
-                           title="Introduction to Turing" 
-                            style="color: red;"
+                           title="Introduction to Turing" style="display:none;"
+                           
                            class="md-nav__link pancakes-child">Introduction to Turing</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/1-gaussianmixturemodel"
-                           title="Gaussian Mixture Models" 
+                           title="Gaussian Mixture Models" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Gaussian Mixture Models</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/2-logisticregression"
-                           title="Bayesian Logistic Regression" 
+                           title="Bayesian Logistic Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Logistic Regression</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/3-bayesnn"
-                           title="Bayesian Neural Networks" 
+                           title="Bayesian Neural Networks" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Neural Networks</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/4-bayeshmm"
-                           title="Hidden Markov Models" 
+                           title="Hidden Markov Models" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Hidden Markov Models</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/5-linearregression"
-                           title="Linear Regression" 
+                           title="Linear Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Linear Regression</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/6-infinitemixturemodel"
-                           title="Infinite Mixture Models" 
+                           title="Infinite Mixture Models" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Infinite Mixture Models</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/7-poissonregression"
-                           title="Bayesian Poisson Regression" 
+                           title="Bayesian Poisson Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Poisson Regression</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/8-multinomiallogisticregression"
-                           title="Multinomial Logistic Regression" 
+                           title="Multinomial Logistic Regression" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Multinomial Logistic Regression</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/9-variationalinference"
-                           title="Variational Inference" 
+                           title="Variational Inference" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Variational Inference</a>
                         </li>
                         
                         <li class="md-nav__item">
                         <a href="/dev/tutorials/10-bayesiandiffeq"
-                           title="Bayesian Differential Equation" 
+                           title="Bayesian Differential Equation" style="display:none;"
                            
                            class="md-nav__link pancakes-child">Bayesian Differential Equation</a>
                         </li>
@@ -781,10 +781,10 @@
         <ul id="nav-toc" class="md-nav__list" data-md-scrollfix="">
         <!-- toc will be appended here!-->
         </ul>
-        <a href="https://twitter.com/intent/tweet?original_referer=https://github.com/TuringLang/Turing.jl/edit/master/docs/src_tutorials/0_Introduction.md" title="Tweet this page" class="social-link"><i class="fa fa-twitter fa-1x"></i>Tweet this page</a>
+        <a href="https://twitter.com/intent/tweet?original_referer=https://github.com/TuringLang/Turing.jl/edit/master/docs/src/for-developers/how_turing_implements_abstractmcmc.md" title="Tweet this page" class="social-link"><i class="fa fa-twitter fa-1x"></i>Tweet this page</a>
         <a href="https://discourse.julialang.org/c/domain/probprog" title="Ask questions" class="social-link"><i class="fa fa-stack-overflow fa-1x"></i>Ask questions</a>
-        <a href="https://github.com/TuringLang/Turing.jl//issues/new?label=question&title=Question:&body=Question%20on:%20https://github.com/TuringLang/Turing.jl/edit/master/docs/_tutorials/0_Introduction.md" title="Report issues" class="social-link"><i class="fa fa-comments fa-1x"></i>Report issues</a>
-        <a href="https://github.com/TuringLang/Turing.jl/edit/master/docs/src_tutorials/0_Introduction.md" title="Edit this page on github"  class="social-link"><i class="fa fa-github fa-1x"></i> Edit me</a>
+        <a href="https://github.com/TuringLang/Turing.jl//issues/new?label=question&title=Question:&body=Question%20on:%20https://github.com/TuringLang/Turing.jl/edit/master/docs/_docs/for-developers/how_turing_implements_abstractmcmc.md" title="Report issues" class="social-link"><i class="fa fa-comments fa-1x"></i>Report issues</a>
+        <a href="https://github.com/TuringLang/Turing.jl/edit/master/docs/src/for-developers/how_turing_implements_abstractmcmc.md" title="Edit this page on github"  class="social-link"><i class="fa fa-github fa-1x"></i> Edit me</a>
       </nav>
     </div>
   </div>
@@ -793,191 +793,320 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <h1 id="introduction-to-turing">Introduction to Turing</h1>
+    <p><a id="How-Turing-implements-AbstractMCMC"></a></p>
+
+<p><a id="How-Turing-implements-AbstractMCMC-1"></a></p>
+
+<h1 id="how-turing-implements-abstractmcmc">How Turing implements AbstractMCMC</h1>
+
+<p>Prerequisite: <a href="https://turing.ml/dev/docs/for-developers/interface">Interface guide</a>.</p>
+
+<p><a id="Introduction"></a></p>
+
+<p><a id="Introduction-1"></a></p>
 
 <h2 id="introduction">Introduction</h2>
 
-<p>This is the first of a series of tutorials on the universal probabilistic programming language <strong>Turing</strong>.</p>
+<p>Consider the following Turing, code block:</p>
 
-<p>Turing is a probabilistic programming system written entirely in Julia. It has an intuitive modelling syntax and supports a wide range of sampling-based inference algorithms. Most importantly, Turing inference is composable: it combines Markov chain sampling operations on subsets of model variables, e.g. using a combination of a Hamiltonian Monte Carlo (HMC) engine and a particle Gibbs (PG) engine. This composable inference engine allows the user to easily switch between black-box style inference methods such as HMC and customized inference methods.</p>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
+    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+<span class="k">end</span>
 
-<p>Familiarity with Julia is assumed through out this tutorial. If you are new to Julia, <a href="https://julialang.org/learning/">Learning Julia</a> is a good starting point.</p>
+<span class="n">mod</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
+<span class="n">alg</span> <span class="o">=</span> <span class="n">IS</span><span class="x">()</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
 
-<p>For users new to Bayesian machine learning, please consider more thorough introductions to the field, such as <a href="https://www.springer.com/us/book/9780387310732">Pattern Recognition and Machine Learning</a>. This tutorial tries to provide an intuition for Bayesian inference and gives a simple example on how to use Turing. Note that this is not a comprehensive introduction to Bayesian machine learning.</p>
-
-<h3 id="coin-flipping-without-turing">Coin Flipping Without Turing</h3>
-<p>The following example illustrates the effect of updating our beliefs with every piece of new evidence we observe. In particular, assume that we are unsure about the probability of heads in a coin flip. To get an intuitive understanding of what “updating our beliefs” is, we will visualize the probability of heads in a coin flip after each observed evidence.</p>
-
-<p>First, let’s load some of the packages we need to flip a coin (<code class="language-plaintext highlighter-rouge">Random</code>, <code class="language-plaintext highlighter-rouge">Distributions</code>) and show our results (<code class="language-plaintext highlighter-rouge">Plots</code>). You will note that Turing is not an import here — we do not need it for this example. If you are already familiar with posterior updates, you can proceed to the next step.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using Base modules.</span>
-<span class="k">using</span> <span class="n">Random</span>
-
-<span class="c"># Load a plotting library.</span>
-<span class="k">using</span> <span class="n">Plots</span>
-
-<span class="c"># Load the distributions library.</span>
-<span class="k">using</span> <span class="n">Distributions</span>
+<span class="n">chn</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">mod</span><span class="x">,</span> <span class="n">alg</span><span class="x">,</span> <span class="n">n_samples</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>Next, we configure our posterior update model. First, let’s set the true probability that any coin flip will turn up heads and set the number of coin flips we will show our model:</p>
+<p>The function <code class="language-plaintext highlighter-rouge">sample</code> is part of the AbstractMCMC interface. As explained in the <a href="https://turing.ml/dev/docs/for-developers/interface">interface guide</a>, building a a sampling method that can be used by <code class="language-plaintext highlighter-rouge">sample</code> consists in overloading the structs and functions in <code class="language-plaintext highlighter-rouge">AbstractMCMC</code>. The interface guide also gives a standalone example of their implementation, <a href=""><code class="language-plaintext highlighter-rouge">AdvancedMH.jl</code></a>.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set the true probability of heads in a coin.</span>
-<span class="n">p_true</span> <span class="o">=</span> <span class="mf">0.5</span>
+<p>Turing sampling methods (most of which are written <a href="https://github.com/TuringLang/Turing.jl/tree/master/src/inference">here</a>) also implement <code class="language-plaintext highlighter-rouge">AbstractMCMC</code>. Turing defines a particular architecture for <code class="language-plaintext highlighter-rouge">AbstractMCMC</code> implementations, that enables working with models defined by the <code class="language-plaintext highlighter-rouge">@model</code> macro, and uses DynamicPPL as a backend. The goal of this page is to describe this architecture, and how you would go about implementing your own sampling method in Turing, using Importance Sampling as an example. I don’t go into all the details: for instance, I don’t address selectors or parallelism.</p>
 
-<span class="c"># Iterate from having seen 0 observations to 100 observations.</span>
-<span class="n">Ns</span> <span class="o">=</span> <span class="mi">0</span><span class="o">:</span><span class="mi">100</span><span class="x">;</span>
+<p>First, we explain how Importance Sampling works in the abstract. Consider the model defined in the first code block. Mathematically, it can be written:</p>
+
+\[\begin{align}
+s &amp;\sim \text{InverseGamma}(2, 3) \\
+m &amp;\sim \text{Normal}(0, \sqrt{s}) \\
+x &amp;\sim \text{Normal}(m, \sqrt{s}) \\
+y &amp;\sim \text{Normal}(m, \sqrt{s})
+\end{align}\]
+
+<p>The <strong>latent</strong> variables are \(s\) and \(m\), the <strong>observed</strong> variables are \(x\) and \(y\). The model <strong>joint</strong> distribution \(p(s,m,x,y)\) decomposes into the <strong>prior</strong> \(p(s,m)\) and the <strong>likelihood</strong> \(p(x,y \mid s,m)\). Since \(x = 1.5\) and \(y = 2\) are observed, the goal is to infer the <strong>posterior</strong> distribution \(p(s,m \mid x,y)\).</p>
+
+<p>Importance Sampling produces independent samples \((s_i, m_i)\) from the prior distribution. It also outputs unnormalized weights \(w_i = \frac {p(x,y,s_i,m_i)} {p(s_i, m_i)} = p(x,y \mid s_i, m_i)\) such that the empirical distribution \(\frac 1 N \sum\limits_{i =1}^N \frac {w*i} {\sum\limits*{j=1}^N w_j} \delta*{(s\*i, m_i)}\) is a good approximation of the posterior.</p>
+
+<p><a id=".-Define-a-Sampler"></a></p>
+
+<p><a id=".-Define-a-Sampler-1"></a></p>
+
+<h2 id="1-define-a-sampler">1. Define a <code class="language-plaintext highlighter-rouge">Sampler</code></h2>
+
+<p>Recall the last line of the above code block:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chn</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">mod</span><span class="x">,</span> <span class="n">alg</span><span class="x">,</span> <span class="n">n_samples</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>We will now use the Bernoulli distribution to flip 100 coins, and collect the results in a variable called <code class="language-plaintext highlighter-rouge">data</code>:</p>
+<p>Here <code class="language-plaintext highlighter-rouge">sample</code> takes as arguments a <strong>model</strong> <code class="language-plaintext highlighter-rouge">mod</code>, an <strong>algorithm</strong> <code class="language-plaintext highlighter-rouge">alg</code>, and a <strong>number of samples</strong> <code class="language-plaintext highlighter-rouge">n_samples</code>, and returns an instance <code class="language-plaintext highlighter-rouge">chn</code> of <code class="language-plaintext highlighter-rouge">Chains</code> which can be analysed using the functions in <code class="language-plaintext highlighter-rouge">MCMCChains</code>.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Draw data from a Bernoulli distribution, i.e. draw heads or tails.</span>
-<span class="n">Random</span><span class="o">.</span><span class="n">seed!</span><span class="x">(</span><span class="mi">12</span><span class="x">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">Bernoulli</span><span class="x">(</span><span class="n">p_true</span><span class="x">),</span> <span class="n">last</span><span class="x">(</span><span class="n">Ns</span><span class="x">))</span>
+<p><a id="Models"></a></p>
 
-<span class="c"># Here's what the first five coin flips look like:</span>
-<span class="n">data</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="x">]</span>
+<p><a id="Models-1"></a></p>
+
+<h3 id="models">Models</h3>
+
+<p>To define a <strong>model</strong>, you declare a joint distribution on variables in the <code class="language-plaintext highlighter-rouge">@model</code> macro, and specify which variables are observed and which should be inferred, as well as the value of the observed variables. Thus, when implementing Importance Sampling,</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mod</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5-element Array{Bool,1}:
- 1
- 0
- 1
- 1
- 0
+<p>creates an instance <code class="language-plaintext highlighter-rouge">mod</code> of the struct <code class="language-plaintext highlighter-rouge">Model</code>, which corresponds to the observations of a value of <code class="language-plaintext highlighter-rouge">1.5</code> for <code class="language-plaintext highlighter-rouge">x</code>, and a value of <code class="language-plaintext highlighter-rouge">2</code> for <code class="language-plaintext highlighter-rouge">y</code>.</p>
+
+<p>This is all handled by DynamicPPL, more specifically <a href="https://github.com/TuringLang/DynamicPPL.jl/blob/master/src/model.jl">here</a>. I will return to how models are used to inform sampling algorithms <a href="#assumeobserve">below</a>.</p>
+
+<p><a id="Algorithms"></a></p>
+
+<p><a id="Algorithms-1"></a></p>
+
+<h3 id="algorithms">Algorithms</h3>
+
+<p>An <strong>algorithm</strong> is just a sampling method: in Turing, it is a subtype of the abstract type <code class="language-plaintext highlighter-rouge">InferenceAlgorithm</code>. Defining an algorithm may require specifying a few high-level parameters. For example, “Hamiltonian Monte-Carlo” may be too vague, but “Hamiltonian Monte Carlo with  10 leapfrog steps per proposal and a stepsize of 0.01” is an algorithm. “Metropolis-Hastings” may be too vague, but “Metropolis-Hastings with proposal distribution <code class="language-plaintext highlighter-rouge">p</code>” is an algorithm. \(\epsilon\)</p>
+
+<p>Thus</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stepsize</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">alg</span> <span class="o">=</span> <span class="n">HMC</span><span class="x">(</span><span class="n">stepsize</span><span class="x">,</span> <span class="n">L</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>After flipping all our coins, we want to set a prior belief about what we think the distribution of coin flips look like. In this case, we are going to choose a common prior distribution called the <a href="https://en.wikipedia.org/wiki/Beta_distribution">Beta</a> distribution.</p>
+<p>defines a Hamiltonian Monte-Carlo algorithm, an instance of <code class="language-plaintext highlighter-rouge">HMC</code>, which is a subtype of <code class="language-plaintext highlighter-rouge">InferenceAlgorithm</code>.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Our prior belief about the probability of heads in a coin toss.</span>
-<span class="n">prior_belief</span> <span class="o">=</span> <span class="n">Beta</span><span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">);</span>
+<p>In the case of Importance Sampling, there is no need to specify additional parameters:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">alg</span> <span class="o">=</span> <span class="n">IS</span><span class="x">()</span>
 </code></pre></div></div>
 
-<p>With our priors set and our data at hand, we can perform Bayesian inference.</p>
+<p>defines an Importance Sampling algorithm, an instance of <code class="language-plaintext highlighter-rouge">IS</code> which is a subtype of <code class="language-plaintext highlighter-rouge">InferenceAlgorithm</code>.</p>
 
-<p>This is a fairly simple process. We expose one additional coin flip to our model every iteration, such that the first run only sees the first coin flip, while the last iteration sees all the coin flips. Then, we set the <code class="language-plaintext highlighter-rouge">updated_belief</code> variable to an updated version of the original Beta distribution that accounts for the new proportion of heads and tails.</p>
+<p>When creating your own Turing sampling method, you must therefore build a subtype of <code class="language-plaintext highlighter-rouge">InferenceAlgorithm</code> corresponding to your method.</p>
 
-<p>For the mathematically inclined, the <code class="language-plaintext highlighter-rouge">Beta</code> distribution is updated by adding each coin flip to the distribution’s \(\alpha\) and \(\beta\) parameters, which are initially defined as \(\alpha = 1, \beta = 1\). Over time, with more and more coin flips, \(\alpha\) and \(\beta\) will be approximately equal to each other as we are equally likely to flip a heads or a tails, and the plot of the beta distribution will become more tightly centered around 0.5.</p>
+<p><a id="Samplers"></a></p>
 
-<p>This works because mean of the <code class="language-plaintext highlighter-rouge">Beta</code> distribution is defined as the following:</p>
+<p><a id="Samplers-1"></a></p>
 
-<p>$$ \text{E}[\text{Beta}] = \dfrac{\alpha}{\alpha+\beta} $$</p>
+<h3 id="samplers">Samplers</h3>
 
-<p>Which is 0.5 when \(\alpha = \beta\), as we expect for a large enough number of coin flips. As we increase the number of samples, our variance will also decrease, such that the distribution will reflect less uncertainty about the probability of receiving a heads. The definition of the variance for the <code class="language-plaintext highlighter-rouge">Beta</code> distribution is the following:</p>
+<p>Samplers are <strong>not</strong> the same as algorithms. An algorithm is a generic sampling method, a sampler is an object that stores information about how algorithm and model interact during sampling, and is modified as sampling progresses. The <code class="language-plaintext highlighter-rouge">Sampler</code> struct is defined in DynamicPPL.</p>
 
-<p>$$ \text{var}[\text{Beta}] = \dfrac{\alpha\beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)} $$</p>
+<p>Turing implements <code class="language-plaintext highlighter-rouge">AbstractMCMC</code>’s <code class="language-plaintext highlighter-rouge">AbstractSampler</code> with the <code class="language-plaintext highlighter-rouge">Sampler</code> struct defined in <code class="language-plaintext highlighter-rouge">DynamicPPL</code>. The most important attributes of an instance <code class="language-plaintext highlighter-rouge">spl</code> of <code class="language-plaintext highlighter-rouge">Sampler</code> are:</p>
 
-<p>The intuition about this definition is that the variance of the distribution will approach 0 with more and more samples, as the denominator will grow faster than will the numerator. More samples means less variance.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">spl.alg</code>: the sampling method used, an instance of a subtype of <code class="language-plaintext highlighter-rouge">InferenceAlgorithm</code></li>
+  <li><code class="language-plaintext highlighter-rouge">spl.state</code>: information about the sampling process, see <a href="#States">below</a></li>
+</ul>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import StatsPlots for animating purposes.</span>
-<span class="k">using</span> <span class="n">StatsPlots</span>
+<p>When you call <code class="language-plaintext highlighter-rouge">sample(mod, alg, n_samples)</code>, Turing first uses <code class="language-plaintext highlighter-rouge">model</code> and <code class="language-plaintext highlighter-rouge">alg</code> to build an instance <code class="language-plaintext highlighter-rouge">spl</code> of <code class="language-plaintext highlighter-rouge">Sampler</code> , then calls the native <code class="language-plaintext highlighter-rouge">AbstractMCMC</code> function <code class="language-plaintext highlighter-rouge">sample(mod, spl, n_samples)</code>.</p>
 
-<span class="c"># Make an animation.</span>
-<span class="n">animation</span> <span class="o">=</span> <span class="nd">@gif</span> <span class="k">for</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span> <span class="k">in</span> <span class="n">enumerate</span><span class="x">(</span><span class="n">Ns</span><span class="x">)</span>
+<p>When you define your own Turing sampling method, you must therefore build:</p>
 
-    <span class="c"># Count the number of heads and tails.</span>
-    <span class="n">heads</span> <span class="o">=</span> <span class="n">sum</span><span class="x">(</span><span class="n">data</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="x">])</span>
-    <span class="n">tails</span> <span class="o">=</span> <span class="n">N</span> <span class="o">-</span> <span class="n">heads</span>
-    
-    <span class="c"># Update our prior belief in closed form (this is possible because we use a conjugate prior).</span>
-    <span class="n">updated_belief</span> <span class="o">=</span> <span class="n">Beta</span><span class="x">(</span><span class="n">prior_belief</span><span class="o">.</span><span class="n">α</span> <span class="o">+</span> <span class="n">heads</span><span class="x">,</span> <span class="n">prior_belief</span><span class="o">.</span><span class="n">β</span> <span class="o">+</span> <span class="n">tails</span><span class="x">)</span>
+<ul>
+  <li>a <strong>sampler constructor</strong> that uses a model and an algorithm to initialize an instance of <code class="language-plaintext highlighter-rouge">Sampler</code>. For Importance Sampling:</li>
+</ul>
 
-    <span class="c"># Plotting</span>
-    <span class="n">plot</span><span class="x">(</span><span class="n">updated_belief</span><span class="x">,</span> 
-        <span class="n">size</span> <span class="o">=</span> <span class="x">(</span><span class="mi">500</span><span class="x">,</span> <span class="mi">250</span><span class="x">),</span> 
-        <span class="n">title</span> <span class="o">=</span> <span class="s">"Updated belief after </span><span class="si">$$</span><span class="s">N observations"</span><span class="x">,</span>
-        <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"probability of heads"</span><span class="x">,</span> 
-        <span class="n">ylabel</span> <span class="o">=</span> <span class="s">""</span><span class="x">,</span> 
-        <span class="n">legend</span> <span class="o">=</span> <span class="nb">nothing</span><span class="x">,</span>
-        <span class="n">xlim</span> <span class="o">=</span> <span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="mi">1</span><span class="x">),</span>
-        <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="x">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="x">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">3</span><span class="x">)</span>
-    <span class="n">vline!</span><span class="x">([</span><span class="n">p_true</span><span class="x">])</span>
-<span class="k">end</span><span class="x">;</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> Sampler</span><span class="x">(</span><span class="n">alg</span><span class="o">::</span><span class="n">IS</span><span class="x">,</span> <span class="n">model</span><span class="o">::</span><span class="n">Model</span><span class="x">,</span> <span class="n">s</span><span class="o">::</span><span class="n">Selector</span><span class="x">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="kt">Dict</span><span class="x">{</span><span class="kt">Symbol</span><span class="x">,</span> <span class="kt">Any</span><span class="x">}()</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">ISState</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
+    <span class="k">return</span> <span class="n">Sampler</span><span class="x">(</span><span class="n">alg</span><span class="x">,</span> <span class="n">info</span><span class="x">,</span> <span class="n">s</span><span class="x">,</span> <span class="n">state</span><span class="x">)</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌ Info: Saved animation to 
-│   fn = /home/cameron/code/TuringTutorials/tmp.gif
-└ @ Plots /home/cameron/.julia/packages/Plots/Xnzc7/src/animation.jl:104
+<ul>
+  <li>a <strong>state</strong> struct implementing <code class="language-plaintext highlighter-rouge">AbstractSamplerState</code> corresponding to your method: we cover this in the following paragraph.</li>
+</ul>
+
+<p><a id="a-style&quot;text-decoration:none&quot;-name&quot;States&quot;States/a"></a></p>
+
+<p><a id="a-style&quot;text-decoration:none&quot;-name&quot;States&quot;States/a-1"></a></p>
+
+<h3 id="states"><a style="text-decoration:none" name="States">States</a></h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">vi</code> field contains all the important information about sampling: first and foremost, the values of all the samples, but also the distributions from which they are sampled, the names of model parameters, and other metadata. As we will see below, many important steps during sampling correspond to queries or updates to <code class="language-plaintext highlighter-rouge">spl.state.vi</code>.</p>
+
+<p>By default, you can use <code class="language-plaintext highlighter-rouge">SamplerState</code>, a concrete type defined in <code class="language-plaintext highlighter-rouge">inference/Inference.jl</code>, which extends <code class="language-plaintext highlighter-rouge">AbstractSamplerState</code> and has no field except for <code class="language-plaintext highlighter-rouge">vi</code>:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">mutable struct</span><span class="nc"> SamplerState</span><span class="x">{</span><span class="n">VIType</span><span class="o">&lt;:</span><span class="n">VarInfo</span><span class="x">}</span> <span class="o">&lt;:</span> <span class="n">AbstractSamplerState</span>
+    <span class="n">vi</span> <span class="o">::</span> <span class="n">VIType</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
-<p><img src="https://user-images.githubusercontent.com/7974003/44995702-37c1b200-af9c-11e8-8b26-c88a528956af.gif" alt="animation" /></p>
+<p>When doing Importance Sampling, we care not only about the values of the samples but also their weights. We will see below that the weight of each sample is also added to <code class="language-plaintext highlighter-rouge">spl.state.vi</code>. Moreover, the average \(\frac 1 N \sum\limits_{j=1}^N w_i = \frac 1 N \sum\limits_{j=1}^N p(x,y \mid s_i, m_i)\) of the sample weights is a particularly important quantity:</p>
 
-<p>The animation above shows that with increasing evidence our belief about the probability of heads in a coin flip slowly adjusts towards the true value. The orange line in the animation represents the true probability of seeing heads on a single coin flip, while the mode of the distribution shows what the model believes the probability of a heads is given the evidence it has seen.</p>
+<ul>
+  <li>it is used to <strong>normalize</strong> the <strong>empirical approximation</strong> of the posterior distribution</li>
+  <li>its logarithm is the importance sampling <strong>estimate</strong> of the <strong>log evidence</strong> \(\log p(x, y)\)</li>
+</ul>
 
-<h3 id="coin-flipping-with-turing">Coin Flipping With Turing</h3>
+<p>To avoid having to compute it over and over again, <code class="language-plaintext highlighter-rouge">is.jl</code>defines an IS-specific concrete type <code class="language-plaintext highlighter-rouge">ISState</code> for sampler states, with an additional field <code class="language-plaintext highlighter-rouge">final_logevidence</code> containing \(\log \left( \frac 1 N \sum\limits_{j=1}^N w_i \right)\).</p>
 
-<p>In the previous example, we used the fact that our prior distribution is a <a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a>. Note that a closed-form expression (the <code class="language-plaintext highlighter-rouge">updated_belief</code> expression) for the posterior is not accessible in general and usually does not exist for more interesting models.</p>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">mutable struct</span><span class="nc"> ISState</span><span class="x">{</span><span class="n">V</span><span class="o">&lt;:</span><span class="n">VarInfo</span><span class="x">,</span> <span class="n">F</span><span class="o">&lt;:</span><span class="kt">AbstractFloat</span><span class="x">}</span> <span class="o">&lt;:</span> <span class="n">AbstractSamplerState</span>
+    <span class="n">vi</span>                 <span class="o">::</span>  <span class="n">V</span>
+    <span class="n">final_logevidence</span>  <span class="o">::</span>  <span class="n">F</span>
+<span class="k">end</span>
 
-<p>We are now going to move away from the closed-form expression above and specify the same model using <strong>Turing</strong>. To do so, we will first need to import <code class="language-plaintext highlighter-rouge">Turing</code>, <code class="language-plaintext highlighter-rouge">MCMCChains</code>, <code class="language-plaintext highlighter-rouge">Distributions</code>, and <code class="language-plaintext highlighter-rouge">StatPlots</code>. <code class="language-plaintext highlighter-rouge">MCMCChains</code> is a library built by the Turing team to help summarize Markov Chain Monte Carlo (MCMC) simulations, as well as a variety of utility functions for diagnostics and visualizations.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Load Turing and MCMCChains.</span>
-<span class="k">using</span> <span class="n">Turing</span><span class="x">,</span> <span class="n">MCMCChains</span>
-
-<span class="c"># Load the distributions library.</span>
-<span class="k">using</span> <span class="n">Distributions</span>
-
-<span class="c"># Load StatsPlots for density plots.</span>
-<span class="k">using</span> <span class="n">StatsPlots</span>
+<span class="c"># additional constructor</span>
+<span class="n">ISState</span><span class="x">(</span><span class="n">model</span><span class="o">::</span><span class="n">Model</span><span class="x">)</span> <span class="o">=</span> <span class="n">ISState</span><span class="x">(</span><span class="n">VarInfo</span><span class="x">(</span><span class="n">model</span><span class="x">),</span> <span class="mf">0.0</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>First, we define the coin-flip model using Turing.</p>
+<p>The following diagram summarizes the hierarchy presented above.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">coinflip</span><span class="x">(</span><span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-    
-    <span class="c"># Our prior belief about the probability of heads in a coin.</span>
-    <span class="n">p</span> <span class="o">~</span><span class="err"> </span><span class="n">Beta</span><span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">)</span>
-    
-    <span class="c"># The number of observations.</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">y</span><span class="x">)</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">N</span>
-        <span class="c"># Heads or tails of a coin are drawn from a Bernoulli distribution.</span>
-        <span class="n">y</span><span class="x">[</span><span class="n">n</span><span class="x">]</span> <span class="o">~</span> <span class="n">Bernoulli</span><span class="x">(</span><span class="n">p</span><span class="x">)</span>
-    <span class="k">end</span>
-<span class="k">end</span><span class="x">;</span>
+<p><img src="how_turing_implements_abstractmcmc_files/hierarchy.png" alt="hierarchy" /></p>
+
+<p><a id=".-Overload-the-functions-used-inside-mcmcsample"></a></p>
+
+<p><a id=".-Overload-the-functions-used-inside-mcmcsample-1"></a></p>
+
+<h2 id="2-overload-the-functions-used-inside-mcmcsample">2. Overload the functions used inside <code class="language-plaintext highlighter-rouge">mcmcsample</code></h2>
+
+<p>A lot of the things here are method-specific. However Turing also has some functions that make it easier for you to implement these functions, for examples .</p>
+
+<p><a id="Transitions"></a></p>
+
+<p><a id="Transitions-1"></a></p>
+
+<h3 id="transitions">Transitions</h3>
+
+<p><code class="language-plaintext highlighter-rouge">AbstractMCMC</code> stores information corresponding to each individual sample in objects called <code class="language-plaintext highlighter-rouge">transition</code>, but does not specify what the structure of these objects could be. You could decide to implement a type <code class="language-plaintext highlighter-rouge">MyTransition</code> for transitions corresponding to the specifics of your methods. However, there are many situations in which the only information you need for each sample is:</p>
+
+<ul>
+  <li>its value: \(\theta\)</li>
+  <li>log of the joint probability of the observed data and this sample: <code class="language-plaintext highlighter-rouge">lp</code></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">Inference.jl</code> <a href="https://github.com/TuringLang/Turing.jl/blob/master/src/inference/Inference.jl#L103">defines</a> a struct <code class="language-plaintext highlighter-rouge">Transition</code>, which corresponds to this default situation</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span><span class="nc"> Transition</span><span class="x">{</span><span class="n">T</span><span class="x">,</span> <span class="n">F</span><span class="o">&lt;:</span><span class="kt">AbstractFloat</span><span class="x">}</span>
+    <span class="n">θ</span>  <span class="o">::</span> <span class="n">T</span>
+    <span class="n">lp</span> <span class="o">::</span> <span class="n">F</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
-<p>After defining the model, we can approximate the posterior distribution by drawing samples from the distribution. In this example, we use a <a href="https://en.wikipedia.org/wiki/Hamiltonian_Monte_Carlo">Hamiltonian Monte Carlo</a> sampler to draw these samples. Later tutorials will give more information on the samplers available in Turing and discuss their use for different models.</p>
+<p>It also <a href="https://github.com/TuringLang/Turing.jl/blob/master/src/inference/Inference.jl#L108">contains</a> a constructor that builds an instance of <code class="language-plaintext highlighter-rouge">Transition</code> from an instance <code class="language-plaintext highlighter-rouge">spl</code> of <code class="language-plaintext highlighter-rouge">Sampler</code>: \(\theta\) is <code class="language-plaintext highlighter-rouge">spl.state.vi</code> converted to a <code class="language-plaintext highlighter-rouge">namedtuple</code>, and <code class="language-plaintext highlighter-rouge">lp</code> is <code class="language-plaintext highlighter-rouge">getlogp(spl.state.vi)</code>. <code class="language-plaintext highlighter-rouge">is.jl</code> uses this default constructor at the end of the <code class="language-plaintext highlighter-rouge">step!</code> function <a href="https://github.com/TuringLang/Turing.jl/blob/master/src/inference/is.jl#L58">here</a>.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Settings of the Hamiltonian Monte Carlo (HMC) sampler.</span>
-<span class="n">iterations</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">τ</span> <span class="o">=</span> <span class="mi">10</span>
+<p><a id="How-sample-works"></a></p>
 
-<span class="c"># Start sampling.</span>
-<span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">coinflip</span><span class="x">(</span><span class="n">data</span><span class="x">),</span> <span class="n">HMC</span><span class="x">(</span><span class="n">ϵ</span><span class="x">,</span> <span class="n">τ</span><span class="x">),</span> <span class="n">iterations</span><span class="x">,</span> <span class="n">progress</span><span class="o">=</span><span class="nb">false</span><span class="x">);</span>
+<p><a id="How-sample-works-1"></a></p>
+
+<h3 id="how-sample-works">How <code class="language-plaintext highlighter-rouge">sample</code> works</h3>
+
+<p>A crude summary, which ignores things like parallelism, is the following:</p>
+
+<p><code class="language-plaintext highlighter-rouge">sample</code> calls <code class="language-plaintext highlighter-rouge">mcmcsample</code>, which calls</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sample_init!</code> to set things up</li>
+  <li><code class="language-plaintext highlighter-rouge">step!</code> repeatedly to produce multiple new transitions</li>
+  <li><code class="language-plaintext highlighter-rouge">sample_end!</code> to perform operations once all samples have been obtained</li>
+  <li><code class="language-plaintext highlighter-rouge">bundle_samples</code> to convert a vector of transitions into a more palatable type, for instance a <code class="language-plaintext highlighter-rouge">Chain</code>.</li>
+</ul>
+
+<p>You can of course implement all of these functions, but <code class="language-plaintext highlighter-rouge">AbstractMCMC</code> as well as Turing also provide default implementations for simple cases. For instance, importance sampling uses the default implementations of <code class="language-plaintext highlighter-rouge">sample_init!</code> and <code class="language-plaintext highlighter-rouge">bundle_samples</code>, which is why you don’t see code for them inside <code class="language-plaintext highlighter-rouge">is.jl</code>.</p>
+
+<p><a id="a-style&quot;text-decoration:none&quot;-name&quot;assumeobserve&quot;3.-Overload-assume-and-observe/a"></a></p>
+
+<p><a id="a-style&quot;text-decoration:none&quot;-name&quot;assumeobserve&quot;3.-Overload-assume-and-observe/a-1"></a></p>
+
+<h2 id="3-overload-assume-and-observe"><a style="text-decoration:none" name="assumeobserve">3. Overload <code class="language-plaintext highlighter-rouge">assume</code> and <code class="language-plaintext highlighter-rouge">observe</code></a></h2>
+
+<p>The functions mentioned above, such as <code class="language-plaintext highlighter-rouge">sample_init!</code>, <code class="language-plaintext highlighter-rouge">step!</code>, etc.,  must of course use information about the model in order to generate samples! In particular, these functions may need <strong>samples from distributions</strong> defined in the model, or to <strong>evaluate the density of these distributions</strong> at some values of the corresponding parameters or observations.</p>
+
+<p>For an example of the former, consider <strong>Importance Sampling</strong> as defined in <code class="language-plaintext highlighter-rouge">is.jl</code>. This implementation of Importance Sampling uses the model prior distribution as a proposal distribution, and therefore requires <strong>samples from the prior distribution</strong> of the model. Another example is <strong>Approximate Bayesian Computation</strong>, which requires multiple <strong>samples from the model prior and likelihood distributions</strong> in order to generate a single sample.</p>
+
+<p>An example of the latter is the <strong>Metropolis-Hastings</strong> algorithm. At every step of sampling from a target posterior \(p(\theta \mid x_{\text{obs}})\), in order to compute the acceptance ratio, you need to <strong>evaluate the model joint density</strong> \(p(\theta_{\text{prop}}, x_{\text{obs}})\) with \(\theta_{\text{prop}}\) a sample from the proposal and \(x_{\text{obs}}\) the observed data.</p>
+
+<p>This begs the question: how can these functions access model information during sampling? Recall that the model is stored as an instance <code class="language-plaintext highlighter-rouge">m</code> of <code class="language-plaintext highlighter-rouge">Model</code>. One of the attributes of <code class="language-plaintext highlighter-rouge">m</code> is the model evaluation function <code class="language-plaintext highlighter-rouge">m.f</code>, which is built by compiling the <code class="language-plaintext highlighter-rouge">@model</code> macro. Executing <code class="language-plaintext highlighter-rouge">f</code> runs the tilde statements of the model in order, and adds model information to the sampler (the instance of <code class="language-plaintext highlighter-rouge">Sampler</code> that stores information about the ongoing sampling process) at each step (see <a href="https://turing.ml/dev/docs/for-developers/compiler">here</a> for more information about how the <code class="language-plaintext highlighter-rouge">@model</code> macro is compiled). The DynamicPPL functions <code class="language-plaintext highlighter-rouge">assume</code> and <code class="language-plaintext highlighter-rouge">observe</code> determine what kind of information to add to the sampler for every tilde statement.</p>
+
+<p>Consider an instance <code class="language-plaintext highlighter-rouge">m</code> of <code class="language-plaintext highlighter-rouge">Model</code> and a sampler <code class="language-plaintext highlighter-rouge">spl</code>, with associated <code class="language-plaintext highlighter-rouge">VarInfo</code> <code class="language-plaintext highlighter-rouge">vi = spl.state.vi</code>. At some point during the sampling process, an AbstractMCMC function such as <code class="language-plaintext highlighter-rouge">step!</code> calls  <code class="language-plaintext highlighter-rouge">m(vi, ...)</code>, which calls the model evaluation function <code class="language-plaintext highlighter-rouge">m.f(vi, ...)</code>.</p>
+
+<ul>
+  <li>
+    <p>for every tilde statement in the <code class="language-plaintext highlighter-rouge">@model</code> macro, <code class="language-plaintext highlighter-rouge">m.f(vi, ...)</code> returns model-related information (samples, value of the model density, etc.), and adds it to <code class="language-plaintext highlighter-rouge">vi</code>. How does it do that?</p>
+
+    <ul>
+      <li>recall that the code for <code class="language-plaintext highlighter-rouge">m.f(vi, ...)</code> is automatically generated by compilation of the <code class="language-plaintext highlighter-rouge">@model</code> macro</li>
+      <li>for every tilde statement in the <code class="language-plaintext highlighter-rouge">@model</code> declaration, this code contains a call to <code class="language-plaintext highlighter-rouge">assume(vi, ...)</code> if the variable on the LHS of the tilde is a <strong>model parameter to infer</strong>, and <code class="language-plaintext highlighter-rouge">observe(vi, ...)</code> if the variable on the LHS of the tilde is an <strong>observation</strong></li>
+      <li>in the file corresponding to your sampling method (ie in <code class="language-plaintext highlighter-rouge">Turing.jl/src/inference/&lt;your_method&gt;.jl</code>), you have <strong>overloaded</strong> <code class="language-plaintext highlighter-rouge">assume</code> and <code class="language-plaintext highlighter-rouge">observe</code>, so that they can modify <code class="language-plaintext highlighter-rouge">vi</code> to include the information and samples that you care about!</li>
+      <li>at a minimum, <code class="language-plaintext highlighter-rouge">assume</code> and <code class="language-plaintext highlighter-rouge">observe</code> return the log density <code class="language-plaintext highlighter-rouge">lp</code> of the sample or observation. the model evaluation function then immediately calls <code class="language-plaintext highlighter-rouge">acclogp!(vi, lp)</code>, which adds <code class="language-plaintext highlighter-rouge">lp</code> to the value of the log joint density stored in <code class="language-plaintext highlighter-rouge">vi</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Here’s what <code class="language-plaintext highlighter-rouge">assume</code> looks like for Importance Sampling:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> DynamicPPL.assume</span><span class="x">(</span><span class="n">rng</span><span class="x">,</span> <span class="n">spl</span><span class="o">::</span><span class="n">Sampler</span><span class="x">{</span><span class="o">&lt;:</span><span class="n">IS</span><span class="x">},</span> <span class="n">dist</span><span class="o">::</span><span class="n">Distribution</span><span class="x">,</span> <span class="n">vn</span><span class="o">::</span><span class="n">VarName</span><span class="x">,</span> <span class="n">vi</span><span class="x">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">rand</span><span class="x">(</span><span class="n">rng</span><span class="x">,</span> <span class="n">dist</span><span class="x">)</span>
+    <span class="n">push!</span><span class="x">(</span><span class="n">vi</span><span class="x">,</span> <span class="n">vn</span><span class="x">,</span> <span class="n">r</span><span class="x">,</span> <span class="n">dist</span><span class="x">,</span> <span class="n">spl</span><span class="x">)</span>
+    <span class="k">return</span> <span class="n">r</span><span class="x">,</span> <span class="mi">0</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
-<p>After finishing the sampling process, we can visualize the posterior distribution approximated using Turing against the posterior distribution in closed-form. We can extract the chain data from the sampler using the <code class="language-plaintext highlighter-rouge">Chains(chain[:p])</code> function, exported from the <code class="language-plaintext highlighter-rouge">MCMCChain</code> module. <code class="language-plaintext highlighter-rouge">Chains(chain[:p])</code> creates an instance of the <code class="language-plaintext highlighter-rouge">Chain</code> type which summarizes the MCMC simulation — the <code class="language-plaintext highlighter-rouge">MCMCChain</code> module supports numerous tools for plotting, summarizing, and describing variables of type <code class="language-plaintext highlighter-rouge">Chain</code>.</p>
+<p>The function first generates a sample <code class="language-plaintext highlighter-rouge">r</code> from the distribution <code class="language-plaintext highlighter-rouge">dist</code> (the right hand side of the tilde statement). It then adds <code class="language-plaintext highlighter-rouge">r</code> to <code class="language-plaintext highlighter-rouge">vi</code>, and returns <code class="language-plaintext highlighter-rouge">r</code> and 0.</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Construct summary of the sampling process for the parameter p, i.e. the probability of heads in a coin.</span>
-<span class="n">p_summary</span> <span class="o">=</span> <span class="n">chain</span><span class="x">[</span><span class="o">:</span><span class="n">p</span><span class="x">]</span>
-<span class="n">plot</span><span class="x">(</span><span class="n">p_summary</span><span class="x">,</span> <span class="n">seriestype</span> <span class="o">=</span> <span class="o">:</span><span class="n">histogram</span><span class="x">)</span>
+<p>The <code class="language-plaintext highlighter-rouge">observe</code> function is even simpler:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> DynamicPPL.observe</span><span class="x">(</span><span class="n">spl</span><span class="o">::</span><span class="n">Sampler</span><span class="x">{</span><span class="o">&lt;:</span><span class="n">IS</span><span class="x">},</span> <span class="n">dist</span><span class="o">::</span><span class="n">Distribution</span><span class="x">,</span> <span class="n">value</span><span class="x">,</span> <span class="n">vi</span><span class="x">)</span>
+    <span class="k">return</span> <span class="n">logpdf</span><span class="x">(</span><span class="n">dist</span><span class="x">,</span> <span class="n">value</span><span class="x">)</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
-<p><img src="../0_Introduction_files/0_Introduction_21_0.svg" alt="svg" /></p>
+<p>It simply returns the density (in the discrete case, the probability) of the observed value under the distribution <code class="language-plaintext highlighter-rouge">dist</code>.</p>
 
-<p>Now we can build our plot:</p>
+<p><a id=".-Summary:-Importance-Sampling-step-by-step"></a></p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compute the posterior distribution in closed-form.</span>
-<span class="n">N</span> <span class="o">=</span> <span class="n">length</span><span class="x">(</span><span class="n">data</span><span class="x">)</span>
-<span class="n">heads</span> <span class="o">=</span> <span class="n">sum</span><span class="x">(</span><span class="n">data</span><span class="x">)</span>
-<span class="n">updated_belief</span> <span class="o">=</span> <span class="n">Beta</span><span class="x">(</span><span class="n">prior_belief</span><span class="o">.</span><span class="n">α</span> <span class="o">+</span> <span class="n">heads</span><span class="x">,</span> <span class="n">prior_belief</span><span class="o">.</span><span class="n">β</span> <span class="o">+</span> <span class="n">N</span> <span class="o">-</span> <span class="n">heads</span><span class="x">)</span>
+<p><a id=".-Summary:-Importance-Sampling-step-by-step-1"></a></p>
 
-<span class="c"># Visualize a blue density plot of the approximate posterior distribution using HMC (see Chain 1 in the legend).</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">plot</span><span class="x">(</span><span class="n">p_summary</span><span class="x">,</span> <span class="n">seriestype</span> <span class="o">=</span> <span class="o">:</span><span class="n">density</span><span class="x">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="mi">1</span><span class="x">),</span> <span class="n">legend</span> <span class="o">=</span> <span class="o">:</span><span class="n">best</span><span class="x">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">2</span><span class="x">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">blue</span><span class="x">)</span>
+<h2 id="4-summary-importance-sampling-step-by-step">4. Summary: Importance Sampling step by step</h2>
 
-<span class="c"># Visualize a green density plot of posterior distribution in closed-form.</span>
-<span class="n">plot!</span><span class="x">(</span><span class="n">p</span><span class="x">,</span> <span class="n">range</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="mi">1</span><span class="x">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">100</span><span class="x">),</span> <span class="n">pdf</span><span class="o">.</span><span class="x">(</span><span class="kt">Ref</span><span class="x">(</span><span class="n">updated_belief</span><span class="x">),</span> <span class="n">range</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="mi">1</span><span class="x">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">100</span><span class="x">)),</span> 
-        <span class="n">xlabel</span> <span class="o">=</span> <span class="s">"probability of heads"</span><span class="x">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s">""</span><span class="x">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s">""</span><span class="x">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="mi">1</span><span class="x">),</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Closed-form"</span><span class="x">,</span>
-        <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="x">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.3</span><span class="x">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">3</span><span class="x">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">lightgreen</span><span class="x">)</span>
+<p>We focus on the AbstractMCMC functions that are overriden in <code class="language-plaintext highlighter-rouge">is.jl</code> and executed inside <code class="language-plaintext highlighter-rouge">mcmcsample</code>: <code class="language-plaintext highlighter-rouge">step!</code>, which is called <code class="language-plaintext highlighter-rouge">n_samples</code> times, and <code class="language-plaintext highlighter-rouge">sample_end!</code>, which is executed once after those <code class="language-plaintext highlighter-rouge">n_samples</code> iterations.</p>
 
-<span class="c"># Visualize the true probability of heads in red.</span>
-<span class="n">vline!</span><span class="x">(</span><span class="n">p</span><span class="x">,</span> <span class="x">[</span><span class="n">p_true</span><span class="x">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"True probability"</span><span class="x">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">:</span><span class="n">red</span><span class="x">)</span>
-</code></pre></div></div>
+<ul>
+  <li>
+    <p>During the \(i\)-th iteration, <code class="language-plaintext highlighter-rouge">step!</code> does 3 things:</p>
 
-<p><img src="../0_Introduction_files/0_Introduction_23_0.svg" alt="svg" /></p>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">empty!(spl.state.vi)</code>: remove information about the previous sample from the sampler’s <code class="language-plaintext highlighter-rouge">VarInfo</code></li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">model(rng, spl.state.vi, spl)</code>: call the model evaluation function</p>
 
-<p>As we can see, the Turing model closely approximates the true probability. Hopefully this tutorial has provided an easy-to-follow, yet informative introduction to Turing’s simpler applications. More advanced usage will be demonstrated in later tutorials.</p>
+        <ul>
+          <li>calls to <code class="language-plaintext highlighter-rouge">assume</code> add the samples from the prior \(s_i\) and \(m_i\) to <code class="language-plaintext highlighter-rouge">spl.state.vi</code></li>
+          <li>calls to both <code class="language-plaintext highlighter-rouge">assume</code> or <code class="language-plaintext highlighter-rouge">observe</code> are followed by the line <code class="language-plaintext highlighter-rouge">acclogp!(vi, lp)</code>, where <code class="language-plaintext highlighter-rouge">lp</code> is an output of <code class="language-plaintext highlighter-rouge">assume</code> and <code class="language-plaintext highlighter-rouge">observe</code></li>
+          <li><code class="language-plaintext highlighter-rouge">lp</code> is set to 0 after <code class="language-plaintext highlighter-rouge">assume</code>, and to the value of the density at the observation after <code class="language-plaintext highlighter-rouge">observe</code></li>
+          <li>when all the tilde statements have been covered, <code class="language-plaintext highlighter-rouge">spl.state.vi.logp[]</code> is the sum of the <code class="language-plaintext highlighter-rouge">lp</code>, ie the likelihood \(\log p(x, y \mid s_i, m_i) = \log p(x \mid s_i, m_i) + \log p(y \mid s_i, m_i)\) of the observations given the latent variable samples \(s_i\) and \(m_i\).</li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">return Transition(spl)</code>: build a transition from the sampler, and return that transition</p>
+
+        <ul>
+          <li>the transition’s <code class="language-plaintext highlighter-rouge">vi</code> field is simply <code class="language-plaintext highlighter-rouge">spl.state.vi</code></li>
+          <li>the <code class="language-plaintext highlighter-rouge">lp</code> field contains the likelihood <code class="language-plaintext highlighter-rouge">spl.state.vi.logp[]</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>When the, <code class="language-plaintext highlighter-rouge">n_samples</code> iterations are completed, <code class="language-plaintext highlighter-rouge">sample_end!</code> fills the <code class="language-plaintext highlighter-rouge">final_logevidence</code> field of <code class="language-plaintext highlighter-rouge">spl.state</code></p>
+
+    <ul>
+      <li>it simply takes the logarithm of the average of the sample weights, using the log weights for numerical stability</li>
+    </ul>
+  </li>
+</ul>
+
 
     
 <script
@@ -1075,7 +1204,7 @@ $(document).ready(function() {
 
     <script src="/dev/assets/js/application.js"></script>
     
-    <script>console.log('3')</script>
+    <script>console.log('4')</script>
     <script>app.initialize({version:"0.17.4", url:{base:'/dev'}})</script>
 
     
