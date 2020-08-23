@@ -309,9 +309,9 @@ version = "0.4.2"
 
 [[MCMCChains]]
 deps = ["AbstractFFTs", "AbstractMCMC", "AxisArrays", "Compat", "Distributions", "Formatting", "IteratorInterfaceExtensions", "LinearAlgebra", "NaturalSort", "PrettyTables", "Random", "RecipesBase", "Requires", "Serialization", "SpecialFunctions", "Statistics", "StatsBase", "TableTraits", "Tables"]
-git-tree-sha1 = "9abd185d653cab183cd1b513e3573032e7120b47"
+git-tree-sha1 = "f0d37ce735ede7cf72885a00a18342e39cdb24de"
 uuid = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
-version = "4.0.3"
+version = "4.0.4"
 
 [[MacroTools]]
 deps = ["Markdown", "Random"]
