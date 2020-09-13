@@ -804,19 +804,23 @@
   <li><a href="/dev/docs/library/bijectors/#Bijectors.AbstractBijector"><code class="language-plaintext highlighter-rouge">Bijectors.AbstractBijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Bijector"><code class="language-plaintext highlighter-rouge">Bijectors.Bijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Composed"><code class="language-plaintext highlighter-rouge">Bijectors.Composed</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.CorrBijector"><code class="language-plaintext highlighter-rouge">Bijectors.CorrBijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Inverse"><code class="language-plaintext highlighter-rouge">Bijectors.Inverse</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Permute"><code class="language-plaintext highlighter-rouge">Bijectors.Permute</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Stacked"><code class="language-plaintext highlighter-rouge">Bijectors.Stacked</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors._link_chol_lkj-Tuple{Any}"><code class="language-plaintext highlighter-rouge">Bijectors._link_chol_lkj</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}"><code class="language-plaintext highlighter-rouge">Bijectors.bijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.composel-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N"><code class="language-plaintext highlighter-rouge">Bijectors.composel</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.composer-Union{Tuple{Vararg{Bijector{N},N1} where N1}, Tuple{N}} where N"><code class="language-plaintext highlighter-rouge">Bijectors.composer</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.compute_r-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.compute_r</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.find_alpha-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.find_alpha</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.isclosedform-Tuple{Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.isclosedform</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{Inverse{var&quot;#s23&quot;,N} where N where var&quot;#s23&quot;&lt;:Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{ADBijector,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{Inverse{var&quot;#s23&quot;,N} where N where var&quot;#s23&quot;&lt;:Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijectors.TransformedDistribution{var&quot;#s108&quot;,var&quot;#s107&quot;,Univariate} where var&quot;#s107&quot;&lt;:Bijector where var&quot;#s108&quot;&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logpdf_with_jac-Tuple{Bijectors.TransformedDistribution{var&quot;#s108&quot;,var&quot;#s107&quot;,Univariate} where var&quot;#s107&quot;&lt;:Bijector where var&quot;#s108&quot;&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logpdf_with_jac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.transformed-Tuple{Distribution,Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.transformed</code></a></li>
 </ul>
@@ -826,6 +830,41 @@
 <p><a id="Functions-1"></a></p>
 
 <h2 id="functions">Functions</h2>
+
+<p><a id="Bijectors._link_chol_lkj-Tuple{Any}" href="#Bijectors._link_chol_lkj-Tuple{Any}">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors._link_chol_lkj</code></strong> — <em>Method</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> _link_chol_lkj</span><span class="x">(</span><span class="n">w</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Link function for cholesky factor.</p>
+
+<p>An alternative and maybe more efficient implementation was considered:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for i=2:K, j=(i+1):K
+    z[i, j] = (w[i, j] / w[i-1, j]) * (z[i-1, j] / sqrt(1 - z[i-1, j]^2))
+end
+</code></pre></div></div>
+
+<p>But this implementation will not work when w[i-1, j] = 0. Though it is a zero measure set, unit matrix initialization will not work.</p>
+
+<p>For equivelence, following explanations is given by @torfjelde:</p>
+
+<p>For <code class="language-plaintext highlighter-rouge">(i, j)</code> in the loop below, we define</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>z₍ᵢ₋₁, ⱼ₎ = w₍ᵢ₋₁,ⱼ₎ * ∏ₖ₌₁ⁱ⁻² (1 / √(1 - z₍ₖ,ⱼ₎²))
+</code></pre></div></div>
+
+<p>and so</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>z₍ᵢ,ⱼ₎ = w₍ᵢ,ⱼ₎ * ∏ₖ₌₁ⁱ⁻¹ (1 / √(1 - z₍ₖ,ⱼ₎²))
+        = (w₍ᵢ,ⱼ₎ * / √(1 - z₍ᵢ₋₁,ⱼ₎²)) * (∏ₖ₌₁ⁱ⁻² 1 / √(1 - z₍ₖ,ⱼ₎²))
+        = (w₍ᵢ,ⱼ₎ * / √(1 - z₍ᵢ₋₁,ⱼ₎²)) * (w₍ᵢ₋₁,ⱼ₎ * ∏ₖ₌₁ⁱ⁻² 1 / √(1 - z₍ₖ,ⱼ₎²)) / w₍ᵢ₋₁,ⱼ₎
+        = (w₍ᵢ,ⱼ₎ * / √(1 - z₍ᵢ₋₁,ⱼ₎²)) * (z₍ᵢ₋₁,ⱼ₎ / w₍ᵢ₋₁,ⱼ₎)
+        = (w₍ᵢ,ⱼ₎ / w₍ᵢ₋₁,ⱼ₎) * (z₍ᵢ₋₁,ⱼ₎ / √(1 - z₍ᵢ₋₁,ⱼ₎²))
+</code></pre></div></div>
+
+<p>which is the above implementation.</p>
 
 <p><a id="Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}" href="#Bijectors.bijector-Tuple{Distribution{Univariate,Discrete}}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.bijector</code></strong> — <em>Method</em>.</p>
@@ -850,6 +889,44 @@
 </code></pre></div></div>
 
 <p>Constructs <code class="language-plaintext highlighter-rouge">Composed</code> such that <code class="language-plaintext highlighter-rouge">ts</code> are applied right-to-left.</p>
+
+<p><a id="Bijectors.compute_r-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any}" href="#Bijectors.compute_r-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any}">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.compute_r</code></strong> — <em>Method</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compute_r</span><span class="x">(</span><span class="n">y_minus_z0</span><span class="o">::</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">},</span> <span class="n">α</span><span class="x">,</span> <span class="n">α_plus_β_hat</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Compute the unique solution $r$ to the equation</p>
+
+\[\|y_minus_z0\|_2 = r \left(1 + \frac{α_plus_β_hat - α}{α + r}\right)\]
+
+<p>subject to $r ≥ 0$ and $r ≠ α$.</p>
+
+<p>Since $α &gt; 0$ and $α_plus_β_hat &gt; 0$, the solution is unique and given by</p>
+
+\[r = (\sqrt{(α_plus_β_hat - γ)^2 + 4 α γ} - (α_plus_β_hat - γ)) / 2,\]
+
+<p>where $γ = |y_minus_z0|_2$. For details see appendix A.2 of the reference.</p>
+
+<p><strong>References</strong></p>
+
+<p>D. Rezende, S. Mohamed (2015): Variational Inference with Normalizing Flows. arXiv:1505.05770</p>
+
+<p><a id="Bijectors.find_alpha-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any,Any}" href="#Bijectors.find_alpha-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any,Any}">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.find_alpha</code></strong> — <em>Method</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">find_alpha</span><span class="x">(</span><span class="n">y</span><span class="o">::</span><span class="kt">AbstractVector</span><span class="x">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="x">},</span> <span class="n">wt_y</span><span class="x">,</span> <span class="n">wt_u_hat</span><span class="x">,</span> <span class="n">b</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Compute an (approximate) real-valued solution $α$ to the equation</p>
+
+\[wt_y = α + wt_u_hat tanh(α + b)\]
+
+<p>The uniqueness of the solution is guaranteed since $wt_u_hat ≥ -1$. For details see appendix A.1 of the reference.</p>
+
+<p><strong>References</strong></p>
+
+<p>D. Rezende, S. Mohamed (2015): Variational Inference with Normalizing Flows. arXiv:1505.05770</p>
 
 <p><a id="Bijectors.forward-Tuple{Bijector,Any}" href="#Bijectors.forward-Tuple{Bijector,Any}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></strong> — <em>Method</em>.</p>
@@ -1063,6 +1140,64 @@ julia&gt; Bijectors.composer(cb1, cb2).ts
 julia&gt; Bijectors.composer(cb1, cb2).ts isa Tuple{Composed, Composed}
 true
 </code></pre>
+
+<p><a id="Bijectors.CorrBijector" href="#Bijectors.CorrBijector">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.CorrBijector</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CorrBijector</span> <span class="o">&lt;:</span> <span class="n">Bijector</span><span class="x">{</span><span class="mi">2</span><span class="x">}</span>
+</code></pre></div></div>
+
+<p>A bijector implementation of Stan’s parametrization method for Correlation matrix: https://mc-stan.org/docs/2_23/reference-manual/correlation-matrix-transform-section.html</p>
+
+<p>Basically, a unconstrained strictly upper triangular matrix <code class="language-plaintext highlighter-rouge">y</code> is transformed to  a correlation matrix by following readable but not that efficient form:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>K = size(y, 1)
+z = tanh.(y)
+
+for j=1:K, i=1:K
+    if i&gt;j
+        w[i,j] = 0
+    elseif 1==i==j
+        w[i,j] = 1
+    elseif 1&lt;i==j
+        w[i,j] = prod(sqrt(1 .- z[1:i-1, j].^2))
+    elseif 1==i&lt;j
+        w[i,j] = z[i,j]
+    elseif 1&lt;i&lt;j
+        w[i,j] = z[i,j] * prod(sqrt(1 .- z[1:i-1, j].^2))
+    end
+end
+</code></pre></div></div>
+
+<p>It is easy to see that every column is a unit vector, for example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>w3' w3 ==
+w[1,3]^2 + w[2,3]^2 + w[3,3]^2 ==
+z[1,3]^2 + (z[2,3] * sqrt(1 - z[1,3]^2))^2 + (sqrt(1-z[1,3]^2) * sqrt(1-z[2,3]^2))^2 ==
+z[1,3]^2 + z[2,3]^2 * (1-z[1,3]^2) + (1-z[1,3]^2) * (1-z[2,3]^2) ==
+z[1,3]^2 + z[2,3]^2 - z[2,3]^2 * z[1,3]^2 + 1 -z[1,3]^2 - z[2,3]^2 + z[1,3]^2 * z[2,3]^2 ==
+1
+</code></pre></div></div>
+
+<p>And diagonal elements are positive, so <code class="language-plaintext highlighter-rouge">w</code> is a cholesky factor for a positive matrix.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x = w' * w
+</code></pre></div></div>
+
+<p>Consider block matrix representation for <code class="language-plaintext highlighter-rouge">x</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x = [w1'; w2'; ... wn'] * [w1 w2 ... wn] == 
+[w1'w1 w1'w2 ... w1'wn;
+ w2'w1 w2'w2 ... w2'wn;
+ ...
+]
+</code></pre></div></div>
+
+<p>The diagonal elements are given by <code class="language-plaintext highlighter-rouge">wk'wk = 1</code>, thus <code class="language-plaintext highlighter-rouge">x</code> is a correlation matrix.</p>
+
+<p>Every step is invertible, so this is a bijection(bijector).</p>
+
+<p>Note: The implementation doesn’t follow their “manageable expression” directly, because their equation seems wrong (7/30/2020). Insteadly it follows definition  above the “manageable expression” directly, which is also described in above doc.</p>
 
 <p><a id="Bijectors.Inverse" href="#Bijectors.Inverse">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.Inverse</code></strong> — <em>Type</em>.</p>

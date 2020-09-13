@@ -7,9 +7,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Articles</title>
-    <meta name="description" content="Turing: A robust, efficient and modular library for general-purpose probabilistic programming.
-">
+    <title>Google Summer of Code 2020</title>
+    <meta name="description" content="As the 2020 Google Summer of Code comes to a close, the Turing team thought it would be a good opportunity to reflect on the work that was done by our superb...">
     <meta name="author" content="The Turing Team">
     <meta name="theme-color" content="red">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -18,7 +17,7 @@
     <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="canonical" href="/dev/archive/">
+    <link rel="canonical" href="/dev/posts/2020-09-11-gsoc">
     <link rel="alternate" type="application/rss+xml" title="Turing.jl" href="/dev/feed.xml">
     <meta name="lang:clipboard.copy" content="Copy to clipboard">
     <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -41,6 +40,8 @@
     
 
     
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
 
   </head>
 
@@ -55,7 +56,7 @@
 
     <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off>
     <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off>
-    <label class=md-overlay data-md-component=overlay for=__drawer></label> <a href="#articles" tabindex=1 class=md-skip> Skip to content </a>
+    <label class=md-overlay data-md-component=overlay for=__drawer></label> <a href="#google-summer-of-code-2020" tabindex=1 class=md-skip> Skip to content </a>
     <header class=md-header data-md-component=header data-md-state=none>
         <nav class="md-header-nav md-grid">
             <div class=md-flex>
@@ -234,68 +235,36 @@
                 <div id="md-container-pancakes">
                 <div class="md-content full-width"> 
     <article class="md-content__inner md-typeset  full-width">
-    <h1 id="news-archive">News Archive</h1>
+    <h1 style="margin-bottom:0px">Google Summer of Code 2020</h1>
+    
+     <span class"author"> Cameron Pfiffer </span> <br>
+    <span class="post-date" style="font-style: italic;">September 11, 2020</span>
 
-<h2 class="c-archives__year" id="2020-ref">2020</h2>
-<ul class="c-archives__list">
-<li class="c-archives__item">
-  Sep 11, 2020: <a href="/dev/posts/2020-09-11-gsoc">Google Summer of Code 2020</a>
-  </li>
+    <p>As the 2020 <a href="https://summerofcode.withgoogle.com/">Google Summer of Code</a> comes to a close, the Turing team thought it would be a good opportunity to reflect on the work that was done by our superb students this summer.</p>
 
+<p><a href="https://github.com/SaranjeetKaur">Saranjeet Kaur</a>’s <a href="https://summerofcode.withgoogle.com/projects/#6567464390885376">project</a> focused primarily on expanding <a href="https://github.com/TuringLang/NestedSamplers.jl">NestedSamplers.jl</a>. NestedSamplers.jl now supports <a href="https://arxiv.org/abs/1506.00171">PolyChord-style</a> nested sampling natively, which is an absolute delight. Saranjeet wrote about this <a href="https://nextjournal.com/Saranjeet-Kaur/extending-nestedsamplersjl">here</a>. She also provided a good tutorial on how to use NestedSamplers.jl <a href="https://nextjournal.com/Saranjeet-Kaur/illustrations-of-use-of-nestedsamplersjl">here</a>. The NestedSamplers.jl integration with Turing is still on-going – integrating new samplers with Turing is one of the more difficult tasks. If you are interested to see the progress on this, check out the relevant <a href="https://github.com/TuringLang/Turing.jl/pull/1333">pull request</a>.</p>
 
-<li class="c-archives__item">
-  May 14, 2020: <a href="/dev/posts/2020-05-04-Imperial-Report13-analysis">Replication study: Estimating number of infections and impact of NPIs on COVID-19 in European countries (Imperial Report 13)</a>
-  </li>
+<p><a href="https://github.com/luiarthur">Arthur Lui</a>’s <a href="https://summerofcode.withgoogle.com/projects/#5861616765108224">project</a> was to provide a much-needed set of benchmarks of Bayesian nonparametric models between Turing and other PPLs. Arthur’s work spawned a <a href="https://github.com/luiarthur/TuringBnpBenchmarks">GitHub repository</a> with good practices for benchmarking, as well as three blog posts with some (very cool!) statistics on Turing’s performance:</p>
 
+<ol>
+  <li><a href="https://luiarthur.github.io/TuringBnpBenchmarks/dpsbgmm">Dirichlet Process Gaussian mixture model via the stick-breaking construction in various PPLs</a></li>
+  <li><a href="https://luiarthur.github.io/TuringBnpBenchmarks/gp">Gaussian Process Regression Model in various PPLs</a></li>
+  <li><a href="https://luiarthur.github.io/TuringBnpBenchmarks/gpclassify">Gaussian Process Classification Model in various PPLs</a></li>
+</ol>
 
-<li class="c-archives__item">
-  Feb 12, 2020: <a href="/dev/posts/2020-02-12-jsoc">Google Summer of Code/Julia Summer of Code</a>
-  </li>
+<p>Finally, <a href="https://github.com/sharanry">Sharan Yalburgi</a> (a returning GSoC student) completed an epic amount of work Turing’s growing suite of <a href="https://summerofcode.withgoogle.com/projects/#5565948129443840">Gaussian process tools</a>. In particular, the GitHub organization <a href="https://github.com/JuliaGaussianProcesses">JuliaGaussianProcesses</a> was founded, and serves as an effort to build a robust Gaussian process framework for the Julia ecosystem. The framework consists of multiple GP related Julia packages:</p>
+
+<ul>
+  <li><a href="https://github.com/JuliaGaussianProcesses/KernelFunctions.jl">KernelFunctions.jl</a> provides kernel functions for GPs as well as efficient AD for these kernels. KernelFunctions.jl also supports multi-output GPs by providing necessary data abstractions and multi-output kernels.</li>
+  <li><a href="https://github.com/JuliaGaussianProcesses/AbstractGPs.jl">AbstractGPs.jl</a> defines GP abstractions and provides exact posteriors. It provides support for induced points based GP posteriors and for efficient sequential/online (sparse) GP updates.</li>
+  <li><a href="https://github.com/JuliaGaussianProcesses/GPLikelihoods.jl">GPLikelihoods.jl</a> defines alternate likelihoods for Non-Gaussian GPs.</li>
+  <li><a href="https://github.com/JuliaGaussianProcesses/GPMLj.jl">GPMLj.jl</a> provides a Julia interface for <a href="https://github.com/GPflow/GPflow">GPFlow</a>, a GP library written in Python using TensorFlow.</li>
 </ul>
-<h2 class="c-archives__year" id="2019-ref">2019</h2>
-<ul class="c-archives__list">
 
+<p>Special thanks to our three GSoC students for this summer, who all did excellent work. Additional thanks to Google for supporting open source software development and the Julia language!</p>
 
-<li class="c-archives__item">
-  Dec 14, 2019: <a href="/dev/posts/2019-12-14-initial-post">Turing's Blog</a>
-  </li></ul>
 
     
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
-
-<script>
-$(document).ready(function() {
-
-    var toc = $('#nav-toc');
-
-    // Select each header
-    sections = $('#md-container-pancakes h1');
-        $.each(sections, function(idx, v) {
-            section = $(v);
-            var div_id = $(section).attr('id');
-            var div_text = section.text().split('¶')[0];
-            var parent = $("#" + div_id)
-            var content = '<li id="link_' + div_id + '" class="md-nav__item"><a class="md-nav__link toc-side-bar" href="#' + div_id + '" title="' + div_text +'">' + div_text +'</a></li>';
-            $(toc).append(content);
-
-            // Add section code to subnavigation
-            var children = $('<nav class="md-nav"><ul class="md-nav__list"></nav></ul>')
-            var contenders = $("#" + div_id).nextUntil( "h1" );
-            $.each(contenders, function(idx, contender){
-            if($(contender).is('h2')) {
-                var contender_id = $(contender).attr('id');
-                var contender_text = $(contender).text().split('¶')[0];
-                var content = '<li class="md-nav__item"><a class="md-nav__link toc-side-bar" href="#' + contender_id + '" title="' + contender_text +'">' + contender_text +'</a></li>';
-                children.append(content);
-                }
-            })
-            $("#link_" + div_id).append(children);
-        });
-    });
-</script>
     <!-- this will parse through the header fields and add a button to open
      an issue / ask a question on Github. The editable field should be in
      the post frontend matter, and refer to the label to open the issue for -->
@@ -356,7 +325,7 @@ $(document).ready(function() {
 
     <script src="/dev/assets/js/application.js"></script>
     
-    <script>console.log('2')</script>
+    <script>console.log('3')</script>
     <script>app.initialize({version:"0.17.4", url:{base:'/dev'}})</script>
 
     
@@ -400,7 +369,8 @@ $(".mobile-navbar-back").on('click', function(){
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-    
+    <script>
+$('h1').first().append('<div></div>')</script>
 
     <style>
 #scrolltop {
