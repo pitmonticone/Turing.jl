@@ -893,7 +893,7 @@
 
 <p>methods like Particle Gibbs. You can increase the effectiveness of particle sampling by including more particles in the particle sampler.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/gibbs.jl#L14-L39" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/gibbs.jl#L14-L39" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmc--type"><a id="Turing.Inference.HMC" href="#Turing.Inference.HMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></strong> — <em>Type</em>.</h3>
 
@@ -927,7 +927,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/hmc.jl#L46-L73" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/hmc.jl#L46-L73" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmcda--type"><a id="Turing.Inference.HMCDA" href="#Turing.Inference.HMCDA">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></strong> — <em>Type</em>.</h3>
 
@@ -956,7 +956,7 @@
   <li>Hoffman, Matthew D., and Andrew Gelman. “The No-U-turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo.” Journal of Machine Learning Research 15, no. 1 (2014): 1593-1623.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/hmc.jl#L218-L241" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/hmc.jl#L218-L241" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferenceis--type"><a id="Turing.Inference.IS" href="#Turing.Inference.IS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></strong> — <em>Type</em>.</h3>
 
@@ -986,7 +986,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">IS</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencemh--type"><a id="Turing.Inference.MH" href="#Turing.Inference.MH">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.MH</code></strong> — <em>Type</em>.</h3>
 
@@ -1103,7 +1103,7 @@ mean(chain)
 
 <p>chain = sample(     gdemo(1.5, 2.0),      MH(         [0.25 0.05;           0.05 0.50]     ),      1_000 ) mean(chain) ````</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/mh.jl#L12-L150" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/mh.jl#L12-L150" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencenuts--type"><a id="Turing.Inference.NUTS" href="#Turing.Inference.NUTS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.NUTS</code></strong> — <em>Type</em>.</h3>
 
@@ -1128,7 +1128,7 @@ mean(chain)
   <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically searching using a heuristic procedure.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/hmc.jl#L284-L304" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/hmc.jl#L284-L304" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencepg--type"><a id="Turing.Inference.PG" href="#Turing.Inference.PG">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></strong> — <em>Type</em>.</h3>
 
@@ -1154,7 +1154,7 @@ mean(chain)
   </li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/AdvancedSMC.jl#L154" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/AdvancedSMC.jl#L154" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencesmc--type"><a id="Turing.Inference.SMC" href="#Turing.Inference.SMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></strong> — <em>Type</em>.</h3>
 
@@ -1169,7 +1169,7 @@ mean(chain)
   <li><code class="language-plaintext highlighter-rouge">resampler::Any</code></li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/inference/AdvancedSMC.jl#L35" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/inference/AdvancedSMC.jl#L35" class="documenter-source">source</a><br /></p>
 
 <p><a id="Distributions"></a></p>
 
@@ -1184,7 +1184,7 @@ mean(chain)
 
 <p>A distribution with support and density of one everywhere.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingflatpos--type"><a id="Turing.FlatPos" href="#Turing.FlatPos">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></strong> — <em>Type</em>.</h3>
 
@@ -1193,7 +1193,7 @@ mean(chain)
 
 <p>A distribution with a lower bound of <code class="language-plaintext highlighter-rouge">l</code> and a density of one at every <code class="language-plaintext highlighter-rouge">x</code> above <code class="language-plaintext highlighter-rouge">l</code>.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingbinomiallogit--type"><a id="Turing.BinomialLogit" href="#Turing.BinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.BinomialLogit</code></strong> — <em>Type</em>.</h3>
 
@@ -1202,7 +1202,7 @@ mean(chain)
 
 <p>A univariate binomial logit distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
 
 <p>!!! warning “Missing docstring.”
     Missing docstring for <code class="language-plaintext highlighter-rouge">VecBinomialLogit</code>. Check Documenter’s build log for details.</p>
@@ -1214,7 +1214,7 @@ mean(chain)
 
 <p>An ordered logistic distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/ae24c28657a10800d14308117150427f645dcb40/src/stdlib/distributions.jl#L72-L76" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/1d87a1d4084299de74c2d53956895741a6e0001b/src/stdlib/distributions.jl#L72-L76" class="documenter-source">source</a><br /></p>
 
 <p><a id="Data-Structures"></a></p>
 
