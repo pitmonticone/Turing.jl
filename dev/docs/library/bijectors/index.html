@@ -807,8 +807,13 @@
   <li><a href="/dev/docs/library/bijectors/#Bijectors.CorrBijector"><code class="language-plaintext highlighter-rouge">Bijectors.CorrBijector</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Coupling"><code class="language-plaintext highlighter-rouge">Bijectors.Coupling</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Inverse"><code class="language-plaintext highlighter-rouge">Bijectors.Inverse</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.PartitionMask"><code class="language-plaintext highlighter-rouge">Bijectors.PartitionMask</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.LeakyReLU"><code class="language-plaintext highlighter-rouge">Bijectors.LeakyReLU</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.NamedBijector"><code class="language-plaintext highlighter-rouge">Bijectors.NamedBijector</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.NamedComposition"><code class="language-plaintext highlighter-rouge">Bijectors.NamedComposition</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.NamedCoupling"><code class="language-plaintext highlighter-rouge">Bijectors.NamedCoupling</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.NamedInverse"><code class="language-plaintext highlighter-rouge">Bijectors.NamedInverse</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.PartitionMask-Union{Tuple{T}, Tuple{Int64,Any}} where T"><code class="language-plaintext highlighter-rouge">Bijectors.PartitionMask</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.PartitionMask"><code class="language-plaintext highlighter-rouge">Bijectors.PartitionMask</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Permute"><code class="language-plaintext highlighter-rouge">Bijectors.Permute</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.Stacked"><code class="language-plaintext highlighter-rouge">Bijectors.Stacked</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors._link_chol_lkj-Tuple{Any}"><code class="language-plaintext highlighter-rouge">Bijectors._link_chol_lkj</code></a></li>
@@ -820,13 +825,13 @@
   <li><a href="/dev/docs/library/bijectors/#Bijectors.couple-Tuple{Bijectors.Coupling,AbstractArray{T,1} where T}"><code class="language-plaintext highlighter-rouge">Bijectors.couple</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.coupling-Tuple{Bijectors.Coupling}"><code class="language-plaintext highlighter-rouge">Bijectors.coupling</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.find_alpha-Tuple{AbstractArray{var&quot;#s107&quot;,1} where var&quot;#s107&quot;&lt;:Real,Any,Any,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.find_alpha</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.forward-Tuple{Distribution}"><code class="language-plaintext highlighter-rouge">Bijectors.forward</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.isclosedform-Tuple{Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.isclosedform</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{ADBijector,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjac-Tuple{Inverse{var&quot;#s23&quot;,N} where N where var&quot;#s23&quot;&lt;:Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjac</code></a></li>
-  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijectors.TransformedDistribution{var&quot;#s108&quot;,var&quot;#s107&quot;,Univariate} where var&quot;#s107&quot;&lt;:Bijector where var&quot;#s108&quot;&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
+  <li><a href="/dev/docs/library/bijectors/#Bijectors.logabsdetjacinv-Tuple{Bijector,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.logabsdetjacinv</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.logpdf_with_jac-Tuple{Bijectors.TransformedDistribution{var&quot;#s108&quot;,var&quot;#s107&quot;,Univariate} where var&quot;#s107&quot;&lt;:Bijector where var&quot;#s108&quot;&lt;:Distribution,Real}"><code class="language-plaintext highlighter-rouge">Bijectors.logpdf_with_jac</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.partition-Tuple{Bijectors.PartitionMask,Any}"><code class="language-plaintext highlighter-rouge">Bijectors.partition</code></a></li>
   <li><a href="/dev/docs/library/bijectors/#Bijectors.transformed-Tuple{Distribution,Bijector}"><code class="language-plaintext highlighter-rouge">Bijectors.transformed</code></a></li>
@@ -1283,6 +1288,88 @@ Shift{Array{Float64,1},1}([2.0])
 </code></pre></div></div>
 
 <p>A <code class="language-plaintext highlighter-rouge">Bijector</code> representing the inverse transform of <code class="language-plaintext highlighter-rouge">b</code>.</p>
+
+<p><a id="Bijectors.LeakyReLU" href="#Bijectors.LeakyReLU">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.LeakyReLU</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LeakyReLU</span><span class="x">{</span><span class="n">T</span><span class="x">,</span> <span class="n">N</span><span class="x">}(</span><span class="n">α</span><span class="o">::</span><span class="n">T</span><span class="x">)</span> <span class="o">&lt;:</span> <span class="n">Bijector</span><span class="x">{</span><span class="n">N</span><span class="x">}</span>
+</code></pre></div></div>
+
+<p>Defines the invertible mapping</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x ↦ x if x ≥ 0 else αx
+</code></pre></div></div>
+
+<p>where α &gt; 0.</p>
+
+<p><a id="Bijectors.NamedBijector" href="#Bijectors.NamedBijector">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.NamedBijector</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NamedBijector</span> <span class="o">&lt;:</span> <span class="n">AbstractNamedBijector</span>
+</code></pre></div></div>
+
+<p>Wraps a <code class="language-plaintext highlighter-rouge">NamedTuple</code> of key -&gt; <code class="language-plaintext highlighter-rouge">Bijector</code> pairs, implementing evaluation, inversion, etc.</p>
+
+<p><strong>Examples</strong></p>
+
+<pre><code class="language-julia-repl">julia&gt; using Bijectors: NamedBijector, Scale, Exp
+
+julia&gt; b = NamedBijector((a = Scale(2.0), b = Exp()));
+
+julia&gt; x = (a = 1., b = 0., c = 42.);
+
+julia&gt; b(x)
+(a = 2.0, b = 1.0, c = 42.0)
+
+julia&gt; (a = 2 * x.a, b = exp(x.b), c = x.c)
+(a = 2.0, b = 1.0, c = 42.0)
+</code></pre>
+
+<p><a id="Bijectors.NamedComposition" href="#Bijectors.NamedComposition">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.NamedComposition</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NamedComposition</span> <span class="o">&lt;:</span> <span class="n">AbstractNamedBijector</span>
+</code></pre></div></div>
+
+<p>Wraps a tuple of array of <code class="language-plaintext highlighter-rouge">AbstractNamedBijector</code> and implements their composition.</p>
+
+<p>This is very similar to <code class="language-plaintext highlighter-rouge">Composed</code> for <code class="language-plaintext highlighter-rouge">Bijector</code>, with the exception that we do not require the inputs to have the same “dimension”, which in this case refers to the <em>symbols</em> for the <code class="language-plaintext highlighter-rouge">NamedTuple</code> that this takes as input.</p>
+
+<p>See also: <a href="/dev/docs/library/bijectors/#Bijectors.Composed"><code class="language-plaintext highlighter-rouge">Composed</code></a></p>
+
+<p><a id="Bijectors.NamedCoupling" href="#Bijectors.NamedCoupling">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.NamedCoupling</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NamedCoupling</span><span class="x">{</span><span class="n">target</span><span class="x">,</span> <span class="n">deps</span><span class="x">,</span> <span class="n">F</span><span class="x">}</span> <span class="o">&lt;:</span> <span class="n">AbstractNamedBijector</span>
+</code></pre></div></div>
+
+<p>Implements a coupling layer for named bijectors.</p>
+
+<p><strong>Examples</strong></p>
+
+<pre><code class="language-julia-repl">julia&gt; using Bijectors: NamedCoupling, Scale
+
+julia&gt; b = NamedCoupling(:b, (:a, :c), (a, c) -&gt; Scale(a + c))
+NamedCoupling{:b,(:a, :c),var"#3#4"}(var"#3#4"())
+
+julia&gt; x = (a = 1., b = 2., c = 3.);
+
+julia&gt; b(x)
+(a = 1.0, b = 8.0, c = 3.0)
+
+julia&gt; (a = x.a, b = (x.a + x.c) * x.b, c = x.c)
+(a = 1.0, b = 8.0, c = 3.0)
+</code></pre>
+
+<p><a id="Bijectors.NamedInverse" href="#Bijectors.NamedInverse">#</a>
+<strong><code class="language-plaintext highlighter-rouge">Bijectors.NamedInverse</code></strong> — <em>Type</em>.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NamedInverse</span> <span class="o">&lt;:</span> <span class="n">AbstractNamedBijector</span>
+</code></pre></div></div>
+
+<p>Represents the inverse of a <code class="language-plaintext highlighter-rouge">AbstractNamedBijector</code>, similarily to <code class="language-plaintext highlighter-rouge">Inverse</code> for <code class="language-plaintext highlighter-rouge">Bijector</code>.</p>
+
+<p>See also: <a href="/dev/docs/library/bijectors/#Bijectors.Inverse"><code class="language-plaintext highlighter-rouge">Inverse</code></a></p>
 
 <p><a id="Bijectors.PartitionMask" href="#Bijectors.PartitionMask">#</a>
 <strong><code class="language-plaintext highlighter-rouge">Bijectors.PartitionMask</code></strong> — <em>Type</em>.</p>
