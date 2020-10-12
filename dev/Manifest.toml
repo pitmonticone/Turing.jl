@@ -315,9 +315,9 @@ version = "0.4.2"
 
 [[MCMCChains]]
 deps = ["AbstractFFTs", "AbstractMCMC", "AxisArrays", "Compat", "Distributions", "Formatting", "IteratorInterfaceExtensions", "LinearAlgebra", "MLJModelInterface", "NaturalSort", "PrettyTables", "Random", "RecipesBase", "Serialization", "SpecialFunctions", "Statistics", "StatsBase", "TableTraits", "Tables"]
-git-tree-sha1 = "9238e22fa1d5d81b8a7af87aee27c02aba773788"
+git-tree-sha1 = "714c23bf675813e75e20aab14fb3b81dbb6d3d6e"
 uuid = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
-version = "4.2.2"
+version = "4.2.3"
 
 [[MLJModelInterface]]
 deps = ["Random", "ScientificTypes"]
@@ -584,7 +584,7 @@ version = "0.3.10"
 deps = ["AbstractMCMC", "AdvancedHMC", "AdvancedMH", "AdvancedVI", "Bijectors", "Distributions", "DistributionsAD", "DocStringExtensions", "DynamicPPL", "EllipticalSliceSampling", "ForwardDiff", "Libtask", "LinearAlgebra", "LogDensityProblems", "MCMCChains", "NamedArrays", "Printf", "Random", "Reexport", "Requires", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns", "Tracker", "ZygoteRules"]
 path = "/home/runner/work/Turing.jl/Turing.jl"
 uuid = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
-version = "0.14.9"
+version = "0.14.10"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
