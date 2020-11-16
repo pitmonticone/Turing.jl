@@ -344,9 +344,9 @@ version = "0.4.2"
 
 [[MCMCChains]]
 deps = ["AbstractFFTs", "AbstractMCMC", "AxisArrays", "Compat", "Distributions", "Formatting", "IteratorInterfaceExtensions", "LinearAlgebra", "MLJModelInterface", "NaturalSort", "PrettyTables", "Random", "RecipesBase", "Serialization", "SpecialFunctions", "Statistics", "StatsBase", "TableTraits", "Tables"]
-git-tree-sha1 = "878a89e412ec091baccfad98da59dc230a2f1e04"
+git-tree-sha1 = "fe293130fd02a34b91cd8e68911f5f1ad0d45518"
 uuid = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
-version = "4.2.4"
+version = "4.3.0"
 
 [[MLJModelInterface]]
 deps = ["Random", "ScientificTypes"]
@@ -385,10 +385,10 @@ uuid = "46d2c3a1-f734-5fdb-9937-b9b9aeba4221"
 version = "0.2.2"
 
 [[NNlib]]
-deps = ["Libdl", "LinearAlgebra", "Pkg", "Requires", "Statistics"]
-git-tree-sha1 = "a8180fd1445e31c0b1add98dae8da694ac2c23fd"
+deps = ["Compat", "Libdl", "LinearAlgebra", "Pkg", "Requires", "Statistics"]
+git-tree-sha1 = "1ae42464fea5258fd2ff49f1c4a40fc41cba3860"
 uuid = "872c559c-99b0-510c-b3b7-b6c96a88d5cd"
-version = "0.7.6"
+version = "0.7.7"
 
 [[NaNMath]]
 git-tree-sha1 = "c84c576296d0e2fbb3fc134d3e09086b3ea617cd"
@@ -440,10 +440,10 @@ deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "R
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[PrettyTables]]
-deps = ["Crayons", "Formatting", "Parameters", "Reexport", "Tables"]
-git-tree-sha1 = "8458dc04a493ae5c2fed3796c1d3117972c69694"
+deps = ["Crayons", "Formatting", "Markdown", "Reexport", "Tables"]
+git-tree-sha1 = "237170206bf38a66fee4d845f4ae57f63788eeb0"
 uuid = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
-version = "0.9.1"
+version = "0.10.1"
 
 [[Printf]]
 deps = ["Unicode"]
@@ -525,9 +525,9 @@ version = "1.0.5"
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 
 [[ScientificTypes]]
-git-tree-sha1 = "b06fff5c17a20aa69494a3d9da62d9c88ec6b764"
+git-tree-sha1 = "1d3f5f8bdf5dd0c9951eb9c595ee08a728aec331"
 uuid = "321657f4-b219-11e9-178b-2701a2544e81"
-version = "1.1.0"
+version = "1.1.1"
 
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
@@ -619,7 +619,7 @@ version = "0.3.10"
 deps = ["AbstractMCMC", "AdvancedHMC", "AdvancedMH", "AdvancedVI", "Bijectors", "Distributions", "DistributionsAD", "DocStringExtensions", "DynamicPPL", "EllipticalSliceSampling", "ForwardDiff", "Libtask", "LinearAlgebra", "LogDensityProblems", "MCMCChains", "NamedArrays", "Printf", "Random", "Reexport", "Requires", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns", "Tracker", "ZygoteRules"]
 path = "/home/runner/work/Turing.jl/Turing.jl"
 uuid = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
-version = "0.14.10"
+version = "0.14.11"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
