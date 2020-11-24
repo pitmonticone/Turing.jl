@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+     <loc>/</loc>
+     <lastmod>2020-11-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+<url>
+     <loc>/v0.14.12docs/using-turing/get-started/</loc>
+     <lastmod>2020-11-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+<url>
+     <loc>/v0.14.12docs/for-developers//</loc>
+     <lastmod>2020-11-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+<url>
+     <loc>/v0.14.12tutorials/</loc>
+     <lastmod>2020-11-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+<url>
+     <loc>/v0.14.12docs/library/</loc>
+     <lastmod>2020-11-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+<url>
+     <loc>/v0.14.12docs/contributing/guide/</loc>
+     <lastmod>2020-11-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+
+</urlset>
