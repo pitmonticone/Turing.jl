@@ -26,9 +26,9 @@ version = "2.3.0"
 
 [[AdvancedHMC]]
 deps = ["ArgCheck", "DocStringExtensions", "InplaceOps", "LinearAlgebra", "Parameters", "ProgressMeter", "Random", "Requires", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "605f08a7c3c9712ee7d7a0aee4d21391dea9eedf"
+git-tree-sha1 = "7e85ed4917716873423f8d47da8c1275f739e0b7"
 uuid = "0bf59076-c3b1-5ca4-86bd-e02cd72cde3d"
-version = "0.2.26"
+version = "0.2.27"
 
 [[AdvancedMH]]
 deps = ["AbstractMCMC", "Distributions", "Random", "Requires"]
@@ -49,9 +49,9 @@ version = "2.1.0"
 
 [[ArrayInterface]]
 deps = ["LinearAlgebra", "Requires", "SparseArrays"]
-git-tree-sha1 = "c121e78a689da38e4199cf964962385a4810d827"
+git-tree-sha1 = "8dda4b50619df45559e6e49d8b72b706ee213923"
 uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
-version = "2.14.2"
+version = "2.14.3"
 
 [[Artifacts]]
 deps = ["Pkg"]
@@ -88,15 +88,15 @@ version = "0.8.8"
 
 [[ChainRules]]
 deps = ["ChainRulesCore", "ChainRulesTestUtils", "Compat", "LinearAlgebra", "Random", "Reexport", "Requires", "Statistics"]
-git-tree-sha1 = "118fad132f286ac9df765e0dda94ddba2f0fb279"
+git-tree-sha1 = "f034ac3dac255b543788bc170713f40a87efe9bf"
 uuid = "082447d4-558c-5d27-93f4-14fc19e9eca2"
-version = "0.7.33"
+version = "0.7.34"
 
 [[ChainRulesCore]]
 deps = ["LinearAlgebra", "MuladdMacro", "SparseArrays"]
-git-tree-sha1 = "6e0e251d98bd909a227e905e2700555e33796042"
+git-tree-sha1 = "1e314c23fc3471644ac068d539053a3e6f91321e"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "0.9.20"
+version = "0.9.22"
 
 [[ChainRulesTestUtils]]
 deps = ["ChainRulesCore", "Compat", "FiniteDifferences", "LinearAlgebra", "Random", "Test"]
@@ -195,9 +195,9 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[Distributions]]
 deps = ["FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SparseArrays", "SpecialFunctions", "StaticArrays", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "501c11d708917ca09ce357bed163dbaf0f30229f"
+git-tree-sha1 = "3d85c955190e6133966df58d3088d88234b72d12"
 uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.23.12"
+version = "0.24.6"
 
 [[DistributionsAD]]
 deps = ["Adapt", "ChainRules", "ChainRulesCore", "Compat", "DiffRules", "Distributions", "FillArrays", "ForwardDiff", "LinearAlgebra", "NaNMath", "PDMats", "Random", "Requires", "SpecialFunctions", "StaticArrays", "StatsBase", "StatsFuns", "ZygoteRules"]
@@ -242,15 +242,15 @@ version = "0.3.1"
 
 [[FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays"]
-git-tree-sha1 = "502b3de6039d5b78c76118423858d981349f3823"
+git-tree-sha1 = "c1cf9e87a5c45f0c05dc31ae95757f706e70865a"
 uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.9.7"
+version = "0.10.1"
 
 [[FiniteDifferences]]
 deps = ["ChainRulesCore", "LinearAlgebra", "Printf", "Random", "Richardson"]
-git-tree-sha1 = "e62dc2e6c482bbbe97e79f875063285257daa142"
+git-tree-sha1 = "df77f981a713a616884df390e0a8a8449ae4bfda"
 uuid = "26cc04aa-876d-5657-8c51-4c34ba976000"
-version = "0.11.3"
+version = "0.11.4"
 
 [[FixedPointNumbers]]
 deps = ["Statistics"]
@@ -266,9 +266,9 @@ version = "0.4.1"
 
 [[ForwardDiff]]
 deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "NaNMath", "Random", "SpecialFunctions", "StaticArrays"]
-git-tree-sha1 = "67d5fdd067626132aa9e7d2830ee9cdd09018775"
+git-tree-sha1 = "8de2519a83c6c1c2442c2f481dd9a8364855daf4"
 uuid = "f6369f11-7733-5829-9624-2563aa707210"
-version = "0.10.13"
+version = "0.10.14"
 
 [[Future]]
 deps = ["Random"]
@@ -673,7 +673,7 @@ version = "0.3.10"
 deps = ["AbstractMCMC", "AdvancedHMC", "AdvancedMH", "AdvancedVI", "BangBang", "Bijectors", "Distributions", "DistributionsAD", "DocStringExtensions", "DynamicPPL", "EllipticalSliceSampling", "ForwardDiff", "Libtask", "LinearAlgebra", "LogDensityProblems", "MCMCChains", "NamedArrays", "Printf", "Random", "Reexport", "Requires", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns", "Tracker", "ZygoteRules"]
 path = "/home/runner/work/Turing.jl/Turing.jl"
 uuid = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
-version = "0.15.0"
+version = "0.15.1"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
