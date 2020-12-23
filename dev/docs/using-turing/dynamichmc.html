@@ -801,14 +801,12 @@
 
 <p>Turing supports the use of <a href="https://github.com/tpapp/DynamicHMC.jl">DynamicHMC</a> as a sampler through the <code class="language-plaintext highlighter-rouge">DynamicNUTS</code> function.</p>
 
-<p><code class="language-plaintext highlighter-rouge">DynamicNUTS</code> is not appropriate for use in compositional inference. If you intend to use <a href="/dev/docs/library/#Turing.Inference.Gibbs">Gibbs</a> sampling, you must use Turing’s native <code class="language-plaintext highlighter-rouge">NUTS</code> function.</p>
-
 <p>To use the <code class="language-plaintext highlighter-rouge">DynamicNUTS</code> function, you must import the <code class="language-plaintext highlighter-rouge">DynamicHMC</code> package as well as Turing. Turing does not formally require <code class="language-plaintext highlighter-rouge">DynamicHMC</code> but will include additional functionality if both packages are present.</p>
 
 <p>Here is a brief example of how to apply <code class="language-plaintext highlighter-rouge">DynamicNUTS</code>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import Turing and DynamicHMC.</span>
-<span class="k">using</span> <span class="n">LogDensityProblems</span><span class="x">,</span> <span class="n">DynamicHMC</span><span class="x">,</span> <span class="n">Turing</span>
+<span class="k">using</span> <span class="n">DynamicHMC</span><span class="x">,</span> <span class="n">Turing</span>
 
 <span class="c"># Model definition.</span>
 <span class="nd">@model</span> <span class="k">function</span><span class="nf"> gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
